@@ -17,3 +17,27 @@ body{background:var(--light);color:var(--ink)}header{position:fixed;background:#
 @media(max-width:600px){.hero-type{padding:0 12px}h1{font-size:22vw;letter-spacing:-.075em}.mascot-scene{width:92%;max-width:92vw;align-self:center}.hero-art{height:290px;margin-top:5px}.companion{width:80px;bottom:3%}.service-title{gap:8px}.service-title h3{font-size:clamp(23px,7vw,30px)}.service-icon{width:48px;height:48px;flex-basis:48px}.sound-toggle{right:12px;bottom:12px;padding:10px 12px;font-size:9px}.hero-orbits{width:140%;left:-20%}.sticker-one{top:45px}.sticker-two{bottom:-12px}.faq-companion{max-width:160px}}
 @media(prefers-reduced-motion:reduce){.service-icon svg *,.sound-wave{animation:none!important}}
 @media(max-width:600px){.mascot-coder,.mascot-designer{transform:none!important}.hero-art{margin-bottom:25px}.art-note{bottom:-10px}.companion{transform:translateX(-50%)!important}.mascot-scene{max-width:88vw;width:88%}}
+.ribbon{height:340px;overflow:visible}.hero{padding-bottom:25px}.service-title{transition:translate .35s ease}.service-stop:hover .service-title{translate:0 -6px}.service-stop p{transition:background .3s,box-shadow .3s}.service-stop:hover p{background:#2b45d8;box-shadow:0 15px 35px #2b45d81a}.orbital-cursor{position:fixed;left:0;top:0;width:64px;height:64px;display:grid;place-items:center;border-radius:50%;background:#0a1033;color:#f1f2fb;border:1px solid #8a90ee;box-shadow:0 0 0 7px #8a90ee25;pointer-events:none;z-index:50;font-size:25px;opacity:0;transition:opacity .15s}.orbital-cursor.visible{opacity:1}@media(pointer:fine){.proof-deck{cursor:pointer}.proof-deck:hover{cursor:none}}@media(max-width:600px){.ribbon{height:180px;overflow:visible}.hero{padding-bottom:0}}@media(prefers-reduced-motion:reduce){.orbital-cursor{display:none}}
+/* Reference-aligned editorial layout, retaining the Code Constellation palette. */
+@media(min-width:901px){
+.section-heading{display:grid;grid-template-columns:24% 1fr 18%;text-align:left;align-items:start;margin-bottom:100px;gap:20px}
+.section-heading>.eyebrow{grid-column:1;margin-top:10px;color:var(--ink)}
+.section-heading>h2{grid-column:2;margin:0;max-width:650px;font-size:clamp(54px,5.8vw,90px);line-height:.94;letter-spacing:-.065em;text-transform:uppercase;font-weight:700;color:var(--ink)}
+.section-heading>p:not(.eyebrow){grid-column:2;margin:0;max-width:450px}
+.services .section-heading h2{max-width:580px}
+.service-title h3{font-size:clamp(34px,4.2vw,65px);font-weight:650;text-transform:uppercase;letter-spacing:-.055em;line-height:1}
+.service-stop{min-height:300px}
+.service-stop p{font-size:16px;line-height:1.45;max-width:380px;border-radius:13px;padding:24px}
+.hero{padding-top:115px}
+.hero-type>.eyebrow{margin-bottom:18px}
+.hero-type{max-width:1200px}
+h1{font-size:clamp(105px,11.3vw,178px);font-weight:700;text-transform:uppercase;letter-spacing:-.075em}
+.hero-art{height:470px}
+.sticker{background:var(--ink);color:var(--light)}
+.sticker-two{background:var(--ink);color:var(--light)}
+}
+.hover-letter{display:inline-block;will-change:transform;transform-origin:50% 80%}
+.heading-word{white-space:nowrap;display:inline-block}
+.project:focus-visible .project-art{border-radius:48px}
+@media(max-width:900px){.section-heading h2{text-transform:uppercase;font-weight:650;line-height:.97}.service-title h3{font-weight:600}}
+@media(prefers-reduced-motion:reduce){.hover-letter{transform:none!important}}
