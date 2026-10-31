@@ -26,3 +26,6 @@ Edit target image 1: the blue rounded comet mascot. Style reference image 2: the
 - https://gsap.com/docs/v3/Plugins/ScrollTrigger/
 - https://github.com/darkroomengineering/lenis
 - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices
+
+## About-page character correction
+The About hero is an identity-preserving edit of assets/mascots.png, generated with the built-in image generation tool. The requested composition is two close, back-to-back head-and-shoulder portraits. Preserve the original boy's round glasses, tousled navy hair, youthful face, warm skin and blue shirt, and the girl's short wavy bob, hoop earrings, cheerful face and lavender shirt. Remove signs and full bodies; keep the original ink-and-gouache treatment and transparent background. This illustration represents the studio's fictional characters, not portraits of the founder or team.
