@@ -212,7 +212,8 @@
       }),
     { once: true },
   );
-  addEventListener("popstate", () => {
+  // Covers back/forward between in-page anchors and hashes typed into the address bar.
+  addEventListener("hashchange", () => {
     const id = decodeURIComponent(location.hash.slice(1));
     const target = id ? document.getElementById(id) : null;
     CC.scrollTo(target || 0, { offset: target ? undefined : 0 });
