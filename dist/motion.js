@@ -14,10 +14,10 @@ if(window.gsap && window.ScrollTrigger){
   if(!seen){loader.hidden=false;intro.from(loader.querySelector('img'),{scale:.7,opacity:0,duration:.45}).from(loader.querySelector('span'),{y:20,opacity:0,duration:.4},.2).to(loader,{yPercent:-100,duration:.7,ease:'power3.inOut',onComplete:()=>{loader.hidden=true;}},.65);sessionStorage.setItem('cc-intro-seen','true');}
   intro.from('.hero-type>.eyebrow',{opacity:0,y:15,duration:.5},seen?0:1)
    .from('.line-mask>span',{yPercent:115,opacity:0,stagger:.12,duration:.95,ease:'back.out(1.25)'},seen?.1:1.05)
-   .from('.sticker',{scale:.4,opacity:0,y:20,stagger:.15,duration:.7,ease:'back.out(2.1)'},seen?.4:1.4)
-   .from('.mascot-scene',{opacity:0,y:60,duration:1},seen?.35:1.35);
+   .from('.sticker',{scale:.75,opacity:0,stagger:.12,duration:.65,ease:'back.out(1.8)'},seen?.35:1.35)
+   .from('.mascot-scene',{opacity:0,y:40,duration:1},seen?.3:1.25);
   const hero=gsap.timeline({scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.8},defaults:{ease:'none'}});
-  hero.to('.hero-type',{y:-60},0).to('.mascot-coder',{x:desktop?-110:-18,rotation:-7,y:25},0).to('.mascot-designer',{x:desktop?110:18,rotation:7,y:-12},0).to('.companion',{y:-80,rotation:-9,scale:1.15},0);
+  hero.to('.hero-type',{y:-40},0).to('.mascot-coder',{x:desktop?-80:-14,rotation:-5,y:18},0).to('.mascot-designer',{x:desktop?80:14,rotation:5,y:-8},0).to('.companion',{y:-50,rotation:-6,scale:1.08},0);
   gsap.fromTo('.ribbon textPath',{attr:{startOffset:'0%'}},{attr:{startOffset:'-20%'},ease:'none',scrollTrigger:{trigger:'.ribbon',start:'top bottom',end:'bottom top',scrub:.6}});
   const copy=document.querySelector('.about-copy'),original=copy.textContent;
   copy.setAttribute('aria-label',original);copy.replaceChildren(...original.split(' ').flatMap((word,i)=>{const w=document.createElement('span');w.className='word';w.setAttribute('aria-hidden','true');for(const c of word){const ch=document.createElement('span');ch.className='about-char';ch.textContent=c;w.append(ch);}return i?[document.createTextNode(' '),w]:[w];}));
@@ -36,8 +36,24 @@ if(window.gsap && window.ScrollTrigger){
   gsap.utils.toArray('.section-heading,.work-end h3,.faq h2').forEach(el=>gsap.from(el,{y:45,opacity:0,duration:1,ease:'back.out(1.2)',scrollTrigger:{trigger:el,start:'top 93%',once:true}}));
   gsap.utils.toArray('.project').forEach((project,index)=>{const art=project.querySelector('.project-art');gsap.fromTo(art,{clipPath:'inset(42.5% 42.5% 42.5% 42.5% round 36px)',scale:1.08,rotationX:12,rotationY:index%2?8:-8},{clipPath:'inset(0% 0% 0% 0% round 16px)',scale:1,rotationX:0,rotationY:0,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:project,start:'top 88%',toggleActions:'play none none reverse'}});});
   gsap.from('.end-pills span',{scale:.4,opacity:0,y:20,stagger:.15,duration:.7,ease:'back.out(2)',scrollTrigger:{trigger:'.work-end',start:'top 80%',once:true}});
-  gsap.fromTo('.draw-path',{strokeDasharray:1,strokeDashoffset:1},{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'.service-journey',start:'top 65%',end:'bottom 65%',scrub:1.1}});
-  gsap.utils.toArray('.service-stop').forEach(stop=>{const tl=gsap.timeline({scrollTrigger:{trigger:stop,start:'top 80%',end:'center 55%',scrub:.6}});tl.from(stop.querySelector('.service-icon'),{scale:0,opacity:0,rotation:-45,duration:1,ease:'back.out(2.5)'},0).from(stop.querySelector('p'),{scale:.6,opacity:0,rotation:0,duration:1,ease:'back.out(2)'},.1);});
+  // Journey line draws on scroll; stops reveal as the line reaches them.
+  const drawPath=document.querySelector('.draw-path');
+  if(drawPath){
+    gsap.set(drawPath,{strokeDasharray:1,strokeDashoffset:1});
+    gsap.to(drawPath,{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:'.service-journey',start:'top 70%',end:'bottom 35%',scrub:1.15}});
+  }
+  gsap.utils.toArray('.service-stop').forEach(stop=>{
+    const icon=stop.querySelector('.service-icon');
+    const bubble=stop.querySelector('.service-bubble, p');
+    const title=stop.querySelector('.service-title');
+    gsap.set([title,icon,bubble].filter(Boolean),{opacity:0});
+    if(icon) gsap.set(icon,{scale:.7});
+    if(bubble) gsap.set(bubble,{y:16});
+    const tl=gsap.timeline({scrollTrigger:{trigger:stop,start:'top 82%',toggleActions:'play none none reverse'}});
+    if(title) tl.to(title,{opacity:1,duration:.45,ease:'power2.out'},0);
+    if(icon) tl.to(icon,{opacity:1,scale:1,duration:.65,ease:'back.out(1.7)'},.05);
+    if(bubble) tl.to(bubble,{opacity:1,y:0,duration:.55,ease:'power3.out'},.18);
+  });
   gsap.from('.proof-deck',{y:70,opacity:0,rotation:-5,duration:1,ease:'power3.out',scrollTrigger:{trigger:'.proof-stage',start:'top 80%',once:true}});
   gsap.from('.faq-companion',{y:80,rotation:15,opacity:0,duration:1,ease:'back.out(1.4)',scrollTrigger:{trigger:'.faq',start:'top 85%',once:true}});
   gsap.utils.toArray('.questions details').forEach(el=>gsap.from(el,{y:25,opacity:0,duration:.65,scrollTrigger:{trigger:el,start:'top 96%',once:true}}));

@@ -1,1 +1,30 @@
-(()=>{const video=document.querySelector('.mascot-wave'),hello=document.querySelector('.mascot-hello');if(!video||!hello)return;const reduced=matchMedia('(prefers-reduced-motion:reduce)');const fallback=()=>{const img=document.createElement('img');img.src=reduced.matches?'assets/mascot-wave-poster.png':'assets/mascot-wave.webp';img.alt='Our blue mascot waving hello';img.className='mascot-wave';video.replaceWith(img);};if(reduced.matches){video.autoplay=false;video.pause();video.removeAttribute('autoplay');}else{if(!video.canPlayType('video/webm')||/^((?!chrome|android).)*safari/i.test(navigator.userAgent))fallback();else video.play().catch(()=>{});}video.addEventListener('error',fallback,{once:true});const observer=new IntersectionObserver(entries=>{if(reduced.matches||!video.isConnected)return;if(entries[0].isIntersecting)video.play().catch(()=>{});else video.pause();});observer.observe(video);hello.addEventListener('click',()=>{if(!reduced.matches&&video.isConnected){video.currentTime=0;video.play().catch(()=>{});}if('speechSynthesis'in window){speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance('Hi!');speech.lang='en-IN';speech.pitch=1.35;speech.rate=.85;speech.volume=.7;speechSynthesis.speak(speech);}});})();
+(() => {
+  const host = document.querySelector('.companion-animated');
+  const wave = host?.querySelector('.mascot-wave');
+  const hello = host?.querySelector('.mascot-hello');
+  if (!host || !wave || !hello) return;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let display = wave;
+
+  if (reduced.matches && display instanceof HTMLImageElement) {
+    display.src = 'assets/mascot-wave-poster.png';
+  }
+
+  hello.addEventListener('click', () => {
+    if (!reduced.matches && display instanceof HTMLImageElement) {
+      const restart = display.cloneNode(true);
+      display.replaceWith(restart);
+      display = restart;
+    }
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      const speech = new SpeechSynthesisUtterance('Hi!');
+      speech.lang = 'en-IN';
+      speech.pitch = 1.35;
+      speech.rate = 0.85;
+      speech.volume = 0.7;
+      speechSynthesis.speak(speech);
+    }
+  });
+})();
