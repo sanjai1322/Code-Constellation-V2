@@ -571,8 +571,8 @@
 .glass-stage:active {
   cursor: grabbing;
 }
-/* Keyboard focus is drawn by the lens shader once the canvas is live; this covers loading. */
-.glass:not(.is-ready) .glass-stage:focus-visible {
+/* Keep keyboard focus visible independently of the decorative glass. */
+.glass-stage:focus-visible {
   outline: 3px solid var(--electric);
   outline-offset: -8px;
   border-radius: 28px;

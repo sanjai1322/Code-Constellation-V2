@@ -447,7 +447,7 @@
       loading = true;
       const small = innerWidth < 700;
       const srcs = items.map((it) => ({ src: small ? it.src.replace(/\.webp$/, "-sm.webp") : it.src }));
-      import(new URL("js/liquid-carousel.js?v=24", document.baseURI).href)
+      import(new URL("js/liquid-carousel.js?v=25", document.baseURI).href)
         .then((mod) => {
           loading = false;
           if (!mod.supported(force)) return fallback();

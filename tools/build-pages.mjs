@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "23";
+const V = "27";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -714,18 +714,30 @@ ${p.notes.map((n) => `          <li>${esc(n)}</li>`).join("\n")}
 function notFound() {
   // Root-relative so it works from any missing path on a root-hosted site.
   const base = "/";
+  const video = existsSync(join(DIST, "assets/404/trio-loop.webm"))
+    ? '<video class="lost-loop" data-lost-video muted loop playsinline preload="metadata" poster="/assets/404/trio-searching.webp?v=27"><source src="/assets/404/trio-loop.webm?v=27" type="video/webm" /></video>' : "";
+  const animated = existsSync(join(DIST, "assets/404/trio-loop.webp")) ? ' data-animated="/assets/404/trio-loop.webp?v=27"' : "";
   const body = `
-    <main id="main" class="case">
-      <section class="case-hero lost">
-        <img class="lost-mascot" src="/assets/characters/mascot-point.webp" alt="" width="565" height="720" />
-        <p class="eyebrow">Error 404</p>
-        <h1 class="case-title"><span class="line-mask"><span>Lost in orbit.</span></span></h1>
-        <p class="case-lead">This page drifted out of range. Head back to the studio or see our work.</p>
-        <p class="lost-actions"><a class="cta" href="/index.html"><span class="label">Back home</span>${arrowChip}</a> <a class="pill" href="/work.html">See work</a></p>
+    <main id="main" class="lost-page">
+      <section class="lost-sector" aria-labelledby="lost-heading">
+        <div class="lost-topline"><p class="eyebrow"><span class="lost-status-dot"></span>404 / Coordinates unknown</p><span class="lost-coordinate" aria-hidden="true">CC — DEEP SPACE</span></div>
+        <div class="lost-scene" role="img" aria-label="Our coder searches the sky, our designer checks a star map, and our companion points the way home.">
+          <div class="lost-code" aria-hidden="true">4<span>0</span>4</div>
+          <svg class="lost-orbit" viewBox="0 0 1200 560" fill="none" aria-hidden="true"><ellipse cx="600" cy="290" rx="535" ry="140" transform="rotate(-13 600 290)" /><path class="lost-trail" d="M92 369C171 481 1062 359 1113 181" /><g class="lost-star"><path d="m1070 100 6 19 19 6-19 6-6 19-6-19-19-6 19-6Z"/></g><circle cx="134" cy="402" r="5"/><circle cx="1010" cy="208" r="3"/></svg>
+          <div class="lost-crew"${animated}><img class="lost-poster" src="/assets/404/trio-searching.webp?v=27" alt="" width="1280" height="720" fetchpriority="high" />${video}</div>
+          <span class="lost-scene-note" aria-hidden="true">THREE EXPLORERS. ONE WRONG TURN.</span>
+        </div>
+        <div class="lost-copy">
+          <h1 id="lost-heading">A little off <em>orbit.</em></h1>
+          <p>Our crew couldn’t find this page.<br />Let’s get you back to somewhere good.</p>
+          <div class="lost-actions"><a class="cta" href="/index.html"><span class="label">Back to Earth</span>${arrowChip}</a><a class="lost-work-link" href="/work.html">Explore our work <span aria-hidden="true">↗</span></a></div>
+          <button class="lost-signal" type="button" aria-label="Send a signal to our crew"><span aria-hidden="true">✦</span> Send a signal</button>
+          <p class="lost-reply" role="status" aria-live="polite"></p>
+        </div>
       </section>
     </main>
 `;
-  return page({ base, css: "case", current: "", title: "Page not found — Code Constellation", description: "Page not found." }, body);
+  return page({ base, css: "lost", current: "", title: "A little off orbit — Code Constellation", description: "Our crew couldn’t find this page. Head home or explore Code Constellation’s work." }, body);
 }
 
 /* ------------------------------------------------------------------ */

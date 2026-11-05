@@ -7,10 +7,22 @@ The deployable site is the buildless static folder `dist/` (HTML, CSS, JS, local
 ## Run
 
 ```bash
-cd dist && python3 -m http.server 8765
+python tools/serve.py
 ```
 
 Then open http://127.0.0.1:8765/.
+
+Unknown paths return the custom page with HTTP 404 locally. Preview it directly at `/404.html`.
+The 404 page uses the approved coder, designer and 3D companion together in
+`assets/404/trio-loop.webm` (1280×720, 24 fps, alpha, muted). The selected Flow
+clip is `Animate_character_illustration_loop_6c08d129_gwr_video_mvp.mp4`.
+Its green screen is keyed and despilled; an eight-frame circular dissolve joins
+the tail to the head, making a 184-frame / 7.667-second forward loop.
+`trio-loop.webp` supplies Safari's animated fallback, while `trio-searching.webp`
+matches the first frame for loading and reduced motion. CSS drift stops when
+the real animation is active. Pause, tab visibility and offscreen controls stop
+playback; reduced motion keeps the still. Regenerate HTML after changing assets
+with `node tools/build-pages.mjs`.
 
 ## Structure
 
@@ -51,7 +63,7 @@ The starting values are the reference component's settings, kept in `SETTINGS` a
 - Reduced motion, no WebGL2, software-only rendering or a lost context fall back to the static project card list.
 - `?glass-test` enables software WebGL and a test hook for automated checks.
 
-**About the reference.** The Framer module (`framer.com/m/liquid-glass-carousel-…`) and the recordings meant to accompany the latest brief were not available to the build environment (framer.com is blocked; the recordings did not arrive), so its source was not inspected or copied. This is an independent implementation of the described behaviour from the supplied settings, and has not been compared side by side with the reference.
+**About the reference.** The lens shader and its optical defaults are adapted from Liquid Carousel by [@luxarma](https://luxarma.fr), module version kpCFFax8ciLkuLf0kMrs: https://framer.com/m/liquid-glass-carousel-SkrkTr.js@kpCFFax8ciLkuLf0kMrs. Its height-normalized lens axes, angular tangential distortion, 16-sample chromatic dispersion, rim highlights and shimmer are preserved. The site integration provides navigation, visibility/paused rendering, resource cleanup and accessible fallbacks. Panel sizing follows the reference's container-height and mobile-width limits.
 
 ## Work page and card hover
 

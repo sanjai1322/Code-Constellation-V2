@@ -430,14 +430,14 @@
         );
         gsap.fromTo(
           mark.children,
-          { yPercent: 100, scaleY: 0.4 },
+          { yPercent: 20, opacity: 0.6 },
           {
             yPercent: 0,
-            scaleY: 1,
-            ease: "elastic.out(1, 0.55)",
-            duration: 1.6,
-            stagger: 0.035,
-            scrollTrigger: { trigger: mark, start: "top 98%", toggleActions: "play none none reverse" },
+            opacity: 1,
+            ease: "power3.out",
+            duration: 0.9,
+            stagger: 0.025,
+            scrollTrigger: { trigger: mark, start: "top 98%", once: true },
           },
         );
       }
@@ -448,14 +448,22 @@
   const wordmark = document.querySelector(".footer-wordmark");
   if (wordmark) {
     const fit = () => {
-      wordmark.style.fontSize = "100px";
-      const natural = wordmark.scrollWidth;
-      const avail = wordmark.parentElement.clientWidth - parseFloat(getComputedStyle(wordmark.parentElement).paddingLeft) * 2;
-      if (natural) wordmark.style.fontSize = `${Math.floor((100 * avail) / natural)}px`;
+      // A block's scrollWidth is at least its container width. Measure an
+      // untransformed, intrinsic-size clone so the mark fills wide screens too.
+      const ruler = wordmark.cloneNode(true);
+      ruler.removeAttribute("id");
+      Object.assign(ruler.style, { position: "absolute", visibility: "hidden", width: "max-content", fontSize: "100px", transform: "none" });
+      ruler.querySelectorAll("span").forEach(el => el.style.transform = "none");
+      wordmark.parentElement.append(ruler);
+      const natural = ruler.getBoundingClientRect().width;
+      ruler.remove();
+      const parentStyle = getComputedStyle(wordmark.parentElement);
+      const avail = wordmark.parentElement.clientWidth - parseFloat(parentStyle.paddingLeft) - parseFloat(parentStyle.paddingRight);
+      if (natural) wordmark.style.fontSize = `${100 * (avail - 2) / natural}px`;
     };
     fit();
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(fit);
-    addEventListener("resize", fit);
+    new ResizeObserver(fit).observe(wordmark.parentElement);
   }
 
   reducedQuery.addEventListener("change", () => location.reload());

@@ -1,0 +1,55 @@
+/* A wrong turn in the Code Constellation universe. */
+.lost-page { padding: calc(var(--header-h) + 36px) var(--gutter) 80px; }
+.lost-sector { max-width: 1600px; margin: 0 auto; }
+.lost-topline { display:flex; align-items:center; justify-content:space-between; padding:0 2vw; color:var(--muted); }
+.lost-topline .eyebrow { display:flex; align-items:center; gap:10px; }
+.lost-coordinate { font:10px var(--mono); letter-spacing:.14em; }
+.lost-status-dot { width:6px; height:6px; border-radius:50%; background:var(--electric); box-shadow:0 0 0 5px #2f6bff0c; }
+.lost-scene { position:relative; height:clamp(310px,39vw,550px); isolation:isolate; margin:8px auto 0; max-width:1300px; }
+.lost-code { position:absolute; inset:-.10em 0 auto; display:flex; justify-content:center; align-items:center; gap:.05em; font-size:clamp(260px,41vw,570px); font-weight:500; letter-spacing:-.085em; line-height:1; color:var(--lavender); opacity:.65; user-select:none; }
+.lost-code > span { color:transparent; -webkit-text-stroke:1.5px var(--nebula); }
+.lost-orbit { position:absolute; width:100%; height:100%; inset:0; overflow:visible; color:var(--nebula); z-index:1; pointer-events:none; }
+.lost-orbit ellipse { stroke:currentColor; stroke-width:.8; opacity:.4; }
+.lost-trail { stroke:var(--orbit); stroke-width:1.2; stroke-dasharray:3 9; opacity:.45; }
+.lost-orbit circle,.lost-star { fill:var(--orbit); }
+.lost-star { transform-box:fill-box; transform-origin:center; }
+.lost-crew { position:absolute; width:min(86%,1000px); left:50%; top:48%; transform:translate(-50%,-50%); z-index:2; }
+.lost-poster { width:100%; height:auto; }
+.lost-loop { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; }
+.lost-crew.has-video .lost-loop { opacity:1; }
+.lost-crew.has-video .lost-poster { opacity:0; }
+.lost-scene-note { position:absolute; right:4%; bottom:0; font:9px var(--mono); letter-spacing:.12em; color:var(--muted); }
+.lost-copy { position:relative; z-index:3; text-align:center; max-width:660px; margin:22px auto 0; }
+.lost-copy h1 { font-weight:500; letter-spacing:-.065em; font-size:clamp(46px,6.2vw,88px); line-height:1.03; margin:0 0 20px; }
+.lost-copy h1 em { font-style:normal; color:var(--orbit); }
+.lost-copy > p:not(.lost-reply) { color:var(--muted); font-size:clamp(16px,1.4vw,19px); line-height:1.6; }
+.lost-actions { display:flex; justify-content:center; align-items:center; gap:28px; margin-top:26px; }
+.lost-work-link { font-size:14px; border-bottom:1px solid var(--lavender); padding:12px 0; }
+.lost-work-link span { display:inline-block; margin-left:8px; transition:transform .3s; }
+.lost-work-link:hover span { transform:translate(3px,-3px); }
+.lost-signal { display:inline-flex; align-items:center; gap:8px; margin-top:24px; color:var(--muted); padding:8px; font:11px var(--mono); }
+.lost-signal > span { color:var(--orbit); font-size:18px; }
+.lost-reply { min-height:20px; color:var(--orbit); font:11px var(--mono); margin:3px 0 0; }
+.lost-crew { animation:crew-drift 6s ease-in-out infinite; }
+.lost-crew.has-video,.lost-crew.has-webp { animation:none; }
+.lost-star { animation:signal-star 5s ease-in-out infinite; }
+.lost-page.is-paused * { animation-play-state:paused !important; }
+.lost-page.is-signalling .lost-star { animation:signal-flash .65s ease-out 2; }
+@keyframes crew-drift { 0%,100% { translate:0 0; rotate:-.5deg; } 50% { translate:0 -10px; rotate:.5deg; } }
+@keyframes signal-star { 0%,100% { scale:.8; opacity:.6; } 50% { scale:1.1; opacity:1; } }
+@keyframes signal-flash { 0% { scale:.8; } 50% { scale:1.8; } 100% { scale:1; } }
+@media(min-width:1800px) { .lost-page { padding-top:calc(var(--header-h) + 60px); } }
+@media(max-width:600px) {
+  .lost-page { padding-top:calc(var(--header-h) + 30px); padding-bottom:48px; }
+  .lost-coordinate { display:none; }
+  .lost-topline { justify-content:center; }
+  .lost-scene { height:260px; margin-top:30px; }
+  .lost-code { font-size:clamp(220px,63vw,360px); top:0; }
+  .lost-crew { width:118%; max-width:none; top:48%; }
+  .lost-orbit { width:130%; left:-15%; }
+  .lost-scene-note { left:0; right:0; text-align:center; font-size:8px; }
+  .lost-copy { margin-top:28px; }
+  .lost-copy h1 { font-size:46px; }
+  .lost-actions { gap:22px; }
+}
+@media(prefers-reduced-motion:reduce) { .lost-crew,.lost-star { animation:none; } }

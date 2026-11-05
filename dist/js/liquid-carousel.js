@@ -10,10 +10,10 @@
    entry sequence (scattered images rise, grow into the strip, the glass develops)
    and a focus state for the selected project.
 
-   The settings below are the values supplied for the reference "Liquid Carousel"
-   component. The reference's own code could not be inspected (framer.com is not
-   reachable from the build environment); this is an independent implementation of
-   the described behaviour. Three.js r169, MIT licence (assets/vendor/three/LICENSE). */
+   Lens shader and optical defaults adapted from Liquid Carousel by @luxarma:
+   https://framer.com/m/liquid-glass-carousel-SkrkTr.js@kpCFFax8ciLkuLf0kMrs
+   The host integration owns loading, navigation, scrolling and resource cleanup.
+   Three.js r169, MIT licence (assets/vendor/three/LICENSE). */
 import * as THREE from "../assets/vendor/three/three.module.min.js";
 
 export const SETTINGS = {
@@ -96,114 +96,184 @@ const LENS_VERT = /* glsl */ `
   }
 `;
 const LENS_FRAG = /* glsl */ `
-  precision highp float;
-  uniform sampler2D tScene;
-  uniform vec2 uRes;
-  uniform float uDpr;
-  uniform float uTime;
-  uniform vec2 uCenter;
-  uniform vec2 uAxes;
-  uniform float uRot;
-  uniform float uStrength;
-  uniform float uRefract;
-  uniform float uDispersion;
-  uniform float uZoom;
-  uniform float uBlur;
-  uniform float uGlow;
-  uniform float uRing;
-  uniform vec3 uRingColor;
-  uniform float uShimmer;
-  uniform float uRimWave;
-  uniform float uFocusRing;
-  varying vec2 vUv;
+    #define PI 3.14159265
+    precision highp float;
+    varying vec2 vUv;
+    uniform sampler2D uTex;
+    uniform vec2  uRes;
+    uniform vec2  uCenter;
+    uniform float uSizeX;
+    uniform float uSizeY;
+    uniform float uAspect;
+    uniform float uZoom;
+    uniform float uDispersion;
+    uniform float uBlur;
+    uniform float uGlow;
+    uniform float uWhiteGlow;
+    uniform float uNovaSize;
+    uniform float uBlueRing;
+    uniform float uRingRadius;
+    uniform float uRingWidth;
+    uniform float uShimmer;
+    uniform float uShimmerFreq;
+    uniform float uShimmerSpeed;
+    uniform float uShimmerDepth;
+    uniform float uTime;
+    uniform float uRimStart;
+    uniform float uRimTangential;
+    uniform float uRimInward;
+    uniform float uRimFreq1;
+    uniform float uRimFreq2;
+    uniform vec3  uBlueColor;
+    uniform float uRimLine;
+    uniform float uRimLinePos;
+    uniform float uRimLineWidth;
+    uniform float uShape;
+    uniform float uSquareRound;
+    uniform float uRotation;
+    uniform int   uSamples;
 
-  vec2 rot(vec2 v, float a) {
-    float c = cos(a), s = sin(a);
-    return vec2(c * v.x - s * v.y, s * v.x + c * v.y);
-  }
-  vec3 scene(vec2 px) {
-    return texture2D(tScene, clamp(px / uRes, vec2(0.0005), vec2(0.9995))).rgb;
-  }
-  vec3 sceneBlur(vec2 px, float r) {
-    if (r < 0.5) return scene(px);
-    vec3 acc = scene(px) * 0.2;
-    acc += scene(px + vec2(r, 0.0)) * 0.2;
-    acc += scene(px - vec2(r, 0.0)) * 0.2;
-    acc += scene(px + vec2(0.0, r)) * 0.2;
-    acc += scene(px - vec2(0.0, r)) * 0.2;
-    return acc;
-  }
-  // signed distance to the (rotated, rim-waved) ellipse, in buffer pixels
-  float lens(vec2 px, out vec2 n, out vec2 q) {
-    q = rot(px - uCenter, -uRot);
-    float ang = atan(q.y, q.x);
-    float wave = uRimWave * (0.6 * sin(ang * 3.0 + uTime * 1.25) + 0.4 * sin(ang * 5.0 - uTime * 0.85));
-    vec2 ab = uAxes * (1.0 + 0.022 * wave);
-    float k0 = length(q / ab);
-    float k1 = length(q / (ab * ab));
-    float d = k0 * (k0 - 1.0) / max(k1, 1e-6);
-    n = rot(normalize(q / (ab * ab) + 1e-7), uRot);
-    return d;
-  }
+    const int MAX_SAMPLES = 16;
 
-  void main() {
-    vec2 px = vUv * uRes;
-    vec3 col = scene(px);
-    float s = uStrength;
-    if (s > 0.001) {
-      vec2 n, q;
-      float d = lens(px, n, q);
-      float minAx = min(uAxes.x, uAxes.y);
-      float aa = 1.5 * uDpr;
-
-      // soft contact shadow just outside the glass
-      float sh = exp(-max(d - 6.0 * uDpr, 0.0) / (22.0 * uDpr)) * step(0.0, d) * 0.07 * s;
-      col *= 1.0 - sh;
-
-      float inside = 1.0 - smoothstep(-aa, aa, d);
-      if (inside > 0.0) {
-        float edge = minAx * 0.46;
-        float t = clamp(-d / edge, 0.0, 1.0);        // 0 at the rim, 1 in the flat centre
-        float bevel = pow(1.0 - t, 2.2);
-        vec2 toC = px - uCenter;
-        vec2 disp = -n * bevel * uRefract * s - toC * uZoom * 0.2 * s;
-        vec2 dn = n * bevel * uDispersion * uDpr * s;
-        float br = uBlur * uDpr * (0.4 + bevel);
-        vec3 g;
-        g.r = sceneBlur(px + disp + dn, br).r;
-        g.g = sceneBlur(px + disp, br).g;
-        g.b = sceneBlur(px + disp - dn, br).b;
-        // glass body: inner glow at the rim, a key light from the upper left
-        float glow = uGlow * 0.03 * exp(d / (9.0 * uDpr));
-        float light = max(dot(n, normalize(vec2(-0.6, 0.8))), 0.0);
-        g += vec3(glow) + vec3(0.11) * bevel * light;
-        // shimmer: a soft band of light travelling across the lens
-        if (uShimmer > 0.5) {
-          vec2 sq = rot(q, -0.55) / minAx;
-          float c = mod(uTime * 0.2, 3.4) - 1.7;
-          float band = exp(-pow((sq.x - c) * 2.8, 2.0));
-          g += vec3(0.14) * band * (0.3 + 0.7 * bevel);
-        }
-        col = mix(col, g, inside * clamp(s * 1.4, 0.0, 1.0));
-      }
-
-      // coloured rim ring and its halo
-      float rw = uRing * uDpr;
-      float ring = 1.0 - smoothstep(0.0, rw * 0.5 + aa, abs(d + rw * 0.35));
-      col = mix(col, uRingColor, ring * 0.6 * s);
-      float halo = step(0.0, d) * exp(-d / (uGlow * 4.0 * uDpr));
-      col = mix(col, uRingColor, halo * 0.16 * s);
-
-      // keyboard focus: a dashed ring that follows the lens
-      if (uFocusRing > 0.01) {
-        float off = d - 10.0 * uDpr;
-        float band = 1.0 - smoothstep(0.0, 1.6 * uDpr, abs(off));
-        float dash = step(0.5, fract(atan(q.y, q.x) * 9.0 / 3.14159265));
-        col = mix(col, vec3(0.184, 0.420, 1.0), band * dash * uFocusRing);
-      }
+    float sdRoundBox(vec2 p, vec2 b, float r) {
+        vec2 q = abs(p) - b + r;
+        return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
     }
-    gl_FragColor = vec4(col, 1.0);
-  }
+
+    vec3 glassLens(vec2 center, float aspectCorrect, out float outA) {
+        vec2 p = vUv - center;
+        p.x *= aspectCorrect;
+        float ca = cos(uRotation), sa = sin(uRotation);
+        p = mat2(ca, -sa, sa, ca) * p;
+        vec2 halfSize = vec2(uSizeX, uSizeY);
+        float dist = length(p / halfSize);
+        outA = 0.0;
+
+        float maskND;
+        if (uShape > 0.5) {
+            float corner = min(uSizeX, uSizeY) * clamp(uSquareRound, 0.0, 1.0);
+            float sd = sdRoundBox(p, halfSize, corner);
+            maskND = 1.0 + sd / min(uSizeX, uSizeY);
+        } else {
+            maskND = dist;
+        }
+
+        if (maskND > 1.0) return vec3(0.0);
+
+        float shapeND = clamp(maskND, 0.0, 1.0);
+        float nd = clamp(dist, 0.0, 1.0);
+        vec2 offset = vUv - center;
+        vec2 radialDir = normalize(offset + 1e-6);
+        vec2 tangentDir = vec2(-radialDir.y, radialDir.x);
+        float angle = atan(p.y, p.x);
+
+        float pull = uZoom * 0.30 * nd * nd;
+        float rimStrength = smoothstep(uRimStart, 1.0, nd);
+        float fluidWave = sin(angle * uRimFreq1) * 0.55 +
+                          sin(angle * uRimFreq2) * 0.25;
+        float rScreen = (uSizeX + uSizeY) * 0.5;
+
+        vec2 rimOff = tangentDir * fluidWave * rimStrength *
+                      rScreen * uRimTangential;
+        vec2 rimPull = -radialDir * rimStrength * rScreen * uRimInward;
+        vec2 baseUV = center + offset * (1.0 - pull) + rimOff + rimPull;
+
+        float rimMask = smoothstep(0.55, 1.0, nd);
+        vec2 dispDir = offset * uDispersion * 0.004 * rimMask;
+
+        int count = uSamples;
+        if (count < 2) count = 2;
+        if (count > MAX_SAMPLES) count = MAX_SAMPLES;
+
+        vec3 col = vec3(0.0);
+        vec3 caW = vec3(0.0);
+
+        for (int i = 0; i < MAX_SAMPLES; i++) {
+            if (i >= count) break;
+
+            float t = float(i) / float(count - 1);
+            vec2 sUV = baseUV + dispDir * (t - 0.5);
+            vec3 sampleColor = texture2D(uTex, sUV).rgb;
+
+            vec3 weight = vec3(
+                exp(-pow((t - 0.00) / 0.38, 2.0)),
+                exp(-pow((t - 0.50) / 0.38, 2.0)),
+                exp(-pow((t - 1.00) / 0.38, 2.0))
+            );
+
+            col += sampleColor * weight;
+            caW += weight;
+        }
+
+        col /= max(caW, vec3(0.001));
+
+        float blurFade = 1.0 - smoothstep(0.72, 0.98, nd);
+
+        if (uBlur > 0.01 && blurFade > 0.01) {
+            vec2 blurRad = vec2(uBlur) / uRes * blurFade;
+            vec3 bcol = vec3(0.0);
+            float totalWeight = 0.0;
+
+            for (float a = 0.0; a < PI * 2.0; a += PI * 2.0 / 6.0) {
+                for (float rr = 0.4; rr <= 1.001; rr += 0.3) {
+                    vec2 o = vec2(cos(a), sin(a)) * blurRad * rr;
+                    float weight = 1.0 - rr * 0.38;
+                    bcol += texture2D(uTex, baseUV + o).rgb * weight;
+                    totalWeight += weight;
+                }
+            }
+
+            col = mix(bcol / totalWeight, col, rimMask);
+        }
+
+        col *= mix(0.91, 1.0, smoothstep(0.0, 0.38, shapeND));
+
+        float r2 = shapeND * shapeND * 0.25;
+        float gs = max(uNovaSize * uGlow * 0.003, 0.004);
+        float nova = exp(-r2 / gs) + exp(-r2 / (gs * 7.0)) * 0.18;
+
+        nova *= uWhiteGlow * (uGlow / 17.0) * 1.15;
+        col += vec3(nova);
+
+        float dC = shapeND * 0.5;
+        float tR = clamp(uRingRadius, 0.1, 0.49);
+        float rW = max(uRingWidth, 0.003);
+
+        float ring = exp(-pow((dC - tR) / rW, 2.0));
+        ring *= uBlueRing * (uGlow / 17.0) * 1.8;
+
+        if (uShimmer > 0.5) {
+            ring *= sin(angle * uShimmerFreq + uTime * uShimmerSpeed) *
+                    uShimmerDepth + (1.0 - uShimmerDepth);
+        }
+
+        float aura = exp(-pow((dC - tR) / (rW * 6.0), 2.0)) *
+                     0.28 * uBlueRing * (uGlow / 17.0);
+
+        col += uBlueColor * (ring + aura);
+
+        col += vec3(
+            exp(
+                -pow(
+                    (dC - uRimLinePos) /
+                    max(uRimLineWidth, 0.0001),
+                    2.0
+                )
+            ) * uRimLine
+        );
+
+        outA = smoothstep(1.0, 0.93, maskND);
+
+        return col;
+    }
+
+    void main() {
+        vec3 outputColor = texture2D(uTex, vUv).rgb;
+        float alpha = 0.0;
+        vec3 lensColor = glassLens(uCenter, uAspect, alpha);
+        outputColor = mix(outputColor, lensColor, alpha);
+        gl_FragColor = vec4(outputColor, 1.0);
+    }
 `;
 
 const mod = (a, n) => ((a % n) + n) % n;
@@ -256,7 +326,7 @@ export function mount(stage, items, hooks = {}, overrides = {}) {
         uTex: { value: null },
         uSize: { value: new THREE.Vector2(1, 1) },
         uBend: { value: 0 },
-        uRadius: { value: 18 },
+        uRadius: { value: 0 },
         uAlpha: { value: S.entryAnimation ? 0 : 1 },
         uGlide: { value: 0 },
         uImgAspect: { value: 1.5 },
@@ -285,24 +355,39 @@ export function mount(stage, items, hooks = {}, overrides = {}) {
     depthTest: false,
     depthWrite: false,
     uniforms: {
-      tScene: { value: null },
+      uTex: { value: null },
       uRes: { value: new THREE.Vector2(1, 1) },
-      uDpr: { value: 1 },
-      uTime: { value: 0 },
-      uCenter: { value: new THREE.Vector2() },
-      uAxes: { value: new THREE.Vector2(1, 1) },
-      uRot: { value: (S.lensRotation * Math.PI) / 180 },
-      uStrength: { value: S.entryAnimation ? 0 : 1 },
-      uRefract: { value: 40 },
-      uDispersion: { value: S.dispersion },
+      uCenter: { value: new THREE.Vector2(S.lensX, S.lensY) },
+      uSizeX: { value: S.lensWidth },
+      uSizeY: { value: S.lensHeight },
+      uAspect: { value: 1 },
+      uRotation: { value: S.lensRotation * Math.PI / 180 },
+      uShape: { value: S.lensShape === "square" ? 1 : 0 },
+      uSquareRound: { value: 0 },
       uZoom: { value: S.zoom },
+      uDispersion: { value: S.dispersion },
       uBlur: { value: S.blur },
       uGlow: { value: S.glow },
-      uRing: { value: S.blueRing },
-      uRingColor: { value: new THREE.Vector3(ringColor.r, ringColor.g, ringColor.b) },
+      uWhiteGlow: { value: 0.24 },
+      uNovaSize: { value: 12 },
+      uBlueRing: { value: S.blueRing },
+      uRingRadius: { value: 0.49 },
+      uRingWidth: { value: 0.014 },
       uShimmer: { value: S.shimmer ? 1 : 0 },
-      uRimWave: { value: S.rimWave },
-      uFocusRing: { value: 0 },
+      uShimmerFreq: { value: 12 },
+      uShimmerSpeed: { value: 3.5 },
+      uShimmerDepth: { value: 0.12 },
+      uTime: { value: 0 },
+      uRimStart: { value: 0.578 },
+      uRimTangential: { value: S.rimWave },
+      uRimInward: { value: 0 },
+      uRimFreq1: { value: 2 },
+      uRimFreq2: { value: 1 },
+      uBlueColor: { value: new THREE.Vector3(ringColor.r, ringColor.g, ringColor.b) },
+      uRimLine: { value: 1.4 },
+      uRimLinePos: { value: 0.488 },
+      uRimLineWidth: { value: 0.003 },
+      uSamples: { value: 16 },
     },
   });
   const lensScene = new THREE.Scene();
@@ -345,7 +430,7 @@ export function mount(stage, items, hooks = {}, overrides = {}) {
     dpr = Math.min(window.devicePixelRatio || 1, S.pixelRatio);
     renderer.setPixelRatio(dpr);
     renderer.setSize(W, H, false);
-    panelH = Math.min(S.panelHeight, H / S.stageRatio);
+    panelH = Math.max(110, Math.min(S.panelHeight, H * 0.48, W * 0.78));
     panelW = panelH * 1.5;
     gap = W < 700 ? Math.max(8, S.gap * 0.7) : S.gap;
     const oldPitch = pitch;
@@ -361,16 +446,16 @@ export function mount(stage, items, hooks = {}, overrides = {}) {
     cam.updateProjectionMatrix();
     if (rt) rt.dispose();
     rt = new THREE.WebGLRenderTarget(Math.round(W * dpr), Math.round(H * dpr), { samples: 4, depthBuffer: false });
-    lensMat.uniforms.tScene.value = rt.texture;
+    lensMat.uniforms.uTex.value = rt.texture;
     lensMat.uniforms.uRes.value.set(W * dpr, H * dpr);
-    lensMat.uniforms.uDpr.value = dpr;
-    panels.forEach((p) => p.mat.uniforms.uRadius.value = Math.max(12, panelH * 0.05));
+
+    panels.forEach((p) => p.mat.uniforms.uRadius.value = 0);
     request();
   }
 
   /* ---------- per-frame ---------- */
   function updatePanels() {
-    const shrink = 1 - 0.14 * Math.min(Math.abs(state.v) / S.speedShrink, 1);
+    const shrink = 1 - 0.25 * Math.min(Math.abs(state.v) / S.speedShrink, 1);
     const bend = Math.max(-60, Math.min(60, state.v)) * 0.9;
     const f = state.focus.t;
     const center = Math.round(state.x / pitch);
@@ -408,16 +493,21 @@ export function mount(stage, items, hooks = {}, overrides = {}) {
 
   function updateLens() {
     const u = lensMat.uniforms;
-    const R = (H / 2) * 0.94 * state.lens.scale * (1 + 0.22 * state.focus.t);
-    const breathe = 1 + 0.012 * Math.sin(time * 0.9);
-    u.uAxes.value.set(S.lensWidth * R * breathe * dpr, S.lensHeight * R * dpr);
-    const drift = Math.sin(time * 0.35) * 5;
-    u.uCenter.value.set((S.lensX * W + drift) * dpr, (1 - S.lensY) * H * dpr);
-    u.uRot.value = ((S.lensRotation + Math.sin(time * 0.4) * 2.5) * Math.PI) / 180;
-    u.uStrength.value = state.lens.strength * (1 - 0.55 * state.focus.t);
-    u.uRefract.value = Math.min(S.lensWidth, S.lensHeight) * R * 0.32 * dpr * (1 + Math.min(Math.abs(state.v) / S.speedShrink, 1) * 0.6);
+    // Reference dimensions are UV half-axes measured in stage HEIGHT units.
+    // Do not halve these or convert them to panel-local pixel coordinates:
+    // the rotated lens must span the strip, not sit inside the selected card.
+    u.uCenter.value.set(S.lensX, S.lensY);
+    u.uSizeX.value = S.lensWidth;
+    u.uSizeY.value = S.lensHeight;
+    u.uAspect.value = W / H;
+    u.uRotation.value = S.lensRotation * Math.PI / 180;
     u.uTime.value = time;
-    u.uFocusRing.value = state.focusRing;
+    const fx = state.lens.strength * (1 - state.focus.t);
+    u.uDispersion.value = S.dispersion * fx;
+    u.uBlueRing.value = S.blueRing * fx;
+    u.uRimLine.value = 1.4 * fx;
+    u.uZoom.value = S.zoom * fx;
+    u.uRimTangential.value = S.rimWave * fx;
   }
 
   function frame(now) {
