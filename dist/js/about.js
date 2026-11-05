@@ -5,14 +5,13 @@
   const CC = window.CC || { reduced: true, onReveal: (fn) => fn() };
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const galleryBtn = $(".gallery-toggle");
+  const sfx = (name, data) => window.CC && window.CC.sfx && window.CC.sfx(name, data);
   const steps = $$(".journey-steps li");
 
   if (CC.reduced) {
     steps.forEach((li) => li.classList.add("is-lit"));
     const vp = $(".gallery-viewport");
     if (vp) vp.style.overflowX = "auto";
-    if (galleryBtn) galleryBtn.hidden = true;
     return;
   }
 
@@ -107,7 +106,13 @@
         const p = self.progress;
         if (vertical()) gsap.set(star, { x: 0, y: p * (track.offsetHeight - 14) });
         else gsap.set(star, { y: 0, x: p * (track.offsetWidth - 14) });
-        steps.forEach((li, i) => li.classList.toggle("is-lit", p >= i / steps.length + 0.02));
+        steps.forEach((li, i) => {
+          const on = p >= i / steps.length + 0.02;
+          if (on !== li.classList.contains("is-lit")) {
+            li.classList.toggle("is-lit", on);
+            sfx("star", { index: i * 2, up: on });
+          }
+        });
       },
     });
   }
@@ -178,7 +183,6 @@
     addEventListener("resize", measure);
     let x = 0;
     let boost = 0;
-    let paused = false;
     let visible = false;
     let lastY = scrollY;
     ScrollTrigger.create({ trigger: ".about-gallery", start: "top bottom", end: "bottom top", onToggle: (s) => (visible = s.isActive) });
@@ -186,15 +190,10 @@
       const dy = Math.abs(scrollY - lastY);
       lastY = scrollY;
       boost += (Math.min(dy * 0.5, 10) - boost) * 0.08;
-      if (paused || !visible || !unit || document.hidden) return;
+      if ((window.CC.motion && window.CC.motion.paused) || !visible || !unit || document.hidden) return;
       x -= (1 + boost) * dt * 0.045;
       x = ((x % unit) - unit) % unit;
       gtrack.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
-    });
-    galleryBtn?.addEventListener("click", () => {
-      paused = !paused;
-      galleryBtn.textContent = paused ? "Play motion" : "Pause motion";
-      galleryBtn.setAttribute("aria-pressed", String(paused));
     });
   }
 })();

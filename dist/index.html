@@ -12,15 +12,15 @@
     <link rel="icon" href="assets/cc-mark-light.svg" />
     <link rel="preload" href="assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="assets/fonts.css" />
-    <link rel="stylesheet" href="css/site.css?v=22" />
-    <link rel="stylesheet" href="css/home.css?v=22" />
+    <link rel="stylesheet" href="css/site.css?v=23" />
+    <link rel="stylesheet" href="css/home.css?v=23" />
     <script src="js/boot.js"></script>
     <script src="assets/gsap.min.js" defer></script>
     <script src="assets/ScrollTrigger.min.js" defer></script>
     <script src="assets/lenis.min.js" defer></script>
-    <script src="js/site.js?v=22" defer></script>
-    <script src="js/home.js?v=22" defer></script>
-    <script src="js/sound.js?v=22" defer></script>
+    <script src="js/site.js?v=23" defer></script>
+    <script src="js/home.js?v=23" defer></script>
+    <script src="js/sound.js?v=23" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -74,54 +74,27 @@
           <div class="character character-coder" aria-hidden="true">
             <img src="assets/hero-coder.webp" alt="" width="523" height="1005" fetchpriority="high" />
             <div class="board board-build">
-              <svg class="board-art" viewBox="0 0 320 150">
+              <svg class="board-art" viewBox="0 0 1200 671" aria-hidden="true">
                 <defs>
-                  <filter id="rough-build" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4" /><feDisplacementMap in="SourceGraphic" scale="2.2" /></filter>
-                  <clipPath id="hero-block-clip"><rect x="52" y="50" width="126" height="38" rx="6" /></clipPath>
+                  <mask id="reveal-build" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="671">
+                    <path class="board-stroke" d="M-60 110 L1260 130 L-60 340 L1260 360 L-60 570 L1260 590" pathLength="1" />
+                  </mask>
                 </defs>
-                <g filter="url(#rough-build)">
-                  <rect class="ink-line b-frame" x="34" y="16" width="252" height="118" rx="11" pathLength="1" />
-                  <path class="ink-line b-frame" d="M34 38 H286" pathLength="1" />
-                  <g class="b-dots"><circle cx="51" cy="27" r="3.8" fill="#2F6BFF" /><circle cx="64" cy="27" r="3.8" fill="#C9CAEE" /><circle cx="77" cy="27" r="3.8" fill="#8A90EE" /></g>
-                  <g class="b-hero">
-                    <rect x="52" y="50" width="126" height="38" rx="6" fill="#2B45D8" />
-                    <g clip-path="url(#hero-block-clip)" stroke="#2F6BFF" stroke-width="2.2" opacity=".6"><path d="M14 92 L60 46" /><path d="M23 92 L69 46" /><path d="M32 92 L78 46" /><path d="M41 92 L87 46" /><path d="M50 92 L96 46" /><path d="M59 92 L105 46" /><path d="M68 92 L114 46" /><path d="M77 92 L123 46" /><path d="M86 92 L132 46" /><path d="M95 92 L141 46" /><path d="M104 92 L150 46" /><path d="M113 92 L159 46" /><path d="M122 92 L168 46" /><path d="M131 92 L177 46" /><path d="M140 92 L186 46" /><path d="M149 92 L195 46" /><path d="M158 92 L204 46" /><path d="M167 92 L213 46" /><path d="M176 92 L222 46" /><path d="M185 92 L231 46" /></g>
-                    <rect class="ink-line" x="52" y="50" width="126" height="38" rx="6" />
-                  </g>
-                  <path class="ink-line b-text" d="M52 106 H160" pathLength="1" />
-                  <path class="ink-line b-text b-text-short" d="M52 120 H128" pathLength="1" />
-                  <g class="b-code">
-                    <rect x="196" y="50" width="74" height="70" rx="10" fill="#0A1033" />
-                    <text class="b-code-text" x="233" y="95" text-anchor="middle">&lt;<tspan class="b-slash">/</tspan>&gt;</text>
-                  </g>
-                </g>
-                <g transform="translate(168 92)"><path class="b-cursor" d="M0 0 L0 22 L6 16.5 L10.5 27 L15 25 L10.5 14.5 L18 14.5 Z" /></g>
+                <image href="assets/boards/board-build.webp" width="1200" height="671" mask="url(#reveal-build)" />
               </svg>
             </div>
           </div>
           <div class="character character-designer" aria-hidden="true">
             <img src="assets/hero-designer.webp" alt="" width="540" height="924" fetchpriority="high" />
             <div class="board board-brand">
-              <svg class="board-art" viewBox="0 0 320 150">
+              <svg class="board-art" viewBox="0 0 1200 585" aria-hidden="true">
                 <defs>
-                  <filter id="rough-brand" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="9" /><feDisplacementMap in="SourceGraphic" scale="2.2" /></filter>
+                  <mask id="reveal-brand" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="585">
+                    <path class="board-stroke" d="M-60 95 L1260 110 L-60 295 L1260 305 L-60 490 L1260 505" pathLength="1" />
+                  </mask>
                 </defs>
-                <circle class="g-orbit" cx="92" cy="76" r="62" pathLength="1" />
-                <image class="g-logo" href="assets/cc-mark-light.svg" x="52" y="36" width="80" height="80" />
-                <g filter="url(#rough-brand)">
-                  <g class="g-swatches">
-                    <circle cx="198" cy="46" r="12.5" fill="#2B45D8" />
-                    <circle cx="230" cy="46" r="12.5" fill="#2F6BFF" />
-                    <circle cx="262" cy="46" r="12.5" fill="#C9CAEE" />
-                  </g>
-                  <text class="g-type" x="190" y="114">Aa</text>
-                  <g transform="translate(240 134) rotate(-22)"><g class="g-pencil">
-                    <rect x="-9" y="-6" width="9" height="12" rx="2.5" fill="#8A90EE" stroke="#0A1033" stroke-width="2" />
-                    <rect x="0" y="-6" width="52" height="12" fill="#C9CAEE" stroke="#0A1033" stroke-width="2" />
-                    <path d="M52 -6 L68 0 L52 6 Z" fill="#F1F2FB" stroke="#0A1033" stroke-width="2" stroke-linejoin="round" />
-                    <path d="M63.5 -1.7 L68 0 L63.5 1.7 Z" fill="#0A1033" />
-                  </g></g>
-                </g>
+                <image href="assets/boards/board-brand.webp" width="1200" height="585" mask="url(#reveal-brand)" />
+                <image class="board-logo" href="assets/cc-mark-light.svg" x="124" y="124" width="337" height="337" />
               </svg>
             </div>
           </div>
@@ -179,7 +152,6 @@
       <section class="showcase" aria-label="A few things in our world">
         <div class="showcase-head">
           <p class="eyebrow">A few things in our world</p>
-          <button class="ghost-btn marquee-toggle" type="button" aria-pressed="false">Pause motion</button>
         </div>
         <div class="showcase-viewport">
           <ul class="showcase-track">
@@ -202,10 +174,14 @@
       <!-- Work -->
       <section id="work" class="work" aria-labelledby="work-title">
         <div class="section-head has-presenter">
-          <p class="eyebrow">Selected work</p>
-          <img class="presenter presenter-coder" src="assets/characters/coder-present.webp" alt="" width="610" height="1000" loading="lazy" decoding="async" />
-          <h2 id="work-title" class="split-heading">Ideas, made tangible.</h2>
-          <p class="section-sub">Client work, independent concepts and experiments — each labelled for what it is.</p>
+          <div class="head-side">
+            <p class="eyebrow">Selected work</p>
+            <img class="presenter presenter-coder" src="assets/characters/coder-present.webp" alt="" width="610" height="1000" loading="lazy" decoding="async" />
+          </div>
+          <div class="head-text">
+            <h2 id="work-title" class="split-heading">Ideas, made tangible.</h2>
+            <p class="section-sub">Client work, independent concepts and experiments — each labelled for what it is.</p>
+          </div>
         </div>
 
         <div class="glass" data-glass role="region" aria-roledescription="carousel" aria-label="Selected work">
@@ -339,9 +315,12 @@
       <section id="services" class="services" aria-labelledby="services-title">
         <div class="section-head services-head has-presenter">
           <p class="eyebrow">Our services</p>
-          <img class="presenter presenter-designer" src="assets/characters/designer-present.webp" alt="" width="541" height="1000" loading="lazy" decoding="async" />
-          <h2 id="services-title" class="split-heading">This is our thing.</h2>
-          <button class="ghost-btn service-toggle" type="button" aria-pressed="false">Pause animations</button>
+          <div class="head-main">
+            <div class="head-text">
+              <h2 id="services-title" class="split-heading">This is our thing.</h2>
+            </div>
+            <img class="presenter presenter-designer" src="assets/characters/designer-present.webp" alt="" width="541" height="1000" loading="lazy" decoding="async" />
+          </div>
         </div>
         <div class="journey">
           <svg class="journey-svg" aria-hidden="true">
@@ -365,49 +344,77 @@
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/strategy-poster.png" data-src="assets/services/strategy.webm" data-fallback="assets/services/strategy.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">Brand</span> <span class="w2">strategy</span></h3>
-              <p class="service-caption">We find the idea, the angle and the reasons people should care.</p>
+              <div class="service-caption" data-pillar="brand">
+                <p class="note-meta"><span class="note-num">01 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Brand &amp; Create</span></p>
+                <p class="note-copy">We find the idea, the angle and the reasons people should care.</p>
+                <ul class="note-tags" aria-label="Includes"><li>Brand strategy</li><li>Pitch decks</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.4; --mx: 0.42" data-channel="left">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/identity-poster.png" data-src="assets/services/identity.webm" data-fallback="assets/services/identity.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">Brand</span> <span class="w2">identity</span></h3>
-              <p class="service-caption">A distinctive look, voice and personality that feel unmistakably yours.</p>
+              <div class="service-caption" data-pillar="brand">
+                <p class="note-meta"><span class="note-num">02 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Brand &amp; Create</span></p>
+                <p class="note-copy">A distinctive look, voice and personality that feel unmistakably yours.</p>
+                <ul class="note-tags" aria-label="Includes"><li>Visual identity</li><li>Logo design</li><li>Brand guidelines</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.6; --mx: 0.58" data-channel="right">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/websites-poster.png" data-src="assets/services/websites.webm" data-fallback="assets/services/websites.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">Websites &amp;</span> <span class="w2">products</span></h3>
-              <p class="service-caption">Websites, ecommerce and SaaS products, designed and engineered to feel clear and work smoothly.</p>
+              <div class="service-caption" data-pillar="build">
+                <p class="note-meta"><span class="note-num">03 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Build</span></p>
+                <p class="note-copy">Websites, ecommerce and SaaS products, designed and engineered to feel clear and work smoothly.</p>
+                <ul class="note-tags" aria-label="Includes"><li>Web design</li><li>Web development</li><li>Ecommerce</li><li>SaaS products</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.4; --mx: 0.42" data-channel="left">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/automation-poster.png" data-src="assets/services/automation.webm" data-fallback="assets/services/automation.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">AI &amp;</span> <span class="w2">automation</span></h3>
-              <p class="service-caption">Useful AI agents, practical integrations and connected workflows that take repetitive tasks off your plate.</p>
+              <div class="service-caption" data-pillar="grow">
+                <p class="note-meta"><span class="note-num">04 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Grow &amp; Operate</span></p>
+                <p class="note-copy">Useful AI agents, practical integrations and connected workflows that take repetitive tasks off your plate.</p>
+                <ul class="note-tags" aria-label="Includes"><li>AI agents</li><li>Workflow automation</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.6; --mx: 0.58" data-channel="right">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/motion-poster.png" data-src="assets/services/motion.webm" data-fallback="assets/services/motion.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">3D &amp;</span> <span class="w2">motion</span></h3>
-              <p class="service-caption">Dimensional product visuals, motion design and AI films that bring your brand story to life.</p>
+              <div class="service-caption" data-pillar="brand">
+                <p class="note-meta"><span class="note-num">05 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Brand &amp; Create</span></p>
+                <p class="note-copy">Dimensional product visuals, motion design and AI films that bring your brand story to life.</p>
+                <ul class="note-tags" aria-label="Includes"><li>3D visuals</li><li>Motion design</li><li>AI films</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.4; --mx: 0.42" data-channel="left">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/operations-poster.png" data-src="assets/services/operations.webm" data-fallback="assets/services/operations.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">CRM &amp;</span> <span class="w2">operations</span></h3>
-              <p class="service-caption">Customer journeys, revenue operations and the systems that keep your business moving.</p>
+              <div class="service-caption" data-pillar="grow">
+                <p class="note-meta"><span class="note-num">06 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Grow &amp; Operate</span></p>
+                <p class="note-copy">Customer journeys, revenue operations and the systems that keep your business moving.</p>
+                <ul class="note-tags" aria-label="Includes"><li>CRM systems</li><li>Revenue ops</li></ul>
+              </div>
             </li>
             <li class="service" style="--x: 0.56; --mx: 0.58" data-channel="right">
               <div class="service-art">
                 <video class="service-video" muted loop playsinline disablepictureinpicture preload="none" width="480" height="360" poster="assets/services/growth-poster.png" data-src="assets/services/growth.webm" data-fallback="assets/services/growth.webp" aria-hidden="true"></video>
               </div>
               <h3 class="service-title"><span class="w1">Growth &amp;</span> <span class="w2">search</span></h3>
-              <p class="service-caption">SEO, AI search, analytics and optimization. Understand what works, then make it work harder.</p>
+              <div class="service-caption" data-pillar="grow">
+                <p class="note-meta"><span class="note-num">07 / 07</span><span class="note-pillar"><span class="star-dot" aria-hidden="true"></span>Grow &amp; Operate</span></p>
+                <p class="note-copy">SEO, AI search, analytics and optimization. Understand what works, then make it work harder.</p>
+                <ul class="note-tags" aria-label="Includes"><li>SEO</li><li>AI search</li><li>Analytics</li></ul>
+              </div>
             </li>
           </ol>
         </div>

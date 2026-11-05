@@ -13,6 +13,48 @@
     lenis: null,
     revealed: false,
     headerOffset: () => (innerWidth <= 900 ? 72 : 88),
+    sfx: () => {}, // replaced by sound.js
+  });
+
+  /* ---------- Motion: one pause for all looping motion, remembered for the session ---------- */
+  CC.motion = (() => {
+    let paused = false;
+    try {
+      paused = sessionStorage.getItem("cc-motion") === "paused";
+    } catch {}
+    const listeners = [];
+    return {
+      get paused() {
+        return paused;
+      },
+      set(v) {
+        paused = !!v;
+        try {
+          if (paused) sessionStorage.setItem("cc-motion", "paused");
+          else sessionStorage.removeItem("cc-motion");
+        } catch {}
+        listeners.forEach((fn) => fn(paused));
+      },
+      on(fn) {
+        listeners.push(fn);
+      },
+    };
+  })();
+  document.querySelectorAll(".motion-toggle").forEach((btn) => {
+    if (CC.reduced) {
+      btn.hidden = true;
+      return;
+    }
+    const render = () => {
+      btn.setAttribute("aria-pressed", String(CC.motion.paused));
+      btn.querySelector("span").textContent = CC.motion.paused ? "Play motion" : "Pause motion";
+    };
+    btn.addEventListener("click", () => {
+      CC.motion.set(!CC.motion.paused);
+      CC.sfx("toggle", { on: !CC.motion.paused });
+    });
+    CC.motion.on(render);
+    render();
   });
 
   const ARROW =
@@ -169,6 +211,7 @@
       sessionStorage.setItem("cc-nav", "1");
     } catch {}
     curtain.dataset.mode = "page";
+    CC.sfx("leave");
     gsap.set(curtain.querySelectorAll(".curtain-name, .eyebrow"), { display: "none" });
     gsap.fromTo(
       curtain,
@@ -232,13 +275,17 @@
   /* ---------- Contact dialog ---------- */
   const contact = document.querySelector("#contact");
   const openDialog = (dialog) => {
+    CC.sfx("open");
     dialog.showModal();
     CC.lenis?.stop();
   };
   document.querySelectorAll("[data-contact]").forEach((btn) => btn.addEventListener("click", () => contact && openDialog(contact)));
   document.querySelectorAll("dialog").forEach((dialog) => {
     dialog.querySelector(".close")?.addEventListener("click", () => dialog.close());
-    dialog.addEventListener("close", () => CC.lenis?.start());
+    dialog.addEventListener("close", () => {
+      CC.lenis?.start();
+      CC.sfx("close");
+    });
     dialog.addEventListener("click", (e) => {
       if (e.target !== dialog) return;
       const r = dialog.getBoundingClientRect();
@@ -263,6 +310,7 @@
         ok = true;
       } catch {}
       btn.textContent = ok ? "Copied" : "Press Ctrl+C";
+      if (ok) CC.sfx("success");
       btn.setAttribute("aria-live", "polite");
       setTimeout(() => (btn.textContent = original), 1800);
     });

@@ -25,7 +25,12 @@
       if (window.ScrollTrigger) ScrollTrigger.refresh();
     }
   }
-  chips.forEach((chip) => chip.addEventListener("click", () => apply(chip.dataset.filter)));
+  chips.forEach((chip, i) =>
+    chip.addEventListener("click", () => {
+      apply(chip.dataset.filter);
+      if (window.CC && window.CC.sfx) window.CC.sfx("filter", { index: i });
+    }),
+  );
 
   if (CC.reduced) return;
 

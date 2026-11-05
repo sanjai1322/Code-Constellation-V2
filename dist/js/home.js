@@ -15,12 +15,9 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-  /* ================= Global motion pause (dock control) ================= */
-  const Motion = { paused: false, listeners: [] };
-  Motion.set = (v) => {
-    Motion.paused = v;
-    Motion.listeners.forEach((fn) => fn(v));
-  };
+  /* ================= Shared motion state and sound (both owned by site.js) ================= */
+  const Motion = (window.CC && window.CC.motion) || { paused: false, on: () => {} };
+  const sfx = (name, data) => window.CC && window.CC.sfx && window.CC.sfx(name, data);
 
   /* ================= Clips: play only while visible ================= */
   const Clips = (() => {
@@ -97,20 +94,9 @@
       clips.filter((c) => c.group === group).forEach(update);
     };
     document.addEventListener("visibilitychange", () => clips.forEach(update));
-    Motion.listeners.push(() => clips.forEach(update));
+    Motion.on(() => clips.forEach(update));
     return { add, setPaused, update, clips };
   })();
-
-  const motionBtn = $(".motion-toggle");
-  if (motionBtn) {
-    if (reduced) motionBtn.hidden = true;
-    motionBtn.addEventListener("click", () => {
-      const v = !Motion.paused;
-      Motion.set(v);
-      motionBtn.setAttribute("aria-pressed", String(v));
-      motionBtn.querySelector("span").textContent = v ? "Play motion" : "Pause motion";
-    });
-  }
 
   /* ================= Split helpers ================= */
   function splitChars(el, cls = "char") {
@@ -144,43 +130,22 @@
       Clips.update(companionClip);
     }
     if (!reduced && window.gsap) gsap.fromTo(".companion", { y: 0 }, { y: -18, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out" });
-    if ("speechSynthesis" in window) {
-      speechSynthesis.cancel();
-      const s = new SpeechSynthesisUtterance("Hi!");
-      s.lang = "en-IN";
-      s.pitch = 1.35;
-      s.rate = 0.9;
-      s.volume = 0.7;
-      speechSynthesis.speak(s);
-    }
+    sfx("hi", { force: true });
   });
 
   if (!reduced && hero) {
-    // Boards draw themselves once the duo has landed: Build (left), Brand (right).
-    const strokes = $$(".b-frame, .b-text");
+    // Boards are painted on with a brush stroke once the duo has landed:
+    // Build (coder) first, then Brand (designer), whose official mark spins into its circle.
+    const strokes = $$(".board-stroke");
     gsap.set(strokes, { strokeDasharray: 1, strokeDashoffset: 1 });
-    gsap.set(".b-dots circle, .b-code, .g-swatches circle", { scale: 0, transformOrigin: "50% 50%" });
-    gsap.set(".g-logo", { scale: 0.6, rotation: -30, opacity: 0, transformOrigin: "50% 50%" });
-    gsap.set(".b-hero", { scaleX: 0, transformOrigin: "0% 50%" });
-    gsap.set(".b-cursor", { x: -26, y: 22, opacity: 0 });
-    gsap.set(".g-orbit, .g-type", { opacity: 0 });
-    gsap.set(".g-pencil", { x: 26, y: 16, opacity: 0 });
+    gsap.set(".board-logo", { scale: 0.3, rotation: -120, opacity: 0, transformOrigin: "50% 50%" });
     const boards = gsap
-      .timeline({ paused: true, defaults: { ease: "power3.out" } })
-      // Build: a website sketch
-      .to(".b-frame", { strokeDashoffset: 0, duration: 0.7, stagger: 0.12, ease: "power2.inOut" }, 0)
-      .to(".b-dots circle", { scale: 1, duration: 0.35, stagger: 0.06, ease: "back.out(3)" }, 0.35)
-      .to(".b-hero", { scaleX: 1, duration: 0.6, ease: "expo.out" }, 0.5)
-      .to(".b-text", { strokeDashoffset: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }, 0.7)
-      .to(".b-code", { scale: 1, duration: 0.5, ease: "back.out(2.2)" }, 0.85)
-      .to(".b-cursor", { x: 0, y: 0, opacity: 1, duration: 0.6 }, 1.0)
-      .to(".b-cursor", { scale: 0.82, duration: 0.12, yoyo: true, repeat: 1, transformOrigin: "0% 0%" }, 1.6)
-      // Brand: the mark's construction, colour and type
-      .fromTo(".g-orbit", { rotation: -90, transformOrigin: "50% 50%" }, { opacity: 1, rotation: 0, duration: 1.1, ease: "power2.out" }, 0.1)
-      .to(".g-logo", { scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.3)
-      .to(".g-swatches circle", { scale: 1, duration: 0.4, stagger: 0.08, ease: "back.out(2.6)" }, 0.6)
-      .fromTo(".g-type", { y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, 0.95)
-      .to(".g-pencil", { x: 0, y: 0, opacity: 1, duration: 0.7 }, 1.15);
+      .timeline({ paused: true })
+      .to(strokes[0], { strokeDashoffset: 0, duration: 1.15, ease: "power1.inOut" }, 0)
+      .add(() => sfx("scribble"), 0)
+      .to(strokes[1], { strokeDashoffset: 0, duration: 1.15, ease: "power1.inOut" }, 0.2)
+      .to(".board-logo", { scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: "back.out(1.7)" }, 1.05)
+      .add(() => sfx("star", { index: 4 }), 1.25);
 
     // Entrance (waits for the curtain).
     gsap.set(".hero-title .line-mask > span", { yPercent: 110 });
@@ -300,7 +265,6 @@
 
   /* ================= Velocity marquee ================= */
   const track = $(".showcase-track");
-  const marqueeBtn = $(".marquee-toggle");
   if (track && !reduced) {
     const originals = [...track.children];
     for (let i = 0; i < 2; i++)
@@ -317,7 +281,6 @@
     let x = 0;
     let dir = 1;
     let speed = 1;
-    let paused = false;
     let visible = false;
     let lastY = scrollY;
     ScrollTrigger.create({ trigger: ".showcase", start: "top bottom", end: "bottom top", onToggle: (s) => (visible = s.isActive) });
@@ -328,19 +291,13 @@
       if (Math.abs(dy) > 0.5) dir = dy > 0 ? 1 : -1;
       const target = 1 + Math.min(Math.abs(dy) * 0.6, 14);
       speed += (target - speed) * 0.08;
-      if (paused || Motion.paused || !visible || !unit) return;
+      if (Motion.paused || !visible || !unit) return;
       x -= dir * speed * dt * 0.05;
       x = ((x % unit) - unit) % unit;
       track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
     });
-    marqueeBtn?.addEventListener("click", () => {
-      paused = !paused;
-      marqueeBtn.textContent = paused ? "Play motion" : "Pause motion";
-      marqueeBtn.setAttribute("aria-pressed", String(paused));
-    });
   } else if (track) {
     $(".showcase-viewport").style.overflowX = "auto";
-    if (marqueeBtn) marqueeBtn.hidden = true;
   }
 
   /* ================= Headings: reveal + playful letter hover ================= */
@@ -429,6 +386,7 @@
     function show(i) {
       if (i === index && titleEl.textContent === items[i].title) return;
       index = i;
+      sfx("glass", { index: i });
       const it = items[i];
       link.href = it.href;
       link.setAttribute("aria-label", `View project: ${it.title}`);
@@ -486,7 +444,10 @@
             api = window.CCGlass.mount(stage, items, {
               start: index,
               onIndex: show,
-              onReveal: (on) => root.classList.toggle("is-revealed", on),
+              onReveal: (on) => {
+                root.classList.toggle("is-revealed", on);
+                sfx("reveal", { on });
+              },
               onFail: fallback,
             });
           } catch {
@@ -558,26 +519,11 @@
     const services = $$(".service", journey);
     const NS = "http://www.w3.org/2000/svg";
 
-    // Clips + pause control.
+    // Clips play while visible; the dock's "Pause motion" stops them too.
     services.forEach((s) => {
       const v = $("video", s);
       if (v) Clips.add(v, "services", $(".service-art", s));
     });
-    const toggle = $(".service-toggle");
-    if (toggle) {
-      if (reduced) {
-        toggle.disabled = true;
-        toggle.textContent = "Animations off (reduced motion)";
-        toggle.setAttribute("aria-pressed", "true");
-      } else {
-        toggle.addEventListener("click", () => {
-          const paused = toggle.getAttribute("aria-pressed") !== "true";
-          toggle.setAttribute("aria-pressed", String(paused));
-          toggle.textContent = paused ? "Play animations" : "Pause animations";
-          Clips.setPaused("services", paused);
-        });
-      }
-    }
 
     let geo = null; // { total, ys: Float32Array, step, stops: [{el, y}], holes }
 
@@ -689,7 +635,7 @@
       return Math.min(total, (lo + f) * step);
     }
 
-    function draw() {
+    function draw(fromScroll) {
       if (!geo) return;
       const top = journey.getBoundingClientRect().top;
       const target = reduced ? Infinity : innerHeight * 0.62 - top;
@@ -699,7 +645,11 @@
       marker.setAttribute("transform", `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)})`);
       const inside = geo.holes.some((h) => ((p.x - h.cx) / h.rx) ** 2 + ((p.y - h.cy) / h.ry) ** 2 < 0.55);
       marker.classList.toggle("is-hidden", reduced || L <= 0.5 || inside);
-      geo.stops.forEach((s) => s.el.classList.toggle("is-reached", reduced || target >= s.y));
+      geo.stops.forEach((s, i) => {
+        const on = reduced || target >= s.y;
+        if (fromScroll === true && on !== s.el.classList.contains("is-reached")) sfx("star", { index: i, up: on });
+        s.el.classList.toggle("is-reached", on);
+      });
     }
 
     const rebuild = () => {
@@ -713,7 +663,7 @@
         trigger: journey,
         start: "top bottom",
         end: "bottom top",
-        onUpdate: draw,
+        onUpdate: () => draw(true),
         onRefresh: rebuild,
       });
     } else {
@@ -761,6 +711,7 @@
 
     function go(dir, fromX = 0, fromR = 0) {
       if (busy) return;
+      sfx("card", { dir });
       const top = cards[order[0]];
       const finish = () => {
         if (dir > 0) order.push(order.shift());
@@ -884,10 +835,13 @@
     items.forEach((d) => {
       d.querySelector("summary").addEventListener("click", (e) => {
         e.preventDefault();
-        if (d.open) close(d);
-        else {
+        if (d.open) {
+          close(d);
+          sfx("collapse");
+        } else {
           items.forEach((o) => o !== d && close(o));
           open(d);
+          sfx("expand");
         }
       });
     });

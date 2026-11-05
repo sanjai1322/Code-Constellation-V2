@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "22";
+const V = "23";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -170,6 +170,7 @@ function head({ title, description, css, base }) {
     <script src="${base}assets/lenis.min.js" defer></script>
     <script src="${base}js/site.js?v=${V}" defer></script>
     <script src="${base}js/${css}.js?v=${V}" defer></script>
+    <script src="${base}js/sound.js?v=${V}" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -256,6 +257,16 @@ function footer({ base }) {
       </form>
       <a class="direct-email" href="mailto:${EMAIL}">Or email us directly ↗</a>
     </dialog>
+    <div class="dock">
+      <button class="dock-btn sound-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z" /><path class="sound-wave" d="M16 8c3 2 3 6 0 8m3-11c5 4 5 10 0 14" /></svg>
+        <span>Sound off</span>
+      </button>
+      <button class="dock-btn motion-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12" /><path class="i-play" d="M8 5.5v13l10.5-6.5Z" /></svg>
+        <span>Pause motion</span>
+      </button>
+    </div>
   </body>
 </html>
 `;
@@ -454,7 +465,6 @@ ${PILLARS.map(
       <section class="about-gallery" aria-label="Inside our world">
         <div class="gallery-head">
           <p class="eyebrow">Inside our world</p>
-          <button class="ghost-btn gallery-toggle" type="button" aria-pressed="false">Pause motion</button>
         </div>
         <div class="gallery-viewport">
           <ul class="gallery-track">

@@ -851,6 +851,84 @@ dialog .close:hover {
   }
 }
 
+/* ---------- Dock: sound and motion controls ---------- */
+.dock {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 18px;
+  z-index: 40;
+  display: flex;
+  gap: 8px;
+}
+.dock-btn {
+  display: flex;
+  color: var(--ink);
+  transition: background 0.3s, color 0.3s;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px 0 10px;
+  border-radius: 999px;
+  background: #fffffff0;
+  box-shadow: 0 6px 18px #0a103314;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dock-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sound-toggle[aria-pressed="false"] .sound-wave {
+  opacity: 0.25;
+}
+.motion-toggle .i-play,
+.motion-toggle[aria-pressed="true"] .i-pause {
+  display: none;
+}
+.motion-toggle[aria-pressed="true"] .i-play {
+  display: block;
+}
+.dock-btn:hover {
+  background: #fff;
+  color: var(--orbit);
+}
+
+.sound-toggle[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--starlight);
+}
+.sound-toggle[aria-pressed="true"]:hover {
+  background: var(--orbit);
+  color: #fff;
+}
+.sound-toggle[aria-pressed="true"] .sound-wave {
+  animation: sound-pulse 1.6s ease-in-out infinite;
+}
+@keyframes sound-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (max-width: 700px) {
+  .dock-btn span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .dock-btn {
+    padding: 0 9px;
+  }
+}
+
 /* ---------- Brand devices shared across pages ---------- */
 .star-dot {
   display: inline-block;
