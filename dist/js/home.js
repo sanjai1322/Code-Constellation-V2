@@ -228,7 +228,7 @@
     const text = textPath.parentElement;
     let unit = 0;
     const measure = () => {
-      unit = text.getComputedTextLength() / 5; // five repeated phrase pairs
+      unit = textPath.querySelector('tspan').getComputedTextLength();
     };
     measure();
     document.fonts?.ready.then(measure);
@@ -237,7 +237,8 @@
     ScrollTrigger.create({ trigger: ".ribbon", start: "top bottom", end: "bottom top", onToggle: (s) => (visible = s.isActive) });
     gsap.ticker.add((_t, dt) => {
       if (!visible || !unit || Motion.paused) return;
-      drift += dt * 0.035;
+      if (document.hidden) return;
+      drift += Math.min(dt, 64) * 0.035;
       const off = -((drift + scrollY * 0.45) % unit);
       textPath.setAttribute("startOffset", off.toFixed(2));
     });

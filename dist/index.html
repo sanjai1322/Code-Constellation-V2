@@ -13,13 +13,13 @@
     <link rel="preload" href="assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="assets/fonts.css" />
     <link rel="stylesheet" href="css/site.css?v=27" />
-    <link rel="stylesheet" href="css/home.css?v=25" />
+    <link rel="stylesheet" href="css/home.css?v=30" />
     <script src="js/boot.js"></script>
     <script src="assets/gsap.min.js" defer></script>
     <script src="assets/ScrollTrigger.min.js" defer></script>
     <script src="assets/lenis.min.js" defer></script>
     <script src="js/site.js?v=27" defer></script>
-    <script src="js/home.js?v=25" defer></script>
+    <script src="js/home.js?v=30" defer></script>
     <script src="js/sound.js?v=24" defer></script>
   </head>
   <body id="top">
@@ -119,10 +119,11 @@
         </div>
 
         <div class="ribbon" aria-hidden="true">
-          <svg viewBox="0 0 1600 200">
-            <path id="ribbon-path" class="ribbon-band" d="M-120 122 C 280 64, 560 168, 820 118 S 1320 66, 1720 110" />
-            <text class="ribbon-text" dy="14">
-              <textPath href="#ribbon-path" startOffset="0">Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦</textPath>
+          <svg viewBox="0 0 1600 200" focusable="false">
+            <defs><path id="ribbon-text-path" d="M-600 174 C-100 192 320 166 760 112 S1400 72 1900 100 L6500 358" /></defs>
+            <path class="ribbon-band" d="M-600 174 C-100 192 320 166 760 112 S1400 72 1900 100" />
+            <text class="ribbon-text" dominant-baseline="central">
+              <textPath href="#ribbon-text-path" startOffset="0"><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan><tspan>Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ </tspan></textPath>
             </text>
           </svg>
         </div>
