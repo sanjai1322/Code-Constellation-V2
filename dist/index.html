@@ -12,15 +12,15 @@
     <link rel="icon" href="assets/cc-mark-light.svg" />
     <link rel="preload" href="assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="assets/fonts.css" />
-    <link rel="stylesheet" href="css/site.css?v=20" />
-    <link rel="stylesheet" href="css/home.css?v=20" />
+    <link rel="stylesheet" href="css/site.css?v=21" />
+    <link rel="stylesheet" href="css/home.css?v=21" />
     <script src="js/boot.js"></script>
     <script src="assets/gsap.min.js" defer></script>
     <script src="assets/ScrollTrigger.min.js" defer></script>
     <script src="assets/lenis.min.js" defer></script>
-    <script src="js/site.js?v=20" defer></script>
-    <script src="js/home.js?v=20" defer></script>
-    <script src="js/sound.js?v=20" defer></script>
+    <script src="js/site.js?v=21" defer></script>
+    <script src="js/home.js?v=21" defer></script>
+    <script src="js/sound.js?v=21" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -171,8 +171,9 @@
 
       <!-- Work -->
       <section id="work" class="work" aria-labelledby="work-title">
-        <div class="section-head">
+        <div class="section-head has-presenter">
           <p class="eyebrow">The studio in practice</p>
+          <img class="presenter presenter-coder" src="assets/characters/coder-present.webp" alt="" width="610" height="1000" loading="lazy" decoding="async" />
           <h2 id="work-title" class="split-heading">Ideas, made tangible.</h2>
           <p class="section-sub">Client work, independent concepts and experiments — connected by design, technology and storytelling.</p>
         </div>
@@ -269,8 +270,9 @@
 
       <!-- Services -->
       <section id="services" class="services" aria-labelledby="services-title">
-        <div class="section-head services-head">
+        <div class="section-head services-head has-presenter">
           <p class="eyebrow">Our services</p>
+          <img class="presenter presenter-designer" src="assets/characters/designer-present.webp" alt="" width="541" height="1000" loading="lazy" decoding="async" />
           <h2 id="services-title" class="split-heading">This is our thing.</h2>
           <button class="ghost-btn service-toggle" type="button" aria-pressed="false">Pause animations</button>
         </div>
@@ -400,7 +402,7 @@
         <div class="faq-aside">
           <p class="eyebrow">Frequently asked questions</p>
           <h2 id="faq-title" class="split-heading">Things you might ask.</h2>
-          <img class="faq-companion" src="assets/companion-ink.webp" alt="Our blue studio companion, waving" width="1246" height="1262" loading="lazy" />
+          <img class="faq-companion" src="assets/characters/mascot-front.webp" alt="Our blue studio companion" width="565" height="720" loading="lazy" decoding="async" />
         </div>
         <div class="faq-list">
           <details open>
@@ -449,10 +451,16 @@
 
     <footer class="site-footer" id="contact-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -482,6 +490,7 @@
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>
@@ -495,9 +504,15 @@
       <a class="direct-email" href="mailto:codeconstellation.business@gmail.com">Or email us directly ↗</a>
     </dialog>
 
-    <button class="sound-toggle" type="button" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z" /><path class="sound-wave" d="M16 8c3 2 3 6 0 8m3-11c5 4 5 10 0 14" /></svg>
-      <span>Sound off</span>
-    </button>
+    <div class="dock">
+      <button class="dock-btn sound-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z" /><path class="sound-wave" d="M16 8c3 2 3 6 0 8m3-11c5 4 5 10 0 14" /></svg>
+        <span>Sound off</span>
+      </button>
+      <button class="dock-btn motion-toggle" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12" /><path class="i-play" d="M8 5.5v13l10.5-6.5Z" /></svg>
+        <span>Pause motion</span>
+      </button>
+    </div>
   </body>
 </html>

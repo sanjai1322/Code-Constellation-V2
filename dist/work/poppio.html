@@ -9,14 +9,14 @@
     <link rel="icon" href="../assets/cc-mark-light.svg" />
     <link rel="preload" href="../assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="../assets/fonts.css" />
-    <link rel="stylesheet" href="../css/site.css?v=20" />
-    <link rel="stylesheet" href="../css/case.css?v=20" />
+    <link rel="stylesheet" href="../css/site.css?v=21" />
+    <link rel="stylesheet" href="../css/case.css?v=21" />
     <script src="../js/boot.js"></script>
     <script src="../assets/gsap.min.js" defer></script>
     <script src="../assets/ScrollTrigger.min.js" defer></script>
     <script src="../assets/lenis.min.js" defer></script>
-    <script src="../js/site.js?v=20" defer></script>
-    <script src="../js/case.js?v=20" defer></script>
+    <script src="../js/site.js?v=21" defer></script>
+    <script src="../js/case.js?v=21" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -41,26 +41,32 @@
       </div>
     </header>
 
-    <main id="main" class="case">
+    <main id="main" class="case case-concept">
       <section class="case-hero" aria-labelledby="case-title">
-        <a class="back-link" href="../index.html#work"><span aria-hidden="true">←</span> All work</a>
-        <p class="eyebrow case-label">Concept · Brand exploration</p>
+        <div class="case-topline">
+          <a class="back-link" href="../index.html#work"><span aria-hidden="true">←</span> All work</a>
+          <span class="case-index">02 / 06</span>
+        </div>
+        <p class="case-label"><span class="kind-chip kind-concept">Concept</span><span class="eyebrow">Brand exploration</span></p>
         <h1 id="case-title" class="case-title"><span class="line-mask"><span>Poppio</span></span></h1>
-        <p class="case-lead">An independent concept exploration by the studio.</p>
-        <dl class="case-meta">
-          <div><dt>Type</dt><dd>Concept</dd></div>
-          <div><dt>Focus</dt><dd>Brand exploration</dd></div>
-          <div><dt>Brief</dt><dd class="is-awaiting">Awaiting content</dd></div>
-          <div><dt>Deliverables</dt><dd class="is-awaiting">Awaiting content</dd></div>
-        </dl>
+        <div class="case-intro">
+          <p class="case-lead">An independent concept exploration by the studio.</p>
+          <dl class="case-meta">
+            <div><dt>Type</dt><dd>Concept</dd></div>
+            <div><dt>Focus</dt><dd>Brand exploration</dd></div>
+            <div><dt>Brief</dt><dd class="is-awaiting">Awaiting content</dd></div>
+            <div><dt>Deliverables</dt><dd class="is-awaiting">Awaiting content</dd></div>
+          </dl>
+        </div>
       </section>
 
       <figure class="case-cover">
         <div class="cover-mask">
           <img src="../assets/project-poppio.webp" alt="Illustrative cover artwork for the Poppio concept" width="1536" height="1024" fetchpriority="high" />
         </div>
-        <figcaption>Illustrative artwork.</figcaption>
+        <figcaption class="annot-line"><span>Fig. 01</span> Illustrative cover artwork</figcaption>
       </figure>
+      
 
       <section class="case-body" aria-label="Case study">
         <div class="case-col">
@@ -70,6 +76,64 @@
         <div class="case-col">
           <p class="eyebrow">What we did</p>
           <p class="awaiting"><span class="awaiting-dot" aria-hidden="true"></span>Brief and deliverables awaiting content.</p>
+        </div>
+      </section>
+
+      <section class="case-gallery" aria-labelledby="gallery-title">
+        <div class="gallery-title-row">
+          <p class="eyebrow" id="gallery-title">Selected frames</p>
+          <p class="gallery-note">Image slots reserved for project visuals.</p>
+        </div>
+        <div class="slot-grid">
+          <figure class="slot slot-wide" style="--ar: 16 / 9">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Hero visual</span>
+              <span class="slot-annot">IMG 02 · 16/9 · 2400 × 1350 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-tall" style="--ar: 4 / 5">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Brand mark</span>
+              <span class="slot-annot">IMG 03 · 4/5 · 1600 × 2000 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-half" style="--ar: 4 / 3">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Key visual — detail</span>
+              <span class="slot-annot">IMG 04 · 4/3 · 2000 × 1500 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-strip" style="--ar: 21 / 9">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Wide brand scene</span>
+              <span class="slot-annot">IMG 05 · 21/9 · 2520 × 1080 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Colour</span>
+              <span class="slot-annot">IMG 06 · 1/1 · 1600 × 1600 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Typography</span>
+              <span class="slot-annot">IMG 07 · 1/1 · 1600 × 1600 · Placeholder</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Application</span>
+              <span class="slot-annot">IMG 08 · 1/1 · 1600 × 1600 · Placeholder</span>
+            </div>
+          </figure>
         </div>
       </section>
 
@@ -83,7 +147,7 @@
       <nav class="case-nav" aria-label="More projects">
         <a class="case-prev" href="1xircle.html"><span aria-hidden="true">←</span> 1Xircle</a>
         <a class="case-next" href="tesla-roadster.html" data-cursor="Next case">
-          <span class="eyebrow">Next project</span>
+          <span class="eyebrow">Next project · Unofficial concept</span>
           <span class="next-name">Tesla Roadster</span>
           <span class="next-media"><img src="../assets/project-roadster-sm.webp" alt="" width="768" height="512" loading="lazy" /></span>
         </a>
@@ -91,10 +155,16 @@
     </main>
     <footer class="site-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="../assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="../assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -124,6 +194,7 @@
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="../assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>

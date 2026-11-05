@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "20";
+const V = "21";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -204,10 +204,16 @@ function header({ base, current }) {
 function footer({ base }) {
   return `    <footer class="site-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="${base}assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="${base}assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -237,6 +243,7 @@ function footer({ base }) {
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="${base}assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>
@@ -257,89 +264,167 @@ function footer({ base }) {
 const page = (opts, body) => head(opts) + header(opts) + body + footer(opts);
 
 /* ------------------------------------------------------------------ */
-/* About                                                               */
+/* About — content from the Code Constellation Brand Book v1.0         */
 /* ------------------------------------------------------------------ */
-const ABOUT_PRINCIPLES = [
-  ["Start with the right question.", "We begin with your goals, your audience and the problem worth solving. A clearer question gives every design and engineering decision a purpose."],
-  ["Give good ideas room.", "We explore, test and refine. Making space for thoughtful work helps us find a direction with character and substance."],
-  ["Make every detail useful.", "A strong identity and a smooth experience should work together. We care about how things look, what they communicate and how they feel to use."],
-  ["Keep it clear.", "We simplify the message, the interface and the way we work together. Complexity belongs behind the scenes, not between you and your customers."],
+const VALUES = [
+  ["Craft over noise", "Every pixel and every line of code earns its place."],
+  ["Outcomes over output", "We sell transformation, not tasks."],
+  ["Clarity always", "Plain words, honest timelines, no jargon."],
+  ["Explore first", "We test new technology so our clients don’t have to."],
+  ["Long orbit", "Relationships that last well beyond launch."],
 ];
-const CAPABILITIES = [
-  "Brand strategy", "Visual identity", "Logo design", "Brand guidelines", "Pitch decks", "Web design", "Web development", "Ecommerce",
-  "SaaS products", "AI agents", "Workflow automation", "CRM systems", "3D visuals", "Motion design", "AI films", "SEO", "AI search",
-  "Analytics", "Growth optimization",
+const JOURNEY = [
+  ["Entry", "Brand & Create", "One niche, one clear result. The door in: a brand, a launch site, a deck or a reel.", "Project"],
+  ["Expand", "Build", "The product, site or system the brand runs on. Same team, no hand-offs.", "Project"],
+  ["Orbit", "Grow & Operate", "Automation, CRM, SEO and analytics on a monthly retainer. Clients stay and grow with us.", "Retainer"],
 ];
+const PILLARS = [
+  ["01", "Build", ["Websites and web apps", "SaaS products", "AI systems and integration", "Ecommerce and cloud"]],
+  ["02", "Brand & Create", ["Brand identity and UI/UX", "3D, motion and AI films", "Pitch decks and campaigns", "Templates and content"]],
+  ["03", "Grow & Operate", ["AI automation and agents", "CRM and revenue ops", "SEO and AI search", "Analytics and growth"]],
+];
+
+const orbitRings = (cls) => `<svg class="${cls}" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none"><circle cx="1180" cy="680" r="260" /><circle cx="1180" cy="680" r="430" /><circle cx="1180" cy="680" r="600" /><circle cx="1180" cy="680" r="770" /></g>
+            <circle class="ring-path" cx="1180" cy="680" r="515" fill="none" />
+            <circle class="ring-star" cx="815" cy="316" r="7" />
+          </svg>`;
 
 function aboutPage() {
   const base = "";
   const body = `
     <main id="main">
       <section class="about-hero" aria-labelledby="about-title">
-        <p class="eyebrow about-eyebrow">About the studio</p>
-        <h1 id="about-title" class="about-title">
-          <span class="line-mask"><span>Small studio.</span></span>
-          <span class="line-mask"><span>Connected thinking.</span></span>
-        </h1>
-        <span class="sticker sticker-a" aria-hidden="true">Design meets technology</span>
-        <span class="sticker sticker-b" aria-hidden="true">Built in Tamil Nadu</span>
-        <figure class="about-portrait">
-          <div class="portrait-mask">
-            <img src="${base}assets/studio-original-duo.webp" alt="Our illustrated coder and designer, side by side" width="1536" height="1024" fetchpriority="high" />
+        <div class="about-hero-grid">
+          <div>
+            <p class="eyebrow about-eyebrow"><span class="star-dot" aria-hidden="true"></span>About the studio</p>
+            <h1 id="about-title" class="about-title">
+              <span class="line-mask"><span>Small studio.</span></span>
+              <span class="line-mask"><span>Connected <em>thinking.</em></span></span>
+            </h1>
           </div>
-          <figcaption>Our illustrated duo — the studio’s characters, not portraits of real people.</figcaption>
+          <div class="about-intro">
+            <p>A creative technology studio that designs, builds and grows ambitious brands.</p>
+            <dl class="annot">
+              <div><dt>Founded by</dt><dd>Sanjai K</dd></div>
+              <div><dt>Based in</dt><dd>Tamil Nadu, India</dd></div>
+              <div><dt>Working</dt><dd>Worldwide</dd></div>
+            </dl>
+          </div>
+        </div>
+        <figure class="about-portrait">
+          <div class="portrait-frame">
+            ${orbitRings("portrait-rings")}
+            <img src="${base}assets/studio-duo.webp" alt="Our illustrated coder and designer, side by side" width="1276" height="828" fetchpriority="high" />
+          </div>
+          <figcaption class="annot-line"><span>Fig. 01</span> Our illustrated duo — the studio’s characters, not portraits of real people.</figcaption>
         </figure>
       </section>
 
-      <section class="about-statement" aria-label="Who we are">
-        <p class="statement-copy">Code Constellation brings design, engineering and growth together. Founded by Sanjai K in Tamil Nadu, India, we help ambitious teams move from idea to orbit — and we work with them wherever they are.</p>
+      <section class="about-mission" aria-label="Mission and vision">
+        <div class="mission-col">
+          <p class="eyebrow">Mission</p>
+          <p class="mission-copy">Give ambitious companies the design, engineering and AI of a world-class team, connected into one system that makes them look better, work smarter and grow faster.</p>
+        </div>
+        <div class="mission-col">
+          <p class="eyebrow">Vision</p>
+          <p class="mission-copy">A world where any ambitious business, wherever it starts, can launch and run like a global brand.</p>
+          <p class="annot-line">Built from Tamil Nadu, for the world.</p>
+        </div>
       </section>
 
       <section class="story" aria-label="Our story">
         <article class="story-row">
-          <span class="story-index" aria-hidden="true">01</span>
+          <img class="story-person" src="${base}assets/characters/coder-present.webp" alt="" width="610" height="1000" loading="lazy" decoding="async" />
           <div class="story-text">
-            <p class="eyebrow">Why we started</p>
+            <p class="eyebrow"><span class="story-num">01</span> Why we started</p>
             <h2>Good ideas deserve a connected team.</h2>
-            <p>Brand, technology and growth work best when they work together. Code Constellation was built around that idea: one studio connecting how a business looks, how it works and how it reaches people.</p>
+            <p>Founders and teams often juggle a designer, a developer and an automation freelancer who never talk to each other. Code Constellation was built so one team owns the whole constellation — from the first impression to the systems that run the business.</p>
           </div>
-          <div class="story-art story-art-mark" aria-hidden="true"><img src="${base}assets/cc-mark-light.svg" alt="" width="200" height="200" /></div>
         </article>
         <article class="story-row is-reverse">
-          <span class="story-index" aria-hidden="true">02</span>
           <div class="story-text">
-            <p class="eyebrow">Where we are going</p>
-            <h2>One studio. A wider perspective.</h2>
-            <p>From a clear identity to a useful digital product, we look at the whole picture. We bring design thinking and thoughtful engineering to the same table, with a focus on clarity, craft and work that lasts.</p>
+            <p class="eyebrow"><span class="story-num">02</span> Where we are going</p>
+            <h2>Every service is a star. Together, a shape people recognise.</h2>
+            <p>Brand, product and growth connect into one system. We bring design thinking and thoughtful engineering to the same table, with a focus on clarity, craft and work that lasts.</p>
           </div>
-          <div class="story-art story-art-companion" aria-hidden="true"><img src="${base}assets/companion-ink.webp" alt="" width="1246" height="1262" loading="lazy" /></div>
+          <img class="story-person" src="${base}assets/characters/designer-present.webp" alt="" width="541" height="1000" loading="lazy" decoding="async" />
         </article>
       </section>
 
-      <section class="founder" aria-labelledby="founder-title">
-        <div class="founder-card">
-          <span class="founder-mono" aria-hidden="true">SK</span>
-          <p class="eyebrow">Founder</p>
-          <h2 id="founder-title">Sanjai K</h2>
-          <p>Founder of Code Constellation, based in Tamil Nadu, India.</p>
-          <a class="cta" href="${base}work/sanjai-portfolio.html"><span class="label">See Sanjai’s portfolio lab</span>${arrowChip}</a>
+      <section class="values" aria-labelledby="values-title">
+        <div class="block-head">
+          <p class="eyebrow">Core values</p>
+          <h2 id="values-title">Five values. One orbit.</h2>
         </div>
-      </section>
-
-      <section class="principles" aria-labelledby="principles-title">
-        <div class="principles-head">
-          <p class="eyebrow">How we work</p>
-          <h2 id="principles-title">Four studio principles.</h2>
-        </div>
-        <ol class="principle-stack">
-${ABOUT_PRINCIPLES.map(
-  ([t, c], i) => `          <li class="principle-card">
-            <span class="principle-num">0${i + 1}</span>
+        <ol class="value-stack">
+${VALUES.map(
+  ([t, c], i) => `          <li class="value-card">
+            <span class="value-num">0${i + 1}</span>
             <h3>${esc(t)}</h3>
             <p>${esc(c)}</p>
           </li>`,
 ).join("\n")}
         </ol>
+      </section>
+
+      <section class="journey-about" aria-labelledby="journey-title">
+        <div class="block-head">
+          <p class="eyebrow">The client journey</p>
+          <h2 id="journey-title">How a client travels.</h2>
+          <p class="block-sub">Every client enters through one pillar and grows into all three. Project, then retainer, then long-term partnership.</p>
+        </div>
+        <div class="journey-track">
+          <svg class="journey-line-about" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M20 20 H1180" /></svg>
+          <span class="journey-star" aria-hidden="true"></span>
+          <ol class="journey-steps">
+${JOURNEY.map(
+  ([stage, pillar, copy, kind], i) => `            <li>
+              <span class="step-dot" aria-hidden="true"></span>
+              <p class="eyebrow">0${i + 1} · ${esc(stage)}</p>
+              <h3>${esc(pillar)}</h3>
+              <p>${esc(copy)}</p>
+              <span class="step-kind">${esc(kind)}</span>
+            </li>`,
+).join("\n")}
+          </ol>
+        </div>
+      </section>
+
+      <section class="founder" aria-labelledby="founder-title">
+        <div class="founder-card">
+          <figure class="slot founder-slot" style="--ar: 4 / 5">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Founder photo</span>
+              <span class="slot-annot">IMG · 4:5 · 1600 × 2000 · Placeholder</span>
+            </div>
+          </figure>
+          <div class="founder-text">
+            <p class="eyebrow">Founder · CEO</p>
+            <h2 id="founder-title">Sanjai K</h2>
+            <p>Founder of Code Constellation, based in Tamil Nadu, India.</p>
+            <a class="cta" href="${base}work/sanjai-portfolio.html"><span class="label">See Sanjai’s portfolio lab</span>${arrowChip}</a>
+          </div>
+          <span class="founder-mono" aria-hidden="true">SK</span>
+        </div>
+      </section>
+
+      <section class="pillars" aria-labelledby="pillars-title">
+        <div class="block-head">
+          <p class="eyebrow">Capabilities</p>
+          <h2 id="pillars-title">Build. Brand. Grow.</h2>
+          <p class="block-sub">Three pillars, one connected system.</p>
+        </div>
+        <div class="pillar-grid">
+${PILLARS.map(
+  ([n, name, items]) => `          <div class="pillar">
+            <p class="eyebrow">${n}</p>
+            <h3>${esc(name)}</h3>
+            <ul>${items.map((it) => `<li><a href="${base}index.html#services">${esc(it)}</a></li>`).join("")}</ul>
+          </div>`,
+).join("\n")}
+        </div>
       </section>
 
       <section class="about-gallery" aria-label="Inside our world">
@@ -351,21 +436,17 @@ ${ABOUT_PRINCIPLES.map(
           <ul class="gallery-track">
             <li class="g-tile g-mark"><img src="${base}assets/cc-mark-light.svg" alt="Code Constellation crescent mark" width="160" height="160" /></li>
             <li class="g-tile g-type">Build.<br />Brand.<br />Grow.</li>
-            <li class="g-tile g-image"><img src="${base}assets/project-roadster-sm.webp" alt="Tesla Roadster unofficial concept cover" width="768" height="512" loading="lazy" /></li>
+            <li class="g-tile g-image"><img src="${base}assets/project-roadster-sm.webp" alt="Tesla Roadster unofficial concept cover" width="768" height="512" loading="lazy" /><span>Unofficial concept</span></li>
             <li class="g-tile g-code"><span>&lt;idea&gt;</span><strong>Make it real.</strong><span>&lt;/idea&gt;</span></li>
-            <li class="g-tile g-image"><img src="${base}assets/project-poppio-sm.webp" alt="Poppio concept cover" width="768" height="512" loading="lazy" /></li>
-            <li class="g-tile g-companion"><img src="${base}assets/companion-ink.webp" alt="Our blue companion" width="1246" height="1262" loading="lazy" /></li>
+            <li class="g-tile g-image"><img src="${base}assets/project-poppio-sm.webp" alt="Poppio concept cover" width="768" height="512" loading="lazy" /><span>Concept</span></li>
+            <li class="g-tile g-mascot"><img src="${base}assets/characters/mascot-jump.webp" alt="Our blue companion, jumping" width="570" height="720" loading="lazy" /></li>
           </ul>
         </div>
       </section>
 
-      <section class="capabilities" aria-labelledby="cap-title">
-        <p class="eyebrow">Capabilities</p>
-        <h2 id="cap-title">One studio. Plenty of range.</h2>
-        <ul class="cap-cloud">
-${CAPABILITIES.map((c) => `          <li><a href="${base}index.html#services">${esc(c)}</a></li>`).join("\n")}
-        </ul>
-        <button class="cta" type="button" data-contact><span class="label">Find your next step</span>${arrowChip}</button>
+      <section class="about-cta" aria-label="Start a project">
+        <h2>From idea to orbit.</h2>
+        <button class="cta" type="button" data-contact><span class="label">Start a project</span>${arrowChip}</button>
       </section>
     </main>
 `;
@@ -384,12 +465,46 @@ ${CAPABILITIES.map((c) => `          <li><a href="${base}index.html#services">${
 /* ------------------------------------------------------------------ */
 /* Case studies                                                        */
 /* ------------------------------------------------------------------ */
+// Image slots, in layout order: wide 16:9, tall 4:5, 4:3, strip 21:9, three squares.
+// Replace a slot's .slot-frame with <img src="..." alt="..."> when an approved image exists.
+const SLOT_SHAPES = [
+  ["wide", "16 / 9", "2400 × 1350"],
+  ["tall", "4 / 5", "1600 × 2000"],
+  ["half", "4 / 3", "2000 × 1500"],
+  ["strip", "21 / 9", "2520 × 1080"],
+  ["square", "1 / 1", "1600 × 1600"],
+  ["square", "1 / 1", "1600 × 1600"],
+  ["square", "1 / 1", "1600 × 1600"],
+];
+const SLOTS = {
+  "1xircle": ["Pitch deck — cover slide", "Logo — before and after", "Deck — product story spread", "Explainer — storyboard strip", "Explainer — frame 01", "Explainer — frame 02", "Logo — app icon"],
+  poppio: ["Hero visual", "Brand mark", "Key visual — detail", "Wide brand scene", "Colour", "Typography", "Application"],
+  "tesla-roadster": ["Product page — desktop hero", "Product page — mobile", "Storytelling section", "Scroll sequence strip", "Detail module 01", "Detail module 02", "Detail module 03"],
+  vespera: ["Hero visual", "Detail", "Key frame", "Wide scene", "Frame 01", "Frame 02", "Frame 03"],
+  "ferrari-f1": ["Team site — desktop hero", "Team site — mobile", "Motion frame", "Speed sequence strip", "Frame 01", "Frame 02", "Frame 03"],
+  "sanjai-portfolio": ["Interactive 3D head — hero", "Mobile view", "Interaction still", "Process strip", "Still 01", "Still 02", "Still 03"],
+};
+const KIND = { "Client work": "client", Concept: "concept", "Unofficial concept": "unofficial", Lab: "lab" };
+
+function slot(label, [shape, ar, px], n, pending) {
+  return `          <figure class="slot slot-${shape}" style="--ar: ${ar}">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">${esc(label)}</span>
+              <span class="slot-annot">IMG ${String(n).padStart(2, "0")} · ${ar.replace(/ /g, "")} · ${px} · ${pending}</span>
+            </div>
+          </figure>`;
+}
+
 function casePage(p, i) {
   const base = "../";
   const next = PROJECTS[(i + 1) % PROJECTS.length];
   const prev = PROJECTS[(i - 1 + PROJECTS.length) % PROJECTS.length];
+  const kind = KIND[p.label] || "concept";
+  const unofficial = p.label === "Unofficial concept";
+  const pending = p.slug === "1xircle" ? "Awaiting client approval" : "Placeholder";
   const did = p.did
-    ? `<ul class="case-list">${p.did.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>`
+    ? `<ol class="case-list">${p.did.map((d, k) => `<li><span>0${k + 1}</span>${esc(d)}</li>`).join("")}</ol>`
     : `<p class="awaiting"><span class="awaiting-dot" aria-hidden="true"></span>Brief and deliverables awaiting content.</p>`;
   const results = p.results
     ? `
@@ -400,24 +515,31 @@ ${p.results.map(([big, small]) => `          <li><strong>${esc(big)}</strong><sp
         </ul>
       </section>`
     : "";
+  const disclaimer = unofficial ? `<p class="unofficial-banner"><span class="star-dot" aria-hidden="true"></span>${esc(p.notes[0])}</p>` : "";
   const body = `
-    <main id="main" class="case">
+    <main id="main" class="case case-${kind}">
       <section class="case-hero" aria-labelledby="case-title">
-        <a class="back-link" href="${base}index.html#work"><span aria-hidden="true">←</span> All work</a>
-        <p class="eyebrow case-label">${esc(p.label)} · ${esc(p.category)}</p>
+        <div class="case-topline">
+          <a class="back-link" href="${base}index.html#work"><span aria-hidden="true">←</span> All work</a>
+          <span class="case-index">${String(i + 1).padStart(2, "0")} / ${String(PROJECTS.length).padStart(2, "0")}</span>
+        </div>
+        <p class="case-label"><span class="kind-chip kind-${kind}">${esc(p.label)}</span><span class="eyebrow">${esc(p.category)}</span></p>
         <h1 id="case-title" class="case-title"><span class="line-mask"><span>${esc(p.name)}</span></span></h1>
-        <p class="case-lead">${esc(p.lead)}</p>
-        <dl class="case-meta">
-${p.meta.map(([k, v]) => `          <div><dt>${esc(k)}</dt><dd${/awaiting/i.test(v) ? ' class="is-awaiting"' : ""}>${esc(v)}</dd></div>`).join("\n")}
-        </dl>
+        <div class="case-intro">
+          <p class="case-lead">${esc(p.lead)}</p>
+          <dl class="case-meta">
+${p.meta.map(([k, v]) => `            <div><dt>${esc(k)}</dt><dd${/awaiting/i.test(v) ? ' class="is-awaiting"' : ""}>${esc(v)}</dd></div>`).join("\n")}
+          </dl>
+        </div>
       </section>
 
       <figure class="case-cover">
         <div class="cover-mask">
           <img src="${base}assets/${p.image}.webp" alt="${esc(p.alt)}" width="1536" height="1024" fetchpriority="high" />
         </div>
-        <figcaption>Illustrative artwork.</figcaption>
+        <figcaption class="annot-line"><span>Fig. 01</span> Illustrative cover artwork${unofficial ? " · Unofficial concept" : ""}</figcaption>
       </figure>
+      ${disclaimer}
 
       <section class="case-body" aria-label="Case study">
         <div class="case-col">
@@ -430,6 +552,16 @@ ${p.meta.map(([k, v]) => `          <div><dt>${esc(k)}</dt><dd${/awaiting/i.test
         </div>
       </section>
 ${results}
+      <section class="case-gallery" aria-labelledby="gallery-title">
+        <div class="gallery-title-row">
+          <p class="eyebrow" id="gallery-title">Selected frames</p>
+          <p class="gallery-note">${p.slug === "1xircle" ? "Image slots reserved for the delivered work, pending client approval." : "Image slots reserved for project visuals."}</p>
+        </div>
+        <div class="slot-grid">
+${SLOTS[p.slug].map((label, k) => slot(label, SLOT_SHAPES[k], k + 2, pending)).join("\n")}
+        </div>
+      </section>
+
       <aside class="case-notes" aria-label="Notes on this project">
         <p class="eyebrow">Notes</p>
         <ul>
@@ -440,7 +572,7 @@ ${p.notes.map((n) => `          <li>${esc(n)}</li>`).join("\n")}
       <nav class="case-nav" aria-label="More projects">
         <a class="case-prev" href="${prev.slug}.html"><span aria-hidden="true">←</span> ${esc(prev.name)}</a>
         <a class="case-next" href="${next.slug}.html" data-cursor="Next case">
-          <span class="eyebrow">Next project</span>
+          <span class="eyebrow">Next project · ${esc(next.label)}</span>
           <span class="next-name">${esc(next.name)}</span>
           <span class="next-media"><img src="${base}assets/${next.image}-sm.webp" alt="" width="768" height="512" loading="lazy" /></span>
         </a>
@@ -468,6 +600,7 @@ function notFound() {
   const body = `
     <main id="main" class="case">
       <section class="case-hero lost">
+        <img class="lost-mascot" src="/assets/characters/mascot-point.webp" alt="" width="565" height="720" />
         <p class="eyebrow">Error 404</p>
         <h1 class="case-title"><span class="line-mask"><span>Lost in orbit.</span></span></h1>
         <p class="case-lead">This page drifted out of range. Head back to the studio or see our work.</p>

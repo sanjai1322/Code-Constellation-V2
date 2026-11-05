@@ -9,14 +9,14 @@
     <link rel="icon" href="assets/cc-mark-light.svg" />
     <link rel="preload" href="assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="assets/fonts.css" />
-    <link rel="stylesheet" href="css/site.css?v=20" />
-    <link rel="stylesheet" href="css/about.css?v=20" />
+    <link rel="stylesheet" href="css/site.css?v=21" />
+    <link rel="stylesheet" href="css/about.css?v=21" />
     <script src="js/boot.js"></script>
     <script src="assets/gsap.min.js" defer></script>
     <script src="assets/ScrollTrigger.min.js" defer></script>
     <script src="assets/lenis.min.js" defer></script>
-    <script src="js/site.js?v=20" defer></script>
-    <script src="js/about.js?v=20" defer></script>
+    <script src="js/site.js?v=21" defer></script>
+    <script src="js/about.js?v=21" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -43,83 +43,178 @@
 
     <main id="main">
       <section class="about-hero" aria-labelledby="about-title">
-        <p class="eyebrow about-eyebrow">About the studio</p>
-        <h1 id="about-title" class="about-title">
-          <span class="line-mask"><span>Small studio.</span></span>
-          <span class="line-mask"><span>Connected thinking.</span></span>
-        </h1>
-        <span class="sticker sticker-a" aria-hidden="true">Design meets technology</span>
-        <span class="sticker sticker-b" aria-hidden="true">Built in Tamil Nadu</span>
-        <figure class="about-portrait">
-          <div class="portrait-mask">
-            <img src="assets/studio-original-duo.webp" alt="Our illustrated coder and designer, side by side" width="1536" height="1024" fetchpriority="high" />
+        <div class="about-hero-grid">
+          <div>
+            <p class="eyebrow about-eyebrow"><span class="star-dot" aria-hidden="true"></span>About the studio</p>
+            <h1 id="about-title" class="about-title">
+              <span class="line-mask"><span>Small studio.</span></span>
+              <span class="line-mask"><span>Connected <em>thinking.</em></span></span>
+            </h1>
           </div>
-          <figcaption>Our illustrated duo — the studio’s characters, not portraits of real people.</figcaption>
+          <div class="about-intro">
+            <p>A creative technology studio that designs, builds and grows ambitious brands.</p>
+            <dl class="annot">
+              <div><dt>Founded by</dt><dd>Sanjai K</dd></div>
+              <div><dt>Based in</dt><dd>Tamil Nadu, India</dd></div>
+              <div><dt>Working</dt><dd>Worldwide</dd></div>
+            </dl>
+          </div>
+        </div>
+        <figure class="about-portrait">
+          <div class="portrait-frame">
+            <svg class="portrait-rings" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none"><circle cx="1180" cy="680" r="260" /><circle cx="1180" cy="680" r="430" /><circle cx="1180" cy="680" r="600" /><circle cx="1180" cy="680" r="770" /></g>
+            <circle class="ring-path" cx="1180" cy="680" r="515" fill="none" />
+            <circle class="ring-star" cx="815" cy="316" r="7" />
+          </svg>
+            <img src="assets/studio-duo.webp" alt="Our illustrated coder and designer, side by side" width="1276" height="828" fetchpriority="high" />
+          </div>
+          <figcaption class="annot-line"><span>Fig. 01</span> Our illustrated duo — the studio’s characters, not portraits of real people.</figcaption>
         </figure>
       </section>
 
-      <section class="about-statement" aria-label="Who we are">
-        <p class="statement-copy">Code Constellation brings design, engineering and growth together. Founded by Sanjai K in Tamil Nadu, India, we help ambitious teams move from idea to orbit — and we work with them wherever they are.</p>
+      <section class="about-mission" aria-label="Mission and vision">
+        <div class="mission-col">
+          <p class="eyebrow">Mission</p>
+          <p class="mission-copy">Give ambitious companies the design, engineering and AI of a world-class team, connected into one system that makes them look better, work smarter and grow faster.</p>
+        </div>
+        <div class="mission-col">
+          <p class="eyebrow">Vision</p>
+          <p class="mission-copy">A world where any ambitious business, wherever it starts, can launch and run like a global brand.</p>
+          <p class="annot-line">Built from Tamil Nadu, for the world.</p>
+        </div>
       </section>
 
       <section class="story" aria-label="Our story">
         <article class="story-row">
-          <span class="story-index" aria-hidden="true">01</span>
+          <img class="story-person" src="assets/characters/coder-present.webp" alt="" width="610" height="1000" loading="lazy" decoding="async" />
           <div class="story-text">
-            <p class="eyebrow">Why we started</p>
+            <p class="eyebrow"><span class="story-num">01</span> Why we started</p>
             <h2>Good ideas deserve a connected team.</h2>
-            <p>Brand, technology and growth work best when they work together. Code Constellation was built around that idea: one studio connecting how a business looks, how it works and how it reaches people.</p>
+            <p>Founders and teams often juggle a designer, a developer and an automation freelancer who never talk to each other. Code Constellation was built so one team owns the whole constellation — from the first impression to the systems that run the business.</p>
           </div>
-          <div class="story-art story-art-mark" aria-hidden="true"><img src="assets/cc-mark-light.svg" alt="" width="200" height="200" /></div>
         </article>
         <article class="story-row is-reverse">
-          <span class="story-index" aria-hidden="true">02</span>
           <div class="story-text">
-            <p class="eyebrow">Where we are going</p>
-            <h2>One studio. A wider perspective.</h2>
-            <p>From a clear identity to a useful digital product, we look at the whole picture. We bring design thinking and thoughtful engineering to the same table, with a focus on clarity, craft and work that lasts.</p>
+            <p class="eyebrow"><span class="story-num">02</span> Where we are going</p>
+            <h2>Every service is a star. Together, a shape people recognise.</h2>
+            <p>Brand, product and growth connect into one system. We bring design thinking and thoughtful engineering to the same table, with a focus on clarity, craft and work that lasts.</p>
           </div>
-          <div class="story-art story-art-companion" aria-hidden="true"><img src="assets/companion-ink.webp" alt="" width="1246" height="1262" loading="lazy" /></div>
+          <img class="story-person" src="assets/characters/designer-present.webp" alt="" width="541" height="1000" loading="lazy" decoding="async" />
         </article>
+      </section>
+
+      <section class="values" aria-labelledby="values-title">
+        <div class="block-head">
+          <p class="eyebrow">Core values</p>
+          <h2 id="values-title">Five values. One orbit.</h2>
+        </div>
+        <ol class="value-stack">
+          <li class="value-card">
+            <span class="value-num">01</span>
+            <h3>Craft over noise</h3>
+            <p>Every pixel and every line of code earns its place.</p>
+          </li>
+          <li class="value-card">
+            <span class="value-num">02</span>
+            <h3>Outcomes over output</h3>
+            <p>We sell transformation, not tasks.</p>
+          </li>
+          <li class="value-card">
+            <span class="value-num">03</span>
+            <h3>Clarity always</h3>
+            <p>Plain words, honest timelines, no jargon.</p>
+          </li>
+          <li class="value-card">
+            <span class="value-num">04</span>
+            <h3>Explore first</h3>
+            <p>We test new technology so our clients don’t have to.</p>
+          </li>
+          <li class="value-card">
+            <span class="value-num">05</span>
+            <h3>Long orbit</h3>
+            <p>Relationships that last well beyond launch.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="journey-about" aria-labelledby="journey-title">
+        <div class="block-head">
+          <p class="eyebrow">The client journey</p>
+          <h2 id="journey-title">How a client travels.</h2>
+          <p class="block-sub">Every client enters through one pillar and grows into all three. Project, then retainer, then long-term partnership.</p>
+        </div>
+        <div class="journey-track">
+          <svg class="journey-line-about" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M20 20 H1180" /></svg>
+          <span class="journey-star" aria-hidden="true"></span>
+          <ol class="journey-steps">
+            <li>
+              <span class="step-dot" aria-hidden="true"></span>
+              <p class="eyebrow">01 · Entry</p>
+              <h3>Brand &amp; Create</h3>
+              <p>One niche, one clear result. The door in: a brand, a launch site, a deck or a reel.</p>
+              <span class="step-kind">Project</span>
+            </li>
+            <li>
+              <span class="step-dot" aria-hidden="true"></span>
+              <p class="eyebrow">02 · Expand</p>
+              <h3>Build</h3>
+              <p>The product, site or system the brand runs on. Same team, no hand-offs.</p>
+              <span class="step-kind">Project</span>
+            </li>
+            <li>
+              <span class="step-dot" aria-hidden="true"></span>
+              <p class="eyebrow">03 · Orbit</p>
+              <h3>Grow &amp; Operate</h3>
+              <p>Automation, CRM, SEO and analytics on a monthly retainer. Clients stay and grow with us.</p>
+              <span class="step-kind">Retainer</span>
+            </li>
+          </ol>
+        </div>
       </section>
 
       <section class="founder" aria-labelledby="founder-title">
         <div class="founder-card">
+          <figure class="slot founder-slot" style="--ar: 4 / 5">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Founder photo</span>
+              <span class="slot-annot">IMG · 4:5 · 1600 × 2000 · Placeholder</span>
+            </div>
+          </figure>
+          <div class="founder-text">
+            <p class="eyebrow">Founder · CEO</p>
+            <h2 id="founder-title">Sanjai K</h2>
+            <p>Founder of Code Constellation, based in Tamil Nadu, India.</p>
+            <a class="cta" href="work/sanjai-portfolio.html"><span class="label">See Sanjai’s portfolio lab</span><span class="arrow-chip"></span></a>
+          </div>
           <span class="founder-mono" aria-hidden="true">SK</span>
-          <p class="eyebrow">Founder</p>
-          <h2 id="founder-title">Sanjai K</h2>
-          <p>Founder of Code Constellation, based in Tamil Nadu, India.</p>
-          <a class="cta" href="work/sanjai-portfolio.html"><span class="label">See Sanjai’s portfolio lab</span><span class="arrow-chip"></span></a>
         </div>
       </section>
 
-      <section class="principles" aria-labelledby="principles-title">
-        <div class="principles-head">
-          <p class="eyebrow">How we work</p>
-          <h2 id="principles-title">Four studio principles.</h2>
+      <section class="pillars" aria-labelledby="pillars-title">
+        <div class="block-head">
+          <p class="eyebrow">Capabilities</p>
+          <h2 id="pillars-title">Build. Brand. Grow.</h2>
+          <p class="block-sub">Three pillars, one connected system.</p>
         </div>
-        <ol class="principle-stack">
-          <li class="principle-card">
-            <span class="principle-num">01</span>
-            <h3>Start with the right question.</h3>
-            <p>We begin with your goals, your audience and the problem worth solving. A clearer question gives every design and engineering decision a purpose.</p>
-          </li>
-          <li class="principle-card">
-            <span class="principle-num">02</span>
-            <h3>Give good ideas room.</h3>
-            <p>We explore, test and refine. Making space for thoughtful work helps us find a direction with character and substance.</p>
-          </li>
-          <li class="principle-card">
-            <span class="principle-num">03</span>
-            <h3>Make every detail useful.</h3>
-            <p>A strong identity and a smooth experience should work together. We care about how things look, what they communicate and how they feel to use.</p>
-          </li>
-          <li class="principle-card">
-            <span class="principle-num">04</span>
-            <h3>Keep it clear.</h3>
-            <p>We simplify the message, the interface and the way we work together. Complexity belongs behind the scenes, not between you and your customers.</p>
-          </li>
-        </ol>
+        <div class="pillar-grid">
+          <div class="pillar">
+            <p class="eyebrow">01</p>
+            <h3>Build</h3>
+            <ul><li><a href="index.html#services">Websites and web apps</a></li><li><a href="index.html#services">SaaS products</a></li><li><a href="index.html#services">AI systems and integration</a></li><li><a href="index.html#services">Ecommerce and cloud</a></li></ul>
+          </div>
+          <div class="pillar">
+            <p class="eyebrow">02</p>
+            <h3>Brand &amp; Create</h3>
+            <ul><li><a href="index.html#services">Brand identity and UI/UX</a></li><li><a href="index.html#services">3D, motion and AI films</a></li><li><a href="index.html#services">Pitch decks and campaigns</a></li><li><a href="index.html#services">Templates and content</a></li></ul>
+          </div>
+          <div class="pillar">
+            <p class="eyebrow">03</p>
+            <h3>Grow &amp; Operate</h3>
+            <ul><li><a href="index.html#services">AI automation and agents</a></li><li><a href="index.html#services">CRM and revenue ops</a></li><li><a href="index.html#services">SEO and AI search</a></li><li><a href="index.html#services">Analytics and growth</a></li></ul>
+          </div>
+        </div>
       </section>
 
       <section class="about-gallery" aria-label="Inside our world">
@@ -131,47 +226,31 @@
           <ul class="gallery-track">
             <li class="g-tile g-mark"><img src="assets/cc-mark-light.svg" alt="Code Constellation crescent mark" width="160" height="160" /></li>
             <li class="g-tile g-type">Build.<br />Brand.<br />Grow.</li>
-            <li class="g-tile g-image"><img src="assets/project-roadster-sm.webp" alt="Tesla Roadster unofficial concept cover" width="768" height="512" loading="lazy" /></li>
+            <li class="g-tile g-image"><img src="assets/project-roadster-sm.webp" alt="Tesla Roadster unofficial concept cover" width="768" height="512" loading="lazy" /><span>Unofficial concept</span></li>
             <li class="g-tile g-code"><span>&lt;idea&gt;</span><strong>Make it real.</strong><span>&lt;/idea&gt;</span></li>
-            <li class="g-tile g-image"><img src="assets/project-poppio-sm.webp" alt="Poppio concept cover" width="768" height="512" loading="lazy" /></li>
-            <li class="g-tile g-companion"><img src="assets/companion-ink.webp" alt="Our blue companion" width="1246" height="1262" loading="lazy" /></li>
+            <li class="g-tile g-image"><img src="assets/project-poppio-sm.webp" alt="Poppio concept cover" width="768" height="512" loading="lazy" /><span>Concept</span></li>
+            <li class="g-tile g-mascot"><img src="assets/characters/mascot-jump.webp" alt="Our blue companion, jumping" width="570" height="720" loading="lazy" /></li>
           </ul>
         </div>
       </section>
 
-      <section class="capabilities" aria-labelledby="cap-title">
-        <p class="eyebrow">Capabilities</p>
-        <h2 id="cap-title">One studio. Plenty of range.</h2>
-        <ul class="cap-cloud">
-          <li><a href="index.html#services">Brand strategy</a></li>
-          <li><a href="index.html#services">Visual identity</a></li>
-          <li><a href="index.html#services">Logo design</a></li>
-          <li><a href="index.html#services">Brand guidelines</a></li>
-          <li><a href="index.html#services">Pitch decks</a></li>
-          <li><a href="index.html#services">Web design</a></li>
-          <li><a href="index.html#services">Web development</a></li>
-          <li><a href="index.html#services">Ecommerce</a></li>
-          <li><a href="index.html#services">SaaS products</a></li>
-          <li><a href="index.html#services">AI agents</a></li>
-          <li><a href="index.html#services">Workflow automation</a></li>
-          <li><a href="index.html#services">CRM systems</a></li>
-          <li><a href="index.html#services">3D visuals</a></li>
-          <li><a href="index.html#services">Motion design</a></li>
-          <li><a href="index.html#services">AI films</a></li>
-          <li><a href="index.html#services">SEO</a></li>
-          <li><a href="index.html#services">AI search</a></li>
-          <li><a href="index.html#services">Analytics</a></li>
-          <li><a href="index.html#services">Growth optimization</a></li>
-        </ul>
-        <button class="cta" type="button" data-contact><span class="label">Find your next step</span><span class="arrow-chip"></span></button>
+      <section class="about-cta" aria-label="Start a project">
+        <h2>From idea to orbit.</h2>
+        <button class="cta" type="button" data-contact><span class="label">Start a project</span><span class="arrow-chip"></span></button>
       </section>
     </main>
     <footer class="site-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -201,6 +280,7 @@
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>

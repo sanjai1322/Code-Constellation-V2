@@ -41,11 +41,44 @@ Clips play only while visible and the tab is visible; the "Pause animations" but
 - Sanjai creative portfolio is a lab project built around an interactive 3D head; its technology stack is marked "awaiting documentation".
 - The contact form opens an email draft; nothing is sent or stored.
 
-## Artwork generation
-Generated using the built-in image generation tool. The hero uses `assets/hero-coder.webp` and `assets/hero-designer.webp` (straight crops of `assets/mascots.png`, faces untouched) and the waving companion clip `assets/mascot-wave.webm` / `.webp`. The supplied logo is unchanged at `assets/cc-mark-light.svg`. Service illustrations are the transparent clips in `assets/services/` (VP9-alpha WebM, animated WebP fallback, PNG poster).
+## Characters and artwork
 
-Final companion edit prompt:
-Edit target image 1: the blue rounded comet mascot. Style reference image 2: the two hand-drawn human characters. REDRAW ONLY the blue mascot from image 1 to look illustrated by exactly the same artist as image 2: imperfect dark navy ink contour lines, dry gouache grain, hand-drawn hatching, flat 2D editorial cartoon shading, paper-like texture within the colored shapes. Preserve the blue rounded droplet body, one curved top tuft, pale lavender face patch, friendly eyes and smile, tiny mitten hands and feet. Simplify glossy eyes into expressive cartoon eyes with a small ink highlight. Friendly wave, three-quarter posture with feet standing on one baseline, a little character and wit. The left hand can wave and other rest on hip. Electric blue #2F6BFF, lavender #C9CAEE, ivory #F1F2FB, navy #0A1033. Absolutely no 3D rendering, no gradients, no vinyl/plastic material, no bloom, no rim lighting, no soft airbrush, no glossy shine. Single character only. No humans in output. No cat, no animal ears, no background, no ground plane, no cast shadow, no text. Genuine transparent background. Full body completely visible with modest transparent padding. Match line weight and sketchy expressive quality of image 2, so this mascot naturally belongs between those two people.
+The approved characters are the illustrated coder and designer and the smooth 3D blue mascot (curled cyan/lavender crest, ivory face, star-highlighted eyes, orbital C chest emblem). The earlier hand-drawn blue companion is **rejected** and has been removed from the site; do not reintroduce it or mix mascot identities.
+
+| File | Pose | Used on |
+| --- | --- | --- |
+| `assets/hero-coder.webp`, `assets/hero-designer.webp` | Holding boards (straight crops of `assets/mascots.png`, faces untouched) | Home hero |
+| `assets/mascot-wave.webm` / `.webp` / `-poster.webp` | 3D mascot waving (animated, transparent) | Home hero |
+| `assets/characters/coder-present.webp` | Presents to his right | Home Work heading, About story 01 |
+| `assets/characters/designer-present.webp` | Presents to her left | Home Services heading, About story 02 |
+| `assets/characters/coder-wave.webp`, `designer-wave.webp` | Waving | Footer contact point (all pages) |
+| `assets/characters/mascot-front.webp` | 3D mascot, front | Home FAQ |
+| `assets/characters/mascot-hello.webp` | 3D mascot, waving | Contact dialog |
+| `assets/characters/mascot-jump.webp` | 3D mascot, jumping | About gallery |
+| `assets/characters/mascot-point.webp` | 3D mascot, pointing | 404 page |
+| `assets/characters/mascot-wave.webp` | 3D mascot, waving (spare) | — |
+
+The pose PNGs were supplied as AI-assisted reproductions of the approved sheet; they were trimmed and exported to WebP with alpha and explicit dimensions (no recolouring or redrawing).
+
+The hero mascot clip was re-keyed from the original green-screen source (`Mascot_character_waving_animatio…mp4`): green-excess matte, despill, interior holes filled so the eyes stay solid, edge colour taken from the nearest solid body pixel. Outputs: VP9-alpha WebM (Chrome, Firefox, Edge), animated WebP fallback (Safari), WebP poster.
+
+The hero boards are inline SVG: the coder's board types `<idea/>`; the designer's board draws a constellation into the crescent mark captioned "orbit." — together, *from idea to orbit*.
+
+Service illustrations are the transparent clips in `assets/services/` (VP9-alpha WebM, animated WebP fallback, PNG poster). The supplied logo is unchanged at `assets/cc-mark-light.svg`.
+
+### Character prompt (for new poses)
+
+Attach the approved character sheet every time and generate one PNG per pose:
+
+> Preserve the exact approved character's face, silhouette, proportions, costume, materials and colors. Change only the requested pose: [POSE]. For the mascot preserve the smooth 3D cobalt body, single curled cyan/lavender crest, ivory face, star-highlighted navy eyes, lavender cheeks and feet, and orbital C chest emblem. For humans preserve the original hand-drawn style and exact outfits. One full-body character, all limbs within frame, clean transparent alpha background, no ground shadow, no haze, no labels or decorative borders. Never substitute the rejected hand-drawn blue companion.
+
+## Brand book
+
+Layout and copy follow the Code Constellation Brand Book v1.0 (October 2026): Geist 400/500 with tight headline tracking; Geist Mono eyebrows, uppercase, tracked 14%; sentence case everywhere else; left-aligned by default with only single lines centred; graphic devices used: orbit lines, the star dot, constellation links, orbit path, a 4px dot grid (image slots) and mono technical annotations; one glow per frame. About-page mission, vision, values, client journey and pillars are quoted from the book.
+
+## Image placeholder slots (case studies)
+
+Each case page has a "Selected frames" gallery of reserved slots (16:9, 4:5, 4:3, 21:9 and three 1:1). To add an approved image, edit `tools/build-pages.mjs` (or the generated page) and replace the slot's `.slot-frame` element with `<img src="…" alt="…">`; the slot keeps its aspect ratio and corner radius.
 
 ## Reference research
 - https://two26.studio/
@@ -53,5 +86,5 @@ Edit target image 1: the blue rounded comet mascot. Style reference image 2: the
 - https://github.com/darkroomengineering/lenis
 - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices
 
-## About-page character correction
-The About hero is an identity-preserving edit of assets/mascots.png, generated with the built-in image generation tool. The requested composition is two close, back-to-back head-and-shoulder portraits. Preserve the original boy's round glasses, tousled navy hair, youthful face, warm skin and blue shirt, and the girl's short wavy bob, hoop earrings, cheerful face and lavender shirt. Remove signs and full bodies; keep the original ink-and-gouache treatment and transparent background. This illustration represents the studio's fictional characters, not portraits of the founder or team.
+## About-page image
+The About hero uses `assets/studio-duo.webp`, a flat-bottom crop of `assets/studio-original-duo.png` (the studio's illustrated characters, not portraits of real people).

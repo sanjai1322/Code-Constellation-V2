@@ -1,11 +1,16 @@
-/* Code Constellation — About page motion. */
+/* Code Constellation — About page motion.
+   Ownership: hero intro -> title/portrait; scrub tweens -> rings star, mission words,
+   value cards, journey star; marquee ticker -> .gallery-track. */
 (() => {
   const CC = window.CC || { reduced: true, onReveal: (fn) => fn() };
-  const $$ = (s) => [...document.querySelectorAll(s)];
-  const galleryBtn = document.querySelector(".gallery-toggle");
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const galleryBtn = $(".gallery-toggle");
+  const steps = $$(".journey-steps li");
 
   if (CC.reduced) {
-    const vp = document.querySelector(".gallery-viewport");
+    steps.forEach((li) => li.classList.add("is-lit"));
+    const vp = $(".gallery-viewport");
     if (vp) vp.style.overflowX = "auto";
     if (galleryBtn) galleryBtn.hidden = true;
     return;
@@ -13,32 +18,47 @@
 
   /* Hero entrance */
   gsap.set(".about-title .line-mask > span", { yPercent: 110 });
-  gsap.set(".about-hero .sticker, .about-eyebrow", { opacity: 0 });
-  gsap.set(".portrait-mask", { clipPath: "inset(30% 22% 0% 22% round 400px)" });
-  gsap.set(".portrait-mask img", { yPercent: 18 });
+  gsap.set(".about-eyebrow, .about-intro > *", { opacity: 0, y: 18 });
+  gsap.set(".portrait-frame", { clipPath: "inset(18% 10% 0% 10% round 48px)" });
+  gsap.set(".portrait-frame img", { yPercent: 14 });
   CC.onReveal(() => {
     gsap
       .timeline({ defaults: { ease: "power4.out" } })
-      .to(".about-eyebrow", { opacity: 1, duration: 0.6 }, 0)
+      .to(".about-eyebrow", { opacity: 1, y: 0, duration: 0.6 }, 0)
       .to(".about-title .line-mask > span", { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0.05)
-      .to(".portrait-mask", { clipPath: "inset(0% 0% 0% 0% round 60px)", duration: 1.4, ease: "expo.out" }, 0.3)
-      .to(".portrait-mask img", { yPercent: 0, duration: 1.4, ease: "expo.out" }, 0.3)
-      .fromTo(".about-hero .sticker", { scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: "back.out(2.2)" }, 0.7);
+      .to(".about-intro > *", { opacity: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.35)
+      .to(".portrait-frame", { clipPath: "inset(0% 0% 0% 0% round 36px)", duration: 1.4, ease: "expo.out" }, 0.3)
+      .to(".portrait-frame img", { yPercent: 0, duration: 1.4, ease: "expo.out" }, 0.3);
   });
 
-  /* Portrait parallax while leaving the hero */
-  gsap.to(".portrait-mask img", {
-    yPercent: -8,
+  /* Portrait: the duo rises slightly as the frame leaves; the star travels its orbit */
+  gsap.to(".portrait-frame img", {
+    yPercent: -4,
     ease: "none",
     scrollTrigger: { trigger: ".about-portrait", start: "top 40%", end: "bottom top", scrub: true },
   });
+  const ringStar = $(".ring-star");
+  if (ringStar) {
+    const p = { a: -150 };
+    const place = () => {
+      const r = (p.a * Math.PI) / 180;
+      ringStar.setAttribute("cx", (1180 + 515 * Math.cos(r)).toFixed(1));
+      ringStar.setAttribute("cy", (680 + 515 * Math.sin(r)).toFixed(1));
+    };
+    place();
+    gsap.to(p, {
+      a: -96,
+      ease: "none",
+      onUpdate: place,
+      scrollTrigger: { trigger: ".about-portrait", start: "top 85%", end: "bottom top", scrub: true },
+    });
+  }
 
-  /* Statement: words light up as they cross the viewport */
-  const statement = document.querySelector(".statement-copy");
-  if (statement) {
-    const text = statement.textContent.trim();
-    statement.setAttribute("aria-label", text);
-    statement.replaceChildren(
+  /* Mission and vision: words light up as they cross the viewport */
+  $$(".mission-copy").forEach((el) => {
+    const text = el.textContent.trim();
+    el.setAttribute("aria-label", text);
+    el.replaceChildren(
       ...text.split(/\s+/).flatMap((w, i) => {
         const s = document.createElement("span");
         s.className = "word";
@@ -48,64 +68,78 @@
       }),
     );
     gsap.fromTo(
-      statement.querySelectorAll(".word"),
-      { opacity: 0.14 },
-      {
-        opacity: 1,
-        stagger: 0.05,
-        ease: "none",
-        scrollTrigger: { trigger: statement, start: "top 80%", end: "bottom 45%", scrub: true },
-      },
+      $$(".word", el),
+      { opacity: 0.16 },
+      { opacity: 1, stagger: 0.05, ease: "none", scrollTrigger: { trigger: el, start: "top 82%", end: "bottom 50%", scrub: true } },
     );
-  }
-
-  /* Story rows */
-  $$(".story-row").forEach((row) => {
-    gsap.from(row.querySelector(".story-text"), {
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: { trigger: row, start: "top 80%", once: true },
-    });
-    const art = row.querySelector(".story-art");
-    gsap.fromTo(art, { scale: 0.7, rotation: -12 }, { scale: 1, rotation: 0, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "center 55%", scrub: true } });
-    gsap.to(art.querySelector("img"), { rotation: art.classList.contains("story-art-mark") ? 120 : 10, ease: "none", scrollTrigger: { trigger: row, start: "top bottom", end: "bottom top", scrub: true } });
   });
 
-  /* Founder */
+  /* Story rows: presenter steps in from the side they present from */
+  $$(".story-row").forEach((row) => {
+    const person = $(".story-person", row);
+    const fromLeft = !row.classList.contains("is-reverse");
+    gsap
+      .timeline({ scrollTrigger: { trigger: row, start: "top 78%", once: true }, defaults: { ease: "power3.out" } })
+      .from(person, { x: fromLeft ? -60 : 60, opacity: 0, duration: 1 }, 0)
+      .from($(".story-text", row).children, { y: 40, opacity: 0, duration: 0.9, stagger: 0.08 }, 0.1);
+  });
+
+  /* Values: each card settles back as the next one stacks over it */
+  const cards = $$(".value-card");
+  cards.forEach((card, i) => {
+    const next = cards[i + 1];
+    if (!next) return;
+    gsap.to(card, { scale: 0.95, ease: "none", scrollTrigger: { trigger: next, start: "top 88%", end: "top 30%", scrub: true } });
+  });
+
+  /* Journey: the star travels the dotted line; each stage lights as it passes */
+  const track = $(".journey-track");
+  const star = $(".journey-star");
+  if (track && star) {
+    const vertical = () => matchMedia("(max-width: 900px)").matches;
+    ScrollTrigger.create({
+      trigger: track,
+      start: "top 75%",
+      end: "bottom 55%",
+      scrub: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        if (vertical()) gsap.set(star, { x: 0, y: p * (track.offsetHeight - 14) });
+        else gsap.set(star, { y: 0, x: p * (track.offsetWidth - 14) });
+        steps.forEach((li, i) => li.classList.toggle("is-lit", p >= i / steps.length + 0.02));
+      },
+    });
+  }
+
+  /* Founder card and pillars */
   gsap.from(".founder-card", {
-    clipPath: "inset(12% 8% round 60px)",
+    clipPath: "inset(10% 6% round 60px)",
     duration: 1.2,
     ease: "expo.out",
     scrollTrigger: { trigger: ".founder", start: "top 75%", once: true },
   });
-  gsap.fromTo(".founder-mono", { xPercent: 20 }, { xPercent: -10, ease: "none", scrollTrigger: { trigger: ".founder", start: "top bottom", end: "bottom top", scrub: true } });
-
-  /* Principles: each card shrinks slightly as the next one stacks over it */
-  const cards = $$(".principle-card");
-  cards.forEach((card, i) => {
-    const next = cards[i + 1];
-    if (!next) return;
-    gsap.to(card, {
-      scale: 0.94,
-      ease: "none",
-      scrollTrigger: { trigger: next, start: "top 85%", end: "top 25%", scrub: true },
-    });
+  gsap.from(".pillar", {
+    y: 50,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.1,
+    ease: "power3.out",
+    scrollTrigger: { trigger: ".pillar-grid", start: "top 82%", once: true },
   });
 
-  /* Gallery marquee: constant drift that speeds up with scroll velocity */
-  const track = document.querySelector(".gallery-track");
-  if (track) {
-    const originals = [...track.children];
+  /* Gallery marquee: steady drift that speeds up with scroll velocity */
+  const gtrack = $(".gallery-track");
+  if (gtrack) {
+    const originals = [...gtrack.children];
     originals.forEach((n) => {
       const c = n.cloneNode(true);
       c.setAttribute("aria-hidden", "true");
       c.querySelectorAll("img").forEach((img) => (img.alt = ""));
-      track.append(c);
+      gtrack.append(c);
     });
     let unit = 0;
-    const measure = () => (unit = track.children[originals.length].offsetLeft - track.children[0].offsetLeft);
+    const measure = () => (unit = gtrack.children[originals.length].offsetLeft - gtrack.children[0].offsetLeft);
     measure();
     addEventListener("resize", measure);
     let x = 0;
@@ -121,7 +155,7 @@
       if (paused || !visible || !unit || document.hidden) return;
       x -= (1 + boost) * dt * 0.045;
       x = ((x % unit) - unit) % unit;
-      track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
+      gtrack.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
     });
     galleryBtn?.addEventListener("click", () => {
       paused = !paused;
@@ -129,15 +163,4 @@
       galleryBtn.setAttribute("aria-pressed", String(paused));
     });
   }
-
-  /* Capabilities */
-  gsap.from(".cap-cloud li", {
-    y: 30,
-    opacity: 0,
-    scale: 0.85,
-    duration: 0.55,
-    stagger: 0.03,
-    ease: "back.out(1.8)",
-    scrollTrigger: { trigger: ".cap-cloud", start: "top 85%", once: true },
-  });
 })();

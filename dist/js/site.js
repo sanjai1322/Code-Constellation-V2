@@ -190,25 +190,35 @@
     if (hasGsap) ScrollTrigger.refresh();
   });
 
-  /* ---------- Deep links: settle layout (pins, fonts) before jumping ---------- */
-  const settle = () => {
-    if (hasGsap) ScrollTrigger.refresh();
+  /* ---------- Deep links: hold the anchor until layout has settled ---------- */
+  // Pins, fonts and ScrollTrigger's own load refresh can all move the page after the
+  // first jump. For a short window we re-apply the anchor after each of them, and
+  // stop the moment the visitor scrolls, taps or presses a key.
+  const anchorTarget = () => {
     const id = decodeURIComponent(location.hash.slice(1));
-    const target = id && document.getElementById(id);
-    if (target) CC.scrollTo(target, { immediate: true });
+    return (id && document.getElementById(id)) || null;
   };
+  let holding = !!location.hash;
+  const release = () => (holding = false);
+  ["wheel", "touchstart", "keydown", "pointerdown"].forEach((ev) => addEventListener(ev, release, { once: true, passive: true }));
+  const reanchor = () => {
+    const target = holding && anchorTarget();
+    if (!target) return;
+    if (Math.abs(target.getBoundingClientRect().top - CC.headerOffset()) > 2) {
+      CC.lenis?.resize?.();
+      CC.scrollTo(target, { immediate: true });
+    }
+  };
+  if (hasGsap) ScrollTrigger.addEventListener("refresh", () => requestAnimationFrame(reanchor));
   const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
   addEventListener(
     "load",
     () =>
       fontsReady.then(() => {
-        requestAnimationFrame(settle);
-        // Re-check once late layout (lazy media, pin spacing) has settled.
-        setTimeout(() => {
-          const id = decodeURIComponent(location.hash.slice(1));
-          const target = id && document.getElementById(id);
-          if (target && Math.abs(target.getBoundingClientRect().top - CC.headerOffset()) > 4) CC.scrollTo(target, { immediate: true });
-        }, 700);
+        if (hasGsap) ScrollTrigger.refresh();
+        requestAnimationFrame(reanchor);
+        [400, 1000, 2000, 3200].forEach((t) => setTimeout(reanchor, t));
+        setTimeout(release, 3600);
       }),
     { once: true },
   );

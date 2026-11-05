@@ -9,14 +9,14 @@
     <link rel="icon" href="../assets/cc-mark-light.svg" />
     <link rel="preload" href="../assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="../assets/fonts.css" />
-    <link rel="stylesheet" href="../css/site.css?v=20" />
-    <link rel="stylesheet" href="../css/case.css?v=20" />
+    <link rel="stylesheet" href="../css/site.css?v=21" />
+    <link rel="stylesheet" href="../css/case.css?v=21" />
     <script src="../js/boot.js"></script>
     <script src="../assets/gsap.min.js" defer></script>
     <script src="../assets/ScrollTrigger.min.js" defer></script>
     <script src="../assets/lenis.min.js" defer></script>
-    <script src="../js/site.js?v=20" defer></script>
-    <script src="../js/case.js?v=20" defer></script>
+    <script src="../js/site.js?v=21" defer></script>
+    <script src="../js/case.js?v=21" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -41,26 +41,32 @@
       </div>
     </header>
 
-    <main id="main" class="case">
+    <main id="main" class="case case-client">
       <section class="case-hero" aria-labelledby="case-title">
-        <a class="back-link" href="../index.html#work"><span aria-hidden="true">←</span> All work</a>
-        <p class="eyebrow case-label">Client work · Investor storytelling</p>
+        <div class="case-topline">
+          <a class="back-link" href="../index.html#work"><span aria-hidden="true">←</span> All work</a>
+          <span class="case-index">01 / 06</span>
+        </div>
+        <p class="case-label"><span class="kind-chip kind-client">Client work</span><span class="eyebrow">Investor storytelling</span></p>
         <h1 id="case-title" class="case-title"><span class="line-mask"><span>1Xircle</span></span></h1>
-        <p class="case-lead">An AI-powered stokvel and savings-circle platform in South Africa, needing to explain its product to investors clearly and quickly.</p>
-        <dl class="case-meta">
-          <div><dt>Client</dt><dd>1Xircle</dd></div>
-          <div><dt>Market</dt><dd>South Africa</dd></div>
-          <div><dt>Type</dt><dd>Client work</dd></div>
-          <div><dt>Deliverables</dt><dd>Investor pitch deck, 60-second explainer, logo clean-up</dd></div>
-        </dl>
+        <div class="case-intro">
+          <p class="case-lead">An AI-powered stokvel and savings-circle platform in South Africa, needing to explain its product to investors clearly and quickly.</p>
+          <dl class="case-meta">
+            <div><dt>Client</dt><dd>1Xircle</dd></div>
+            <div><dt>Market</dt><dd>South Africa</dd></div>
+            <div><dt>Type</dt><dd>Client work</dd></div>
+            <div><dt>Deliverables</dt><dd>Investor pitch deck, 60-second explainer, logo clean-up</dd></div>
+          </dl>
+        </div>
       </section>
 
       <figure class="case-cover">
         <div class="cover-mask">
           <img src="../assets/project-1xircle.webp" alt="Illustrative cover artwork for 1Xircle" width="1536" height="1024" fetchpriority="high" />
         </div>
-        <figcaption>Illustrative artwork.</figcaption>
+        <figcaption class="annot-line"><span>Fig. 01</span> Illustrative cover artwork</figcaption>
       </figure>
+      
 
       <section class="case-body" aria-label="Case study">
         <div class="case-col">
@@ -69,7 +75,7 @@
         </div>
         <div class="case-col">
           <p class="eyebrow">What we did</p>
-          <ul class="case-list"><li>Investor pitch deck</li><li>60-second explainer</li><li>Logo clean-up</li></ul>
+          <ol class="case-list"><li><span>01</span>Investor pitch deck</li><li><span>02</span>60-second explainer</li><li><span>03</span>Logo clean-up</li></ol>
         </div>
       </section>
 
@@ -80,6 +86,64 @@
           <li><strong>✓</strong><span>Successful investor meeting</span></li>
         </ul>
       </section>
+      <section class="case-gallery" aria-labelledby="gallery-title">
+        <div class="gallery-title-row">
+          <p class="eyebrow" id="gallery-title">Selected frames</p>
+          <p class="gallery-note">Image slots reserved for the delivered work, pending client approval.</p>
+        </div>
+        <div class="slot-grid">
+          <figure class="slot slot-wide" style="--ar: 16 / 9">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Pitch deck — cover slide</span>
+              <span class="slot-annot">IMG 02 · 16/9 · 2400 × 1350 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-tall" style="--ar: 4 / 5">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Logo — before and after</span>
+              <span class="slot-annot">IMG 03 · 4/5 · 1600 × 2000 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-half" style="--ar: 4 / 3">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Deck — product story spread</span>
+              <span class="slot-annot">IMG 04 · 4/3 · 2000 × 1500 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-strip" style="--ar: 21 / 9">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Explainer — storyboard strip</span>
+              <span class="slot-annot">IMG 05 · 21/9 · 2520 × 1080 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Explainer — frame 01</span>
+              <span class="slot-annot">IMG 06 · 1/1 · 1600 × 1600 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Explainer — frame 02</span>
+              <span class="slot-annot">IMG 07 · 1/1 · 1600 × 1600 · Awaiting client approval</span>
+            </div>
+          </figure>
+          <figure class="slot slot-square" style="--ar: 1 / 1">
+            <div class="slot-frame">
+              <span class="slot-icon" aria-hidden="true"></span>
+              <span class="slot-label">Logo — app icon</span>
+              <span class="slot-annot">IMG 08 · 1/1 · 1600 × 1600 · Awaiting client approval</span>
+            </div>
+          </figure>
+        </div>
+      </section>
+
       <aside class="case-notes" aria-label="Notes on this project">
         <p class="eyebrow">Notes</p>
         <ul>
@@ -91,7 +155,7 @@
       <nav class="case-nav" aria-label="More projects">
         <a class="case-prev" href="sanjai-portfolio.html"><span aria-hidden="true">←</span> Sanjai creative portfolio</a>
         <a class="case-next" href="poppio.html" data-cursor="Next case">
-          <span class="eyebrow">Next project</span>
+          <span class="eyebrow">Next project · Concept</span>
           <span class="next-name">Poppio</span>
           <span class="next-media"><img src="../assets/project-poppio-sm.webp" alt="" width="768" height="512" loading="lazy" /></span>
         </a>
@@ -99,10 +163,16 @@
     </main>
     <footer class="site-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="../assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="../assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -132,6 +202,7 @@
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="../assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>

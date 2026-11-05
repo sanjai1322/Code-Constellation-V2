@@ -9,14 +9,14 @@
     <link rel="icon" href="/assets/cc-mark-light.svg" />
     <link rel="preload" href="/assets/font-1.ttf" as="font" type="font/ttf" crossorigin />
     <link rel="stylesheet" href="/assets/fonts.css" />
-    <link rel="stylesheet" href="/css/site.css?v=20" />
-    <link rel="stylesheet" href="/css/case.css?v=20" />
+    <link rel="stylesheet" href="/css/site.css?v=21" />
+    <link rel="stylesheet" href="/css/case.css?v=21" />
     <script src="/js/boot.js"></script>
     <script src="/assets/gsap.min.js" defer></script>
     <script src="/assets/ScrollTrigger.min.js" defer></script>
     <script src="/assets/lenis.min.js" defer></script>
-    <script src="/js/site.js?v=20" defer></script>
-    <script src="/js/case.js?v=20" defer></script>
+    <script src="/js/site.js?v=21" defer></script>
+    <script src="/js/case.js?v=21" defer></script>
   </head>
   <body id="top">
     <div class="curtain" aria-hidden="true">
@@ -43,6 +43,7 @@
 
     <main id="main" class="case">
       <section class="case-hero lost">
+        <img class="lost-mascot" src="/assets/characters/mascot-point.webp" alt="" width="565" height="720" />
         <p class="eyebrow">Error 404</p>
         <h1 class="case-title"><span class="line-mask"><span>Lost in orbit.</span></span></h1>
         <p class="case-lead">This page drifted out of range. Head back to the studio or see our work.</p>
@@ -51,10 +52,16 @@
     </main>
     <footer class="site-footer">
       <p class="eyebrow">Enough scrolling. Let’s make something.</p>
-      <button class="footer-cta" type="button" data-contact>
-        <span class="line"><span>Your next chapter.</span></span>
-        <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
-      </button>
+      <div class="footer-top">
+        <button class="footer-cta" type="button" data-contact>
+          <span class="line"><span>Your next chapter.</span></span>
+          <span class="line"><span>Let’s talk <span class="arrow-glyph" aria-hidden="true">↗</span></span></span>
+        </button>
+        <div class="footer-wave" aria-hidden="true">
+          <img class="wave-coder" src="/assets/characters/coder-wave.webp" alt="" width="380" height="1000" loading="lazy" decoding="async" />
+          <img class="wave-designer" src="/assets/characters/designer-wave.webp" alt="" width="516" height="1000" loading="lazy" decoding="async" />
+        </div>
+      </div>
       <div class="footer-grid">
         <div>
           <p class="eyebrow">Email us</p>
@@ -84,6 +91,7 @@
 
     <dialog id="contact" aria-labelledby="contact-title">
       <button class="close" type="button" aria-label="Close contact dialog">×</button>
+      <img class="dialog-mascot" src="/assets/characters/mascot-hello.webp" alt="" width="573" height="720" loading="lazy" decoding="async" />
       <p class="eyebrow">Start a conversation</p>
       <h2 id="contact-title">What are you working on?</h2>
       <p>Tell us a little about your idea, your goals and your timeline.</p>

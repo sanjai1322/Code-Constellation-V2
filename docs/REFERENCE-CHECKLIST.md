@@ -1,6 +1,6 @@
 # Reference checklist — two26.studio → Code Constellation
 
-**Important limitation.** During this implementation pass the reference site (`two26.studio`) was blocked by the build environment's network policy, so it could not be browsed, scrolled or inspected live. The mapping below follows the section structure already present in this repository (which was modelled on the reference) and the behaviours listed in the project brief. Items marked **needs live comparison** should be checked side by side against the reference once it is reachable; nothing here claims a pixel-perfect match.
+**Important limitation.** In both implementation passes (4 and 5 November 2026) the reference site (`two26.studio`) was blocked by the build environment's network policy, so it could not be browsed, scrolled, timed or inspected live. The supplied screen recording of our own site (1105.mp4) and the Code Constellation Brand Book v1.0 were used instead. The mapping below follows the section structure already present in this repository (which was modelled on the reference) and the behaviours listed in the project brief. Items marked **needs live comparison** should be checked side by side against the reference once it is reachable; nothing here claims a pixel-perfect match.
 
 Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs live comparison with the reference · ⏳ awaiting content
 
@@ -32,12 +32,14 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 | Reference section | Ours | Status |
 | --- | --- | --- |
 | Hero typography + masks | "From idea / to orbit." two masked lines | ✅ 🔶 |
-| Characters + pointer interaction | Coder + designer (crops of the original art) with Code / Constellation signs, waving companion clip; pointer parallax; drift apart on scroll | ✅ 🔶 |
+| Hero composition | Centred group on the ribbon: coder (`<idea/>` board), re-keyed 3D mascot clip, designer (constellation board, "orbit."); orbit rings with travelling star; one glow; pointer parallax; duo drifts apart on scroll | ✅ 🔶 |
 | Curved ribbon with moving text | SVG band with text on a path; drifts and responds to scroll | ✅ 🔶 speed |
 | Pinned section with progressive text reveal | "A bit about us" pinned; characters go lavender → electric → ink while scrubbing; value pills pop | ✅ 🔶 pin length |
 | Marquee | Direction follows scroll direction, speed boosts with scroll velocity; pause button | ✅ 🔶 base speed |
 | Project cards | Scroll-scrubbed mask reveal, hover inset + zoom, arrow swap, cursor label; links to case pages | ✅ 🔶 |
-| Services + winding path | Large transparent clips, split titles, caption bubbles, measured path with exact leading marker, mobile channel composition | ✅ (precision tested) 🔶 composition |
+| Services + winding path | Large transparent clips, sentence-case split titles, caption bubbles, measured path with exact leading marker that ends at the last caption, mobile channel composition; designer presents the heading | ✅ (precision tested) 🔶 composition |
+| Presenting / waving characters | Coder presents Work, designer presents Services, mascot in FAQ, duo waves at the footer contact point, mascot waves in the contact dialog | ✅ |
+| Motion control | Dock button pauses the hero clip, marquee, ribbon drift and orbit star; services have their own pause | ✅ |
 | Card stack | Drag/swipe (pointer), arrow buttons, ← → keys, counter | ✅ 🔶 |
 | FAQ | Height-animated open/close, one open at a time, rotating plus icon | ✅ 🔶 |
 
@@ -45,16 +47,18 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 
 | Item | Ours | Status |
 | --- | --- | --- |
-| Composition | Masked headline, stickers, duo portrait with clip-reveal and parallax | ✅ 🔶 |
-| Story sections | Statement with word-by-word reveal; two alternating story rows | ✅ 🔶 |
-| Founder | Sanjai K, Founder (no photo available; monogram card) | ✅ |
-| Principles | Four sticky stacking cards | ✅ 🔶 |
-| Gallery | Velocity-aware marquee with pause | ✅ |
-| Capabilities | Pill cloud linking to Services | ✅ |
+| Composition | Left-aligned masked headline with intro and mono annotations; flat-cropped duo on an orbit-ring panel with clip-reveal, parallax and travelling star | ✅ 🔶 |
+| Mission and vision | Brand-book text with word-by-word reveal | ✅ |
+| Story sections | Two rows with presenting characters on the side they present from | ✅ 🔶 |
+| Values | Brand-book five values as sticky stacking cards | ✅ 🔶 |
+| Client journey | Entry → Expand → Orbit with a star travelling the dotted line | ✅ |
+| Founder | Sanjai K, Founder · CEO; photo placeholder slot | ✅ ⏳ photo |
+| Pillars | Build / Brand & Create / Grow & Operate lists linking to Services | ✅ |
+| Gallery | Velocity-aware marquee with pause; 3D mascot tile | ✅ |
 
 ## Case-study pages
 
-Layout: back link, label, masked title, lead, meta grid, clip-revealed cover, overview, what we did, results (1Xircle only), notes, previous / next project. Unknown facts are shown as "Awaiting content" or "Awaiting documentation". ✅ 🔶
+Layout: back link and index, colour-coded type chip (client / concept / unofficial concept / lab), masked title, lead with technical meta grid, clip-revealed cover, unofficial-concept banner where relevant, overview, numbered deliverables, results (1Xircle only), a "Selected frames" gallery of seven labelled image placeholder slots per project, notes, previous / next project. Unknown facts are shown as "Awaiting content" or "Awaiting documentation". ✅ 🔶
 
 ## Content still needed
 
@@ -62,4 +66,5 @@ Layout: back link, label, masked title, lead, meta grid, clip-revealed cover, ov
 - Poppio and Vespera: brief and deliverables.
 - Tesla Roadster and Ferrari F1: deliverables.
 - Sanjai creative portfolio: technology stack and interaction documentation.
-- Founder photo, if one should be used.
+- Founder photo, if one should be used (slot reserved on About).
+- Approved images for every case-study slot (1Xircle slots are marked "awaiting client approval").

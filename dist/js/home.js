@@ -15,6 +15,13 @@
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
+  /* ================= Global motion pause (dock control) ================= */
+  const Motion = { paused: false, listeners: [] };
+  Motion.set = (v) => {
+    Motion.paused = v;
+    Motion.listeners.forEach((fn) => fn(v));
+  };
+
   /* ================= Clips: play only while visible ================= */
   const Clips = (() => {
     const ua = navigator.userAgent;
@@ -56,7 +63,7 @@
     }
 
     function update(clip) {
-      const play = !reduced && !document.hidden && clip.visible && !groups.get(clip.group);
+      const play = !reduced && !document.hidden && clip.visible && !groups.get(clip.group) && !Motion.paused;
       if (clip.mode === "video") {
         const v = clip.el;
         if (play) {
@@ -90,8 +97,20 @@
       clips.filter((c) => c.group === group).forEach(update);
     };
     document.addEventListener("visibilitychange", () => clips.forEach(update));
+    Motion.listeners.push(() => clips.forEach(update));
     return { add, setPaused, update, clips };
   })();
+
+  const motionBtn = $(".motion-toggle");
+  if (motionBtn) {
+    if (reduced) motionBtn.hidden = true;
+    motionBtn.addEventListener("click", () => {
+      const v = !Motion.paused;
+      Motion.set(v);
+      motionBtn.setAttribute("aria-pressed", String(v));
+      motionBtn.querySelector("span").textContent = v ? "Play motion" : "Pause motion";
+    });
+  }
 
   /* ================= Split helpers ================= */
   function splitChars(el, cls = "char") {
@@ -239,7 +258,7 @@
     ScrollTrigger.create({ trigger: ".hero", start: "top bottom", end: "bottom top", onToggle: (s) => (heroVisible = s.isActive) });
     let t = 0;
     gsap.ticker.add((_time, dt) => {
-      if (!heroVisible || document.hidden) return;
+      if (!heroVisible || document.hidden || Motion.paused) return;
       t += dt / 1000;
       // Sweep across the visible top of the arc; scrolling pushes it forward.
       const deg = -90 + 38 * Math.sin(t * 0.18) + Math.min(scrollY * 0.03, 30);
@@ -263,7 +282,7 @@
     let visible = true;
     ScrollTrigger.create({ trigger: ".ribbon", start: "top bottom", end: "bottom top", onToggle: (s) => (visible = s.isActive) });
     gsap.ticker.add((_t, dt) => {
-      if (!visible || !unit) return;
+      if (!visible || !unit || Motion.paused) return;
       drift += dt * 0.035;
       const off = -((drift + scrollY * 0.45) % unit);
       textPath.setAttribute("startOffset", off.toFixed(2));
@@ -320,7 +339,7 @@
       if (Math.abs(dy) > 0.5) dir = dy > 0 ? 1 : -1;
       const target = 1 + Math.min(Math.abs(dy) * 0.6, 14);
       speed += (target - speed) * 0.08;
-      if (paused || !visible || !unit) return;
+      if (paused || Motion.paused || !visible || !unit) return;
       x -= dir * speed * dt * 0.05;
       x = ((x % unit) - unit) % unit;
       track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
@@ -443,15 +462,25 @@
       const H = box.height;
       if (!W || !H) return;
       const mobile = mobileQuery.matches;
-      const rel = (r) => ({ left: r.left - box.left, top: r.top - box.top, width: r.width, height: r.height });
+      // Layout boxes (offset chain), not getBoundingClientRect: the reveal transforms on
+      // art and captions must never change the geometry, or rebuilds would jump.
+      const rel = (el) => {
+        let left = 0;
+        let top = 0;
+        for (let n = el; n && n !== journey; n = n.offsetParent) {
+          left += n.offsetLeft;
+          top += n.offsetTop;
+        }
+        return { left, top, width: el.offsetWidth, height: el.offsetHeight };
+      };
       const pts = [];
       const holes = [];
       const stops = [];
 
       pts.push(mobile ? { x: W * 0.93, y: -30, t: [0, 1] } : { x: W + 40, y: -20, t: [-1, 0] });
       services.forEach((s) => {
-        const art = rel($(".service-art", s).getBoundingClientRect());
-        const cap = rel($(".service-caption", s).getBoundingClientRect());
+        const art = rel($(".service-art", s));
+        const cap = rel($(".service-caption", s));
         const right = s.dataset.channel === "right";
         const cx = art.left + art.width / 2;
         const cy = art.top + art.height / 2;
@@ -467,8 +496,9 @@
         holes.push({ cx, cy: art.top + art.height * 0.52, rx: art.width * 0.4, ry: art.height * 0.42 });
         stops.push({ el: s, y: art.top + art.height * 0.3 });
       });
+      // Finish just below the last caption: no long tail into the next section.
       const last = pts[pts.length - 1];
-      pts.push({ x: last.x, y: H - 8, t: [0, 1] });
+      pts.push({ x: last.x, y: Math.min(H - 8, last.y + Math.max(80, H * 0.02)), t: [0, 1] });
 
       // Cubic segments with tangent handles: y never decreases along the path,
       // so a viewport line maps to exactly one point on it.

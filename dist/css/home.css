@@ -1,8 +1,10 @@
 /* Code Constellation — homepage sections, in page order. */
 
 .ghost-btn {
+  flex: none;
   min-height: 40px;
   padding: 0 18px;
+  white-space: nowrap;
   border: 1px solid var(--lavender);
   border-radius: 999px;
   background: #fff;
@@ -35,6 +37,30 @@
 }
 .section-head h2 {
   color: var(--ink);
+}
+.has-presenter {
+  row-gap: 0;
+}
+.presenter {
+  height: clamp(220px, 23vw, 340px);
+  width: auto;
+  align-self: end;
+  pointer-events: none;
+  user-select: none;
+}
+.section-head > .presenter-coder {
+  grid-column: 1;
+  grid-row: 2 / span 2;
+  justify-self: end;
+  margin-right: clamp(0px, 2vw, 32px);
+}
+.services-head.has-presenter {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr) minmax(0, 0.45fr);
+}
+.section-head > .presenter-designer {
+  grid-column: 3;
+  grid-row: 1 / span 3;
+  justify-self: start;
 }
 .section-sub {
   max-width: 460px;
@@ -98,13 +124,6 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-}
-.star-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--electric);
-  flex: none;
 }
 .hero-title {
   margin-top: clamp(8px, 1.6vh, 18px);
@@ -412,11 +431,10 @@
 
 /* ---------- Pinned introduction ---------- */
 .intro {
-  min-height: 100svh;
+  min-height: 90svh;
   display: grid;
   place-items: center;
   padding: calc(var(--header-h) + 24px) var(--gutter) 60px;
-  text-align: center;
 }
 .intro-inner {
   max-width: 1120px;
@@ -435,7 +453,6 @@
 .intro-values {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 12px;
   margin: clamp(32px, 5vh, 60px) 0 0;
   padding: 0;
@@ -463,7 +480,7 @@
 
 /* ---------- Marquee ---------- */
 .showcase {
-  padding: clamp(40px, 6vw, 90px) 0;
+  padding: clamp(24px, 3vw, 48px) 0 0;
 }
 .showcase-head {
   display: flex;
@@ -575,7 +592,7 @@
 
 /* ---------- Work ---------- */
 .work {
-  padding: clamp(90px, 11vw, 170px) var(--gutter) clamp(80px, 9vw, 140px);
+  padding: var(--section-y) var(--gutter);
 }
 .work-grid {
   display: grid;
@@ -704,7 +721,7 @@
 .services {
   --art: clamp(260px, 27vw, 400px);
   --title: clamp(28px, 3.3vw, 54px);
-  padding: clamp(90px, 11vw, 170px) var(--gutter) clamp(90px, 10vw, 160px);
+  padding: var(--section-y) var(--gutter);
 }
 .services-head .ghost-btn {
   justify-self: start;
@@ -714,7 +731,7 @@
   position: relative;
   max-width: 1400px;
   margin: clamp(48px, 7vw, 100px) auto 0;
-  padding-bottom: clamp(60px, 8vw, 120px);
+  padding-bottom: clamp(40px, 4vw, 64px);
 }
 .journey-svg {
   position: absolute;
@@ -787,7 +804,6 @@
   font-size: var(--title);
   line-height: 1;
   letter-spacing: -0.045em;
-  text-transform: uppercase;
   color: var(--orbit);
 }
 .service-title span {
@@ -878,7 +894,7 @@
   row-gap: 28px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: clamp(90px, 10vw, 160px) var(--gutter);
+  padding: var(--section-y) var(--gutter);
   align-items: center;
 }
 .proof-head {
@@ -995,7 +1011,7 @@
   gap: clamp(32px, 5vw, 90px);
   max-width: 1400px;
   margin: 0 auto;
-  padding: clamp(80px, 9vw, 150px) var(--gutter);
+  padding: var(--section-y) var(--gutter);
   align-items: start;
 }
 .faq-aside {
@@ -1006,7 +1022,7 @@
   margin: 18px 0 28px;
 }
 .faq-companion {
-  width: clamp(150px, 16vw, 240px);
+  width: clamp(150px, 15vw, 230px);
   height: auto;
 }
 .faq-list details {
@@ -1074,12 +1090,16 @@ details[open] > summary .faq-icon {
   color: var(--ink);
 }
 
-/* ---------- Sound toggle ---------- */
-.sound-toggle {
+/* ---------- Dock: sound and motion controls ---------- */
+.dock {
   position: fixed;
   left: var(--gutter);
   bottom: 18px;
   z-index: 40;
+  display: flex;
+  gap: 8px;
+}
+.dock-btn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1093,7 +1113,7 @@ details[open] > summary .faq-icon {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.sound-toggle svg {
+.dock-btn svg {
   width: 18px;
   height: 18px;
   fill: none;
@@ -1104,6 +1124,17 @@ details[open] > summary .faq-icon {
 }
 .sound-toggle[aria-pressed="false"] .sound-wave {
   opacity: 0.25;
+}
+.motion-toggle .i-play,
+.motion-toggle[aria-pressed="true"] .i-pause {
+  display: none;
+}
+.motion-toggle[aria-pressed="true"] .i-play {
+  display: block;
+}
+.dock-btn:hover {
+  background: #fff;
+  color: var(--orbit);
 }
 
 /* ---------- Tablet ---------- */
@@ -1125,6 +1156,33 @@ details[open] > summary .faq-icon {
   }
   .section-head > .eyebrow {
     padding: 0 0 14px;
+  }
+  .section-head.has-presenter {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .section-head.has-presenter > .eyebrow {
+    grid-column: 1 / -1;
+  }
+  .section-head.has-presenter > :not(.eyebrow):not(.presenter) {
+    grid-column: 2;
+  }
+  .presenter {
+    height: clamp(150px, 30vw, 230px);
+  }
+  .section-head > .presenter-coder {
+    grid-row: 2 / span 2;
+    margin-right: 0;
+  }
+  .services-head.has-presenter {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .services-head.has-presenter > :not(.eyebrow):not(.presenter) {
+    grid-column: 1;
+  }
+  .section-head > .presenter-designer {
+    grid-column: 2;
+    grid-row: 2 / span 2;
   }
   .proof {
     grid-template-columns: 1fr;
@@ -1290,14 +1348,14 @@ details[open] > summary .faq-icon {
     width: min(440px, 100%);
     aspect-ratio: 1 / 1.12;
   }
-  .sound-toggle span {
+  .dock-btn span {
     position: absolute;
     width: 1px;
     height: 1px;
     overflow: hidden;
     clip: rect(0 0 0 0);
   }
-  .sound-toggle {
+  .dock-btn {
     padding: 0 9px;
   }
 }
