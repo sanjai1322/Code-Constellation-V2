@@ -1,7 +1,7 @@
 // Generates the static About page, case-study pages and 404 page into dist/.
 // The site stays buildless at runtime; run `node tools/build-pages.mjs` after
 // editing content here. Only verified project facts belong in PROJECTS.
-import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -278,6 +278,38 @@ const JOURNEY = [
   ["Expand", "Build", "The product, site or system the brand runs on. Same team, no hand-offs.", "Project"],
   ["Orbit", "Grow & Operate", "Automation, CRM, SEO and analytics on a monthly retainer. Clients stay and grow with us.", "Retainer"],
 ];
+// Team. To add a portrait, either save a 4:5 image as dist/assets/team/<slug>.webp
+// (e.g. sanjai.webp) or set `photo` to its path under dist/, then run this script.
+// No biographies, links or credentials are shown — names and roles only.
+const TEAM = [
+  { slug: "sanjai", name: "Sanjai", role: "Founder & CEO", initials: "S", photo: null },
+  { slug: "subhiksha", name: "Subhiksha", role: "COO & Automation Engineer", initials: "SU", photo: null },
+  { slug: "sandeep", name: "Sandeep", role: "Lead Editor", initials: "SA", photo: null },
+];
+const teamPhoto = (m) => m.photo || (existsSync(join(DIST, "assets", "team", `${m.slug}.webp`)) ? `assets/team/${m.slug}.webp` : null);
+
+function teamCard(m, i, base) {
+  const photo = teamPhoto(m);
+  const portrait = photo
+    ? `<img src="${base}${photo}" alt="Portrait of ${esc(m.name)}" width="1000" height="1250" loading="lazy" decoding="async" />`
+    : `<svg class="team-rings" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none"><circle cx="330" cy="560" r="170" /><circle cx="330" cy="560" r="270" /><circle cx="330" cy="560" r="370" /></g></svg>
+                <span class="team-mono" aria-hidden="true">${esc(m.initials)}</span>
+                <span class="team-annot" aria-hidden="true">Portrait · 4:5</span>`;
+  return `          <li>
+            <article class="team-card${photo ? " has-photo" : ""}" tabindex="0" aria-labelledby="team-${m.slug}">
+              <div class="team-portrait">
+                ${portrait}
+                <span class="team-sheen" aria-hidden="true"></span>
+                <span class="team-index" aria-hidden="true">0${i + 1}</span>
+              </div>
+              <div class="team-info">
+                <h3 id="team-${m.slug}">${esc(m.name)}</h3>
+                <p>${esc(m.role)}</p>
+              </div>
+            </article>
+          </li>`;
+}
+
 const PILLARS = [
   ["01", "Build", ["Websites and web apps", "SaaS products", "AI systems and integration", "Ecommerce and cloud"]],
   ["02", "Brand & Create", ["Brand identity and UI/UX", "3D, motion and AI films", "Pitch decks and campaigns", "Templates and content"]],
@@ -391,23 +423,15 @@ ${JOURNEY.map(
         </div>
       </section>
 
-      <section class="founder" aria-labelledby="founder-title">
-        <div class="founder-card">
-          <figure class="slot founder-slot" style="--ar: 4 / 5">
-            <div class="slot-frame">
-              <span class="slot-icon" aria-hidden="true"></span>
-              <span class="slot-label">Founder photo</span>
-              <span class="slot-annot">IMG · 4:5 · 1600 × 2000 · Placeholder</span>
-            </div>
-          </figure>
-          <div class="founder-text">
-            <p class="eyebrow">Founder · CEO</p>
-            <h2 id="founder-title">Sanjai K</h2>
-            <p>Founder of Code Constellation, based in Tamil Nadu, India.</p>
-            <a class="cta" href="${base}work/sanjai-portfolio.html"><span class="label">See Sanjai’s portfolio lab</span>${arrowChip}</a>
-          </div>
-          <span class="founder-mono" aria-hidden="true">SK</span>
+      <section class="team" aria-labelledby="team-title">
+        <div class="block-head">
+          <p class="eyebrow">The team</p>
+          <h2 id="team-title">The people behind the possibilities.</h2>
+          <p class="block-sub">Meet the team connecting creativity, technology and execution.</p>
         </div>
+        <ul class="team-grid">
+${TEAM.map((m, i) => teamCard(m, i, base)).join("\n")}
+        </ul>
       </section>
 
       <section class="pillars" aria-labelledby="pillars-title">

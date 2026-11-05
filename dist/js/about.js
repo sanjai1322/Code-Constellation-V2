@@ -112,13 +112,47 @@
     });
   }
 
-  /* Founder card and pillars */
-  gsap.from(".founder-card", {
-    clipPath: "inset(10% 6% round 60px)",
-    duration: 1.2,
-    ease: "expo.out",
-    scrollTrigger: { trigger: ".founder", start: "top 75%", once: true },
+  /* Team: cards rise in; on fine pointers the portrait tilts toward the cursor
+     (max 5deg) while the text stays flat and crisp. Focus gets the same lift. */
+  gsap.from(".team-card", {
+    y: 60,
+    opacity: 0,
+    duration: 1,
+    stagger: 0.12,
+    ease: "power3.out",
+    scrollTrigger: { trigger: ".team-grid", start: "top 82%", once: true },
   });
+  $$(".team-card").forEach((card) => {
+    const portrait = $(".team-portrait", card);
+    gsap.set(portrait, { transformPerspective: 900 });
+    const rx = gsap.quickTo(portrait, "rotationX", { duration: 0.6, ease: "power3" });
+    const ry = gsap.quickTo(portrait, "rotationY", { duration: 0.6, ease: "power3" });
+    const lift = (on) => gsap.to(card, { y: on ? -6 : 0, duration: on ? 0.5 : 0.7, ease: "power3.out", overwrite: "auto" });
+    card.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      const r = portrait.getBoundingClientRect();
+      const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+      ry((px - 0.5) * 10);
+      rx((0.5 - py) * 8);
+      card.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`);
+      card.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
+    });
+    card.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && lift(true));
+    card.addEventListener("pointerleave", (e) => {
+      if (e.pointerType !== "mouse") return;
+      rx(0);
+      ry(0);
+      lift(false);
+    });
+    card.addEventListener("focus", () => {
+      card.style.setProperty("--mx", "50%");
+      card.style.setProperty("--my", "28%");
+      lift(true);
+    });
+    card.addEventListener("blur", () => lift(false));
+  });
+
   gsap.from(".pillar", {
     y: 50,
     opacity: 0,

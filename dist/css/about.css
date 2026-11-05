@@ -19,7 +19,7 @@
 .story,
 .values,
 .journey-about,
-.founder,
+.team,
 .pillars,
 .about-cta {
   max-width: 1400px;
@@ -326,79 +326,156 @@
   color: var(--orbit);
 }
 
-/* ---------- Founder ---------- */
-.founder {
+/* ---------- Team: showcase cards ---------- */
+.team {
   padding-block: var(--section-y) 0;
 }
-.founder-card {
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.team-card {
+  display: grid;
+  gap: 18px;
+  border-radius: calc(var(--radius) + 8px);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.team-portrait {
   position: relative;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(24px, 5vw, 80px);
-  align-items: end;
-  padding: clamp(20px, 3vw, 44px);
-  border-radius: calc(var(--radius) + 10px);
-  background: var(--ink);
-  color: var(--starlight);
+  aspect-ratio: 4 / 5;
+  border-radius: calc(var(--radius) + 8px);
+  background: linear-gradient(165deg, #e8e9fb 0%, #d7d8f5 46%, #c6c8f2 100%);
+  box-shadow:
+    inset 0 0 0 1px #0a103314,
+    0 1px 2px #0a10330a;
+  transition: box-shadow 0.5s var(--ease-out);
+  will-change: transform;
 }
-.founder-card > :not(.founder-mono) {
-  position: relative;
-  z-index: 1;
+.team-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
 }
-.founder-slot {
-  background-color: #ffffff0d;
-  background-image: radial-gradient(circle, #c9caee40 1px, #c9caee00 1.4px);
-}
-.founder-slot .slot-frame {
-  border-color: #c9caee80;
-}
-.founder-slot .slot-label {
-  color: var(--starlight);
-}
-.founder-slot .slot-annot {
-  color: var(--lavender);
-}
-.founder-slot .slot-icon {
-  border-color: var(--lavender);
-}
-.founder-text {
-  display: grid;
-  justify-items: start;
-  gap: 14px;
-  padding-bottom: clamp(8px, 2vw, 28px);
-}
-.founder-text .eyebrow {
-  color: var(--lavender);
-}
-.founder-text h2 {
-  font-size: clamp(56px, 8vw, 140px);
-  letter-spacing: -0.07em;
-}
-.founder-text > p:not(.eyebrow) {
-  max-width: 40ch;
-  margin-bottom: 14px;
-  font-size: 18px;
-  color: var(--lavender);
-}
-.founder-text .cta {
-  background: var(--starlight);
-  color: var(--ink);
-}
-.founder-text .cta:hover {
-  background: var(--lavender);
-}
-.founder-mono {
+.team-rings {
   position: absolute;
-  right: -0.04em;
-  top: -0.18em;
-  font-size: clamp(160px, 22vw, 360px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.team-rings circle {
+  stroke: #ffffffa6;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+.team-mono {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #ffffffc7;
+  box-shadow: 0 10px 28px #2b45d81f;
+  color: var(--ink);
+  font-size: 20px;
   font-weight: 500;
-  letter-spacing: -0.08em;
-  line-height: 1;
-  color: var(--orbit);
-  opacity: 0.45;
+  letter-spacing: -0.02em;
+  transition: transform 0.6s var(--ease-out);
+}
+.team-annot,
+.team-index {
+  position: absolute;
+  bottom: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3b4170cc;
+}
+.team-annot {
+  left: 18px;
+}
+.team-index {
+  right: 18px;
+}
+.team-card.has-photo .team-index {
+  color: #f1f2fbe6;
+}
+.team-sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 32%), #ffffff57 0%, #ffffff00 46%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
   pointer-events: none;
+}
+.team-info {
+  padding: 0 4px;
+}
+.team-info h3 {
+  font-size: clamp(26px, 2.4vw, 38px);
+  letter-spacing: -0.045em;
+  transition: color 0.4s var(--ease-out);
+}
+.team-info p {
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* Raised state: hover (fine pointers) and keyboard focus share it. */
+@media (hover: hover) {
+  .team-card:hover .team-portrait {
+    box-shadow:
+      inset 0 0 0 2px var(--orbit),
+      0 26px 50px #0a103326;
+  }
+  .team-card:hover .team-sheen {
+    opacity: 1;
+  }
+  .team-card:hover .team-mono {
+    transform: translateY(-4px) scale(1.05);
+  }
+  .team-card:hover .team-portrait img {
+    transform: scale(1.04);
+  }
+  .team-card:hover .team-info h3 {
+    color: var(--orbit);
+  }
+}
+.team-card:focus-visible .team-portrait {
+  box-shadow:
+    inset 0 0 0 2px var(--orbit),
+    0 26px 50px #0a103326,
+    0 0 0 3px var(--paper),
+    0 0 0 6px var(--electric);
+}
+.team-card:focus-visible .team-sheen {
+  opacity: 1;
+}
+.team-card:focus-visible .team-mono {
+  transform: translateY(-4px) scale(1.05);
+}
+.team-card:focus-visible .team-info h3 {
+  color: var(--orbit);
+}
+/* Touch: a gentle press, no sticky hover. */
+@media (hover: none) {
+  .team-card:active .team-portrait {
+    transform: scale(0.985);
+    transition: transform 0.2s var(--ease-out);
+  }
 }
 
 /* ---------- Pillars ---------- */
@@ -616,12 +693,6 @@
   .journey-steps li .step-dot {
     left: -56px;
   }
-  .founder-card {
-    grid-template-columns: 1fr;
-  }
-  .founder-slot {
-    max-width: 360px;
-  }
   .pillar-grid {
     grid-template-columns: 1fr;
   }
@@ -653,5 +724,9 @@
   }
   .annot > div {
     grid-template-columns: 96px 1fr;
+  }
+  .team-grid {
+    grid-template-columns: 1fr;
+    max-width: 440px;
   }
 }

@@ -49,6 +49,15 @@ Clips play only while visible and the tab is visible; the "Pause animations" but
 
 `work.html` lists every project with type filters (All / Client work / Concept / Unofficial concept / Lab). Cards share one hover, adapted from the reference recording: a blob in the project's palette colour grows from the corner the pointer entered, then a detail crop of the cover follows it; leaving reverses it. Colours and crop focus points are set per project in `CARD_STYLE` in `tools/build-pages.mjs`. Touch and reduced motion get a simple, static card.
 
+## Team portraits (About page)
+
+The "Meet the team" cards show a lavender placeholder with an initials badge until a portrait exists. To add one:
+
+1. Save a 4:5 portrait (at least 1000 × 1250) as `dist/assets/team/sanjai.webp`, `subhiksha.webp` or `sandeep.webp`, or set `photo` for that person in `TEAM` in `tools/build-pages.mjs`.
+2. Run `node tools/build-pages.mjs`.
+
+The card keeps its 4:5 frame (`object-fit: cover`). Only names and roles are shown; there are no biographies, links or credentials. The hover treatment (slight lift, portrait tilt toward the pointer, soft light, cobalt hairline) is an interpretation: the Framer "Showcase Card" component referenced in the brief could not be opened from the build environment, so it was not inspected or reused.
+
 ## Third-party code and fonts
 
 - GSAP and ScrollTrigger 3.14.2 — GreenSock standard licence (https://gsap.com/standard-license).
@@ -61,6 +70,7 @@ Clips play only while visible and the tab is visible; the "Pause animations" but
 - Poppio and Vespera are concepts; their briefs and deliverables are marked "awaiting content".
 - Tesla Roadster and Ferrari F1 are clearly labelled unofficial concepts with no affiliation.
 - Sanjai creative portfolio is a lab project built around an interactive 3D head; its technology stack is marked "awaiting documentation".
+- Team: Sanjai — Founder & CEO; Subhiksha — COO & Automation Engineer; Sandeep — Lead Editor. Portraits are placeholders until supplied.
 - The contact form opens an email draft; nothing is sent or stored.
 
 ## Characters and artwork

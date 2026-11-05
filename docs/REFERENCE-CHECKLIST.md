@@ -55,7 +55,7 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 | Story sections | Two rows with presenting characters on the side they present from | ✅ 🔶 |
 | Values | Brand-book five values as sticky stacking cards | ✅ 🔶 |
 | Client journey | Entry → Expand → Orbit with a star travelling the dotted line | ✅ |
-| Founder | Sanjai K, Founder · CEO; photo placeholder slot | ✅ ⏳ photo |
+| Team ("This is pretty much everyone") | Three 4:5 showcase cards: Sanjai, Subhiksha, Sandeep with roles; lavender placeholders with S / SU / SA; hover, focus and touch states | ✅ ⏳ portraits |
 | Pillars | Build / Brand & Create / Grow & Operate lists linking to Services | ✅ |
 | Gallery | Velocity-aware marquee with pause; 3D mascot tile | ✅ |
 
@@ -69,5 +69,5 @@ Layout: back link and index, colour-coded type chip (client / concept / unoffici
 - Poppio and Vespera: brief and deliverables.
 - Tesla Roadster and Ferrari F1: deliverables.
 - Sanjai creative portfolio: technology stack and interaction documentation.
-- Founder photo, if one should be used (slot reserved on About).
+- Portraits for Sanjai, Subhiksha and Sandeep (placeholders on About).
 - Approved images for every case-study slot (1Xircle slots are marked "awaiting client approval").
