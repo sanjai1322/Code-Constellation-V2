@@ -136,21 +136,61 @@
     }
   });
 
+  /* Boards: keep the caret right after the typed code */
+  const codeText = $(".code-line");
+  const caret = $(".code-caret");
+  const codeChars = codeText ? $$("tspan", codeText) : [];
+  const caretAt = (n) => {
+    if (!codeText || !caret) return;
+    try {
+      const w = n ? codeText.getSubStringLength(0, n) : 0;
+      caret.setAttribute("x", (Number(codeText.getAttribute("x")) + w + 5).toFixed(1));
+    } catch {}
+  };
+  caretAt(codeChars.length);
+  document.fonts?.ready.then(() => caretAt(codeChars.length));
+
   if (!reduced && hero) {
+    // Boards start blank and fill in once the duo has landed.
+    const links = $$(".c-link");
+    const dots = $$(".c-dot");
+    gsap.set(codeChars, { opacity: 0 });
+    gsap.set(".code-underline", { strokeDasharray: 1, strokeDashoffset: 1 });
+    gsap.set(links, { strokeDashoffset: 1 });
+    gsap.set([...dots, ".c-star", ".c-spark"], { scale: 0, transformOrigin: "50% 50%" });
+    gsap.set(".c-orbit", { opacity: 0 });
+    caretAt(0);
+    const boards = gsap.timeline({ paused: true });
+    codeChars.forEach((ch, i) =>
+      boards.set(ch, { opacity: 1, onComplete: () => caretAt(i + 1), onReverseComplete: () => caretAt(i) }, i * 0.09),
+    );
+    boards.to(".code-underline", { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, codeChars.length * 0.09 + 0.05);
+    boards.to(".c-orbit", { opacity: 1, duration: 0.6 }, 0.1);
+    dots.forEach((d, i) => {
+      boards.to(d, { scale: 1, duration: 0.35, ease: "back.out(3)" }, 0.15 + i * 0.16);
+      if (links[i]) boards.to(links[i], { strokeDashoffset: 0, duration: 0.18, ease: "none" }, 0.27 + i * 0.16);
+    });
+    boards.fromTo(".c-seam", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.2 + dots.length * 0.16);
+    boards.to([".c-star", ".c-spark"], { scale: 1, duration: 0.6, ease: "back.out(2.6)" }, 0.3 + dots.length * 0.16);
+    boards.fromTo(".c-caption", { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.55 + dots.length * 0.16);
+
     // Entrance (waits for the curtain).
     gsap.set(".hero-title .line-mask > span", { yPercent: 110 });
-    gsap.set([".hero-eyebrow", ".sticker"], { opacity: 0 });
+    gsap.set([".hero-eyebrow", ".hero-sub", ".sticker", ".hero-orbits"], { opacity: 0 });
     gsap.set(".character, .companion", { yPercent: 30, opacity: 0 });
     gsap.set(".ribbon", { yPercent: 60, opacity: 0 });
     CC.onReveal(() => {
       gsap
         .timeline({ defaults: { ease: "power4.out" } })
         .to(".hero-eyebrow", { opacity: 1, duration: 0.6 }, 0)
+        .to(".hero-orbits", { opacity: 1, duration: 1.6, ease: "power2.out" }, 0)
+        .fromTo(".hero-sub", { y: 14 }, { opacity: 1, y: 0, duration: 0.8 }, 0.45)
         .to(".hero-title .line-mask > span", { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0.05)
         .to(".ribbon", { yPercent: 0, opacity: 1, duration: 1.1 }, 0.25)
         .to(".character", { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.1, ease: "expo.out" }, 0.35)
         .to(".companion", { yPercent: 0, opacity: 1, duration: 1, ease: "back.out(1.6)" }, 0.6)
-        .fromTo(".sticker", { scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: "back.out(2.2)" }, 0.7);
+        .fromTo(".sticker", { scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: "back.out(2.2)" }, 0.7)
+        .add(() => boards.play(), 1.05);
     });
 
     // Scroll: the duo drifts apart as the hero leaves.
@@ -190,6 +230,23 @@
       });
       hero.addEventListener("pointerleave", () => movers.forEach((m) => (m.x(0), m.y(0), m.r(0))));
     }
+  }
+
+  /* ================= Orbit path: the star travels the dotted arc ================= */
+  const orbitStar = $(".orbit-star");
+  if (orbitStar && !reduced) {
+    let heroVisible = true;
+    ScrollTrigger.create({ trigger: ".hero", start: "top bottom", end: "bottom top", onToggle: (s) => (heroVisible = s.isActive) });
+    let t = 0;
+    gsap.ticker.add((_time, dt) => {
+      if (!heroVisible || document.hidden) return;
+      t += dt / 1000;
+      // Sweep across the visible top of the arc; scrolling pushes it forward.
+      const deg = -90 + 38 * Math.sin(t * 0.18) + Math.min(scrollY * 0.03, 30);
+      const rad = (deg * Math.PI) / 180;
+      orbitStar.setAttribute("cx", (800 + 750 * Math.cos(rad)).toFixed(1));
+      orbitStar.setAttribute("cy", (1180 + 750 * Math.sin(rad)).toFixed(1));
+    });
   }
 
   /* ================= Ribbon text ================= */

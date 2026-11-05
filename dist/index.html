@@ -49,35 +49,54 @@
     <main id="main">
       <!-- Hero -->
       <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow hero-eyebrow">Creative technology studio</p>
-        <h1 id="hero-title" class="hero-title">
-          <span class="line-mask"><span>From idea</span></span>
-          <span class="line-mask"><span>to orbit.</span></span>
-        </h1>
-        <span class="sticker sticker-a" aria-hidden="true">Design + engineering</span>
-        <span class="sticker sticker-b" aria-hidden="true">Build. Brand. Grow.</span>
-        <span class="sticker sticker-c" aria-hidden="true">One connected studio</span>
+        <svg class="hero-orbits" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+          <g class="orbit-rings" fill="none">
+            <circle cx="800" cy="1180" r="430" />
+            <circle cx="800" cy="1180" r="640" />
+            <circle cx="800" cy="1180" r="860" />
+            <circle cx="800" cy="1180" r="1080" />
+          </g>
+          <circle id="orbit-path" class="orbit-path" cx="800" cy="1180" r="750" fill="none" />
+          <circle class="orbit-star" r="7" cx="800" cy="430" />
+        </svg>
 
-        <div class="hero-stage" role="img" aria-label="Our illustrated coder and designer holding Code and Constellation signs, with our blue companion waving between them">
-          <svg class="hero-orbits" viewBox="0 0 1200 520" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-            <g fill="none" stroke="#2b45d8" stroke-linecap="round">
-              <ellipse cx="600" cy="300" rx="520" ry="170" transform="rotate(-10 600 300)" stroke-width="1.5" opacity=".35" />
-              <ellipse cx="600" cy="300" rx="420" ry="120" transform="rotate(-10 600 300)" stroke-width="1" opacity=".25" stroke-dasharray="4 10" />
-              <path d="m88 210 92-48 58 54M1000 360l92-70 56 40" stroke-width="1.2" opacity=".5" />
-            </g>
-            <g fill="#2b45d8">
-              <circle cx="88" cy="210" r="4.5" /><circle cx="180" cy="162" r="3" /><circle cx="238" cy="216" r="4" />
-              <circle cx="1000" cy="360" r="3" /><circle cx="1092" cy="290" r="5" /><circle cx="1148" cy="330" r="2.5" />
-            </g>
-          </svg>
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow"><span class="star-dot" aria-hidden="true"></span>Creative technology studio<span class="loc"> · Tamil Nadu, India</span></p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="line-mask"><span>From idea</span></span>
+            <span class="line-mask"><span>to <em>orbit.</em></span></span>
+          </h1>
+          <p class="hero-sub">One studio for brand, build and growth.</p>
+        </div>
+
+        <div class="hero-stage" role="img" aria-label="Our illustrated coder holds a board reading idea in code, our designer holds a sketched constellation forming our crescent mark, and our blue companion waves between them: from idea to orbit">
+          <span class="hero-glow" aria-hidden="true"></span>
           <div class="character character-coder" aria-hidden="true">
             <img src="assets/hero-coder.webp" alt="" width="523" height="1005" fetchpriority="high" />
-            <span class="sign-label">Code</span>
+            <div class="board board-code">
+              <svg class="board-art" viewBox="0 0 320 150">
+                <text class="code-line" x="30" y="98"><tspan class="c-br">&lt;</tspan><tspan class="c-word">i</tspan><tspan class="c-word">d</tspan><tspan class="c-word">e</tspan><tspan class="c-word">a</tspan><tspan class="c-sl">/</tspan><tspan class="c-br">&gt;</tspan></text>
+                <rect class="code-caret" x="250" y="62" width="12" height="40" rx="2" />
+                <path class="code-underline" d="M58 118 C 110 108, 170 126, 236 112" pathLength="1" />
+              </svg>
+            </div>
           </div>
           <div class="character character-designer" aria-hidden="true">
             <img src="assets/hero-designer.webp" alt="" width="540" height="924" fetchpriority="high" />
-            <span class="sign-label">Constellation</span>
+            <div class="board board-orbit">
+              <svg class="board-art" viewBox="0 0 320 150">
+                <circle class="c-orbit" cx="118" cy="75" r="72" />
+                <line class="c-link" x1="146.6" y1="120.8" x2="103.1" y2="126.9" pathLength="1" /><line class="c-link" x1="103.1" y1="126.9" x2="69.5" y2="98.7" pathLength="1" /><line class="c-link" x1="69.5" y1="98.7" x2="67.9" y2="54.8" pathLength="1" /><line class="c-link" x1="67.9" y1="54.8" x2="94.3" y2="26.5" pathLength="1" /><line class="c-link" x1="94.3" y1="26.5" x2="125.5" y2="21.5" pathLength="1" />
+                <line class="c-seam" x1="125.5" y1="21.5" x2="164.0" y2="39.1" />
+                <circle class="c-dot" cx="146.6" cy="120.8" r="5" /><circle class="c-dot" cx="103.1" cy="126.9" r="5" /><circle class="c-dot" cx="69.5" cy="98.7" r="5" /><circle class="c-dot" cx="67.9" cy="54.8" r="5" /><circle class="c-dot" cx="94.3" cy="26.5" r="5" /><circle class="c-dot" cx="125.5" cy="21.5" r="5" />
+                <path class="c-spark" d="M164.0 20.1 Q166.0 37.1 183.0 39.1 Q166.0 41.1 164.0 58.1 Q162.0 41.1 145.0 39.1 Q162.0 37.1 164.0 20.1Z" />
+                <circle class="c-star" cx="164.0" cy="39.1" r="7.5" />
+                <text class="c-caption" x="214" y="112">orbit.</text>
+              </svg>
+            </div>
           </div>
+          <span class="sticker sticker-a" aria-hidden="true">Design + engineering</span>
+          <span class="sticker sticker-b" aria-hidden="true">Build. Brand. Grow.</span>
           <div class="companion">
             <video
               class="companion-video"
@@ -88,8 +107,8 @@
               poster="assets/mascot-wave-poster.webp"
               data-src="assets/mascot-wave.webm"
               data-fallback="assets/mascot-wave.webp"
-              width="360"
-              height="405"
+              width="480"
+              height="565"
               aria-hidden="true"
             ></video>
             <button class="companion-hello" type="button" aria-label="Say hi to our blue companion">Hi!</button>
@@ -97,14 +116,14 @@
         </div>
 
         <div class="ribbon" aria-hidden="true">
-          <svg viewBox="0 0 1600 300">
-            <path id="ribbon-path" class="ribbon-band" d="M-200 210 C 200 40, 520 300, 860 170 S 1400 60, 1800 150" />
-            <text class="ribbon-text" dy="16">
-              <textPath href="#ribbon-path" startOffset="0">Build. Brand. Grow. ✦ From idea to orbit. ✦ Build. Brand. Grow. ✦ From idea to orbit. ✦ Build. Brand. Grow. ✦ From idea to orbit. ✦ Build. Brand. Grow. ✦ From idea to orbit. ✦ Build. Brand. Grow. ✦ From idea to orbit. ✦</textPath>
+          <svg viewBox="0 0 1600 200">
+            <path id="ribbon-path" class="ribbon-band" d="M-120 122 C 280 64, 560 168, 820 118 S 1320 66, 1720 110" />
+            <text class="ribbon-text" dy="14">
+              <textPath href="#ribbon-path" startOffset="0">Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦ Build ✦ Brand &amp; Create ✦ Grow &amp; Operate ✦ From idea to orbit. ✦</textPath>
             </text>
           </svg>
         </div>
-        <a class="scroll-cue" href="#studio" aria-label="Scroll to the studio introduction">
+        <a class="scroll-cue" href="#studio"><span>Scroll to explore</span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M3 9l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </a>
       </section>

@@ -53,86 +53,107 @@
 
 /* ---------- Hero ---------- */
 .hero {
+  --rib-h: calc(max(104vw, 900px) / 8); /* rendered ribbon height (viewBox 1600 x 200) */
+  --feet: calc(var(--rib-h) * 0.44); /* the duo stands on the ribbon's upper edge */
   position: relative;
-  height: max(680px, 100svh);
-  max-height: 1100px;
-  padding-top: calc(var(--header-h) + clamp(8px, 2vh, 28px));
+  height: 100svh;
+  min-height: 660px;
+  max-height: 1180px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  padding-top: calc(var(--header-h) + clamp(4px, 1.6vh, 22px));
   overflow: hidden;
   isolation: isolate;
 }
+.hero-orbits {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+.orbit-rings circle {
+  stroke: var(--lavender);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+.orbit-path {
+  stroke: var(--nebula);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.orbit-star {
+  fill: var(--electric);
+}
+.hero-copy {
+  position: relative;
+  z-index: 3;
+  padding: 0 var(--gutter);
+  text-align: center;
+}
 .hero-eyebrow {
-  margin-bottom: clamp(10px, 2vh, 22px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.star-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--electric);
+  flex: none;
 }
 .hero-title {
-  position: relative;
-  z-index: 1;
-  font-size: clamp(60px, min(13vw, 20vh), 230px);
-  line-height: 0.84;
-  letter-spacing: -0.07em;
-  text-transform: uppercase;
-  text-align: center;
+  margin-top: clamp(8px, 1.6vh, 18px);
+  font-size: clamp(56px, min(8.3vw, 16.5vh), 210px);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.hero-title .line-mask {
+  display: inline-block;
+  vertical-align: top;
+}
+.hero-title em {
+  font-style: normal;
   color: var(--orbit);
 }
-.hero-title .line-mask > span {
-  padding: 0 0.04em;
-}
-.sticker {
-  position: absolute;
-  z-index: 4;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: var(--electric);
-  color: #fff;
-  font-size: clamp(12px, 1vw, 15px);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  box-shadow: 0 10px 24px #2b45d826;
-}
-.sticker-a {
-  top: calc(var(--header-h) + 8vh);
-  left: max(4vw, calc(50% - 46vw));
-  transform: rotate(-9deg);
-}
-.sticker-b {
-  top: calc(var(--header-h) + min(30vh, 24vw));
-  right: max(4vw, calc(50% - 46vw));
-  transform: rotate(7deg);
-  background: var(--ink);
-}
-.sticker-c {
-  bottom: 30%;
-  left: 50%;
-  translate: 60% 0;
-  transform: rotate(-4deg);
-  background: var(--lavender);
-  color: var(--ink);
-  box-shadow: none;
+.hero-sub {
+  margin-top: clamp(8px, 1.6vh, 18px);
+  font-size: clamp(16px, 1.25vw, 21px);
+  color: var(--muted);
 }
 
 .hero-stage {
-  position: absolute;
-  inset: auto 0 0;
-  height: 64%;
+  position: relative;
   z-index: 2;
+  flex: 1;
+  width: min(100%, 1560px);
+  min-height: 280px;
+  margin: 0 auto;
   pointer-events: none;
+  --coder-h: min(calc(94% - var(--feet)), 60vw);
+  --designer-h: min(calc(87% - var(--feet)), 55vw);
 }
-.hero-orbits {
+.hero-glow {
   position: absolute;
   left: 50%;
-  bottom: 6%;
-  width: min(1300px, 110vw);
-  height: auto;
-  translate: -50% 0;
+  bottom: var(--feet);
+  width: min(46vw, 640px);
+  aspect-ratio: 1;
+  translate: -50% 38%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2f6bff2e 0%, #2f6bff12 38%, #2f6bff00 68%);
   z-index: -1;
 }
 .character {
   position: absolute;
-  bottom: 9%;
-  height: 86%;
+  bottom: var(--feet);
+  height: var(--coder-h);
   aspect-ratio: var(--ar);
   container-type: inline-size;
   will-change: transform;
@@ -141,59 +162,161 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 18px 24px #0a103314);
+  object-position: bottom;
+  filter: drop-shadow(0 16px 20px #0a103318);
 }
 .character-coder {
   --ar: 523 / 1005;
-  left: max(3vw, calc(50% - 44vw));
+  left: 9%;
 }
 .character-designer {
   --ar: 540 / 924;
-  right: max(3vw, calc(50% - 44vw));
-  height: 80%;
+  right: 9%;
+  height: var(--designer-h);
 }
-.sign-label {
+/* Boards: the coder holds the idea, the designer holds the orbit. */
+.board {
   position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 33%;
-  height: 20%;
-  display: grid;
-  place-items: center;
-  color: var(--orbit);
-  font-weight: 600;
-  letter-spacing: -0.06em;
-  line-height: 1;
+  translate: -50% -50%;
+  aspect-ratio: 320 / 150;
+}
+.board-code {
+  left: 51.6%;
+  top: 43.4%;
+  width: 72%;
+  rotate: -4deg;
+}
+.board-orbit {
+  left: 51.5%;
+  top: 42.1%;
+  width: 70%;
+  rotate: 5.6deg;
+}
+.board-art {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.code-line {
+  font-family: var(--mono);
+  font-size: 58px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.c-br {
+  fill: var(--nebula);
+}
+.c-word {
+  fill: var(--orbit);
+}
+.c-sl {
+  fill: var(--electric);
+}
+.code-caret {
+  fill: var(--electric);
+  animation: caret 1.05s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+.code-underline {
+  fill: none;
+  stroke: var(--nebula);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.c-orbit {
+  fill: none;
+  stroke: var(--lavender);
+  stroke-width: 1.6;
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+}
+.c-link {
+  stroke: var(--ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.c-dot {
+  fill: var(--orbit);
+}
+.c-seam {
+  stroke: var(--nebula);
+  stroke-width: 1.6;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+.c-caption {
+  font-family: var(--mono);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  fill: var(--orbit);
+}
+.c-star {
+  fill: var(--electric);
+}
+.c-spark {
+  fill: var(--electric);
+  opacity: 0.28;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 2.6s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% {
+    opacity: 0.6;
+    transform: scale(1.18) rotate(20deg);
+  }
+}
+.sticker {
+  position: absolute;
+  z-index: 4;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--electric);
+  color: #fff;
+  font-size: clamp(12px, 0.95vw, 15px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
   white-space: nowrap;
+  box-shadow: 0 10px 24px #2b45d826;
 }
-.character-coder .sign-label {
-  font-size: 23cqw;
-  rotate: -2deg;
+.sticker-a {
+  left: calc(9% + 13%);
+  bottom: calc(var(--feet) + var(--coder-h) * 0.94);
+  transform: rotate(-7deg);
 }
-.character-designer .sign-label {
-  top: 32%;
-  font-size: 13cqw;
-  rotate: 3deg;
+.sticker-b {
+  right: calc(9% + 17%);
+  bottom: calc(var(--feet) + var(--designer-h) * 0.9);
+  transform: rotate(6deg);
+  background: var(--ink);
 }
 .companion {
   position: absolute;
   left: 50%;
-  bottom: 6%;
-  width: clamp(130px, 15vw, 240px);
+  bottom: calc(var(--feet) - var(--rib-h) * 0.08);
+  height: min(48%, 400px, 34vw);
+  aspect-ratio: 480 / 565;
   translate: -50% 0;
   z-index: 3;
   pointer-events: auto;
 }
 .companion-video {
   width: 100%;
-  height: auto;
-  aspect-ratio: 360 / 405;
+  height: 100%;
   object-fit: contain;
+  object-position: bottom;
 }
 .companion-hello {
   position: absolute;
-  top: 2%;
-  right: -34%;
+  top: 4%;
+  left: 88%;
   min-height: 34px;
   padding: 0 14px;
   border-radius: 18px 18px 18px 4px;
@@ -211,8 +334,8 @@
 .ribbon {
   position: absolute;
   left: 50%;
-  bottom: -1%;
-  width: max(110%, 900px);
+  bottom: 0;
+  width: max(104vw, 900px);
   translate: -50% 0;
   z-index: 1;
   pointer-events: none;
@@ -220,44 +343,70 @@
 .ribbon svg {
   width: 100%;
   height: auto;
-  aspect-ratio: 1600 / 300;
+  aspect-ratio: 1600 / 200;
   overflow: visible;
 }
 .ribbon-band {
   fill: none;
   stroke: var(--orbit);
-  stroke-width: 84;
-  stroke-linecap: butt;
+  stroke-width: 64;
 }
 .ribbon-text {
   fill: var(--starlight);
   font-family: var(--font);
-  font-size: 46px;
+  font-size: 36px;
   font-weight: 500;
-  letter-spacing: -1.4px;
+  letter-spacing: -1px;
 }
 .scroll-cue {
   position: absolute;
+  display: none;
   right: var(--gutter);
-  bottom: 22px;
+  bottom: calc(var(--rib-h) * 0.82);
   z-index: 6;
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 8px 0 16px;
+  border-radius: 999px;
   background: #fff;
   color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 .scroll-cue svg {
-  width: 16px;
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
 }
 .scroll-cue:hover svg {
   animation: cue 0.8s var(--ease-out);
 }
+@media (min-width: 1680px) {
+  .scroll-cue {
+    display: inline-flex;
+  }
+}
 @keyframes cue {
   50% {
-    transform: translateY(5px);
+    transform: translateY(4px);
+  }
+}
+
+@media (min-width: 701px) and (max-aspect-ratio: 4/5) {
+  .hero {
+    height: auto;
+    min-height: 0;
+  }
+  .hero-stage {
+    flex: none;
+    height: 78vw;
   }
 }
 
@@ -1007,51 +1156,56 @@ details[open] > summary .faq-icon {
 @media (max-width: 700px) {
   .hero {
     height: max(640px, 100svh);
+    max-height: 900px;
   }
   .hero-title {
-    font-size: clamp(54px, 17.5vw, 96px);
-    margin-top: 4px;
+    font-size: clamp(50px, 15.5vw, 92px);
+    white-space: normal;
   }
-  .sticker {
-    padding: 8px 13px;
+  .hero-title .line-mask {
+    display: block;
   }
-  .sticker-a {
-    top: auto;
-    bottom: 57%;
-    left: 4vw;
+  .hero-sub {
+    font-size: 15px;
   }
-  .sticker-b {
-    top: auto;
-    bottom: 53%;
-    right: 4vw;
+  .hero-eyebrow {
+    font-size: 10px;
   }
-  .sticker-c {
+  .hero-eyebrow .loc {
     display: none;
   }
   .hero-stage {
-    height: 54%;
-  }
-  .character {
-    bottom: 13%;
+    --coder-h: calc(74% - var(--feet));
+    --designer-h: calc(67% - var(--feet));
   }
   .character-coder {
-    left: 3vw;
-    height: 84%;
+    left: -2%;
   }
   .character-designer {
-    right: 2vw;
-    height: 78%;
+    right: -3%;
+  }
+  .sticker {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  .sticker-a {
+    left: 5%;
+  }
+  .sticker-b {
+    right: 5%;
   }
   .companion {
-    width: 27vw;
-    bottom: 5%;
+    height: min(30%, 200px);
   }
   .companion-hello {
-    right: -20%;
-    top: -12%;
+    left: 78%;
+    top: -6%;
     min-height: 30px;
     padding: 0 10px;
     font-size: 12px;
+  }
+  .hero-glow {
+    width: 80vw;
   }
   .scroll-cue {
     display: none;
