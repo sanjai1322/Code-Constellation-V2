@@ -4,6 +4,10 @@
   if (!page) return;
   const CC = window.CC;
   page.querySelectorAll('[data-character]').forEach(crew => {
+  // Discourage casual saving on the decorative artwork only. This does not
+  // make public browser-delivered assets inaccessible through developer tools.
+  crew.addEventListener('contextmenu', event => event.preventDefault());
+  crew.addEventListener('dragstart', event => event.preventDefault());
   const video = crew.querySelector('[data-lost-video]');
   const poster = crew.querySelector('.lost-poster');
   const still = poster.getAttribute('src');

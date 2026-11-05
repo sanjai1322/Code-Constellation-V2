@@ -39,7 +39,8 @@
 .lost-character.has-video .lost-poster { opacity:0; }
 .lost-coder { left:29%; }
 .lost-designer { left:72%; }
-.lost-companion { left:50%; height:84%; }
+.lost-companion { left:50%; height:62%; }
+.lost-character img,.lost-character video { pointer-events:none; -webkit-user-drag:none; user-select:none; }
 .lost-star { animation:signal-star 5s ease-in-out infinite; }
 .lost-page.is-paused * { animation-play-state:paused !important; }
 .lost-page.is-signalling .lost-star { animation:signal-flash .65s ease-out 2; }
@@ -58,7 +59,7 @@
   .lost-character { height:115%; }
   .lost-coder { left:20%; }
   .lost-designer { left:80%; }
-  .lost-companion { height:88%; left:50%; }
+  .lost-companion { height:64%; left:50%; }
   .lost-orbit { width:130%; left:-15%; }
   .lost-scene-note { left:0; right:0; text-align:center; font-size:8px; }
   .lost-copy { margin-top:28px; }

@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "28";
+const V = "29";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -714,7 +714,7 @@ ${p.notes.map((n) => `          <li>${esc(n)}</li>`).join("\n")}
 function notFound() {
   // Root-relative so it works from any missing path on a root-hosted site.
   const base = "/";
-  const crewPart = (name) => `<div class="lost-character lost-${name}" data-character data-animated="/assets/404/${name}-loop.webp?v=28"><img class="lost-poster" src="/assets/404/${name}-poster.webp?v=28" alt="" width="720" height="1280" fetchpriority="high" /><video class="lost-loop" data-lost-video muted loop playsinline preload="metadata" poster="/assets/404/${name}-poster.webp?v=28"><source src="/assets/404/${name}-loop.webm?v=28" type="video/webm" /></video></div>`;
+  const crewPart = (name) => `<div class="lost-character lost-${name}" data-character data-animated="/assets/404/${name}-loop.webp?v=28"><img class="lost-poster" src="/assets/404/${name}-poster.webp?v=28" alt="" width="720" height="1280" draggable="false" fetchpriority="high" /><video class="lost-loop" data-lost-video muted loop playsinline preload="metadata" controlslist="nodownload noremoteplayback" disablepictureinpicture disableremoteplayback draggable="false" poster="/assets/404/${name}-poster.webp?v=28"><source src="/assets/404/${name}-loop.webm?v=28" type="video/webm" /></video></div>`;
   const body = `
     <main id="main" class="lost-page">
       <section class="lost-sector" aria-labelledby="lost-heading">
