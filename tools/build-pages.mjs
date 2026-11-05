@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "27";
+const V = "28";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -714,9 +714,7 @@ ${p.notes.map((n) => `          <li>${esc(n)}</li>`).join("\n")}
 function notFound() {
   // Root-relative so it works from any missing path on a root-hosted site.
   const base = "/";
-  const video = existsSync(join(DIST, "assets/404/trio-loop.webm"))
-    ? '<video class="lost-loop" data-lost-video muted loop playsinline preload="metadata" poster="/assets/404/trio-searching.webp?v=27"><source src="/assets/404/trio-loop.webm?v=27" type="video/webm" /></video>' : "";
-  const animated = existsSync(join(DIST, "assets/404/trio-loop.webp")) ? ' data-animated="/assets/404/trio-loop.webp?v=27"' : "";
+  const crewPart = (name) => `<div class="lost-character lost-${name}" data-character data-animated="/assets/404/${name}-loop.webp?v=28"><img class="lost-poster" src="/assets/404/${name}-poster.webp?v=28" alt="" width="720" height="1280" fetchpriority="high" /><video class="lost-loop" data-lost-video muted loop playsinline preload="metadata" poster="/assets/404/${name}-poster.webp?v=28"><source src="/assets/404/${name}-loop.webm?v=28" type="video/webm" /></video></div>`;
   const body = `
     <main id="main" class="lost-page">
       <section class="lost-sector" aria-labelledby="lost-heading">
@@ -724,7 +722,7 @@ function notFound() {
         <div class="lost-scene" role="img" aria-label="Our coder searches the sky, our designer checks a star map, and our companion points the way home.">
           <div class="lost-code" aria-hidden="true">4<span>0</span>4</div>
           <svg class="lost-orbit" viewBox="0 0 1200 560" fill="none" aria-hidden="true"><ellipse cx="600" cy="290" rx="535" ry="140" transform="rotate(-13 600 290)" /><path class="lost-trail" d="M92 369C171 481 1062 359 1113 181" /><g class="lost-star"><path d="m1070 100 6 19 19 6-19 6-6 19-6-19-19-6 19-6Z"/></g><circle cx="134" cy="402" r="5"/><circle cx="1010" cy="208" r="3"/></svg>
-          <div class="lost-crew"${animated}><img class="lost-poster" src="/assets/404/trio-searching.webp?v=27" alt="" width="1280" height="720" fetchpriority="high" />${video}</div>
+          <div class="lost-crew lost-crew-separate">${crewPart("coder")}${crewPart("companion")}${crewPart("designer")}</div>
           <span class="lost-scene-note" aria-hidden="true">THREE EXPLORERS. ONE WRONG TURN.</span>
         </div>
         <div class="lost-copy">

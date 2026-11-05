@@ -3,46 +3,36 @@
   const page = document.querySelector('.lost-page');
   if (!page) return;
   const CC = window.CC;
-  const crew = page.querySelector('.lost-crew');
-  const video = page.querySelector('[data-lost-video]');
+  page.querySelectorAll('[data-character]').forEach(crew => {
+  const video = crew.querySelector('[data-lost-video]');
   const poster = crew.querySelector('.lost-poster');
   const still = poster.getAttribute('src');
   const animated = crew.dataset.animated;
   const safari = /Safari/.test(navigator.userAgent) && !/Chrome|Chromium|CriOS|Edg|Android/.test(navigator.userAgent);
-  let useWebp = safari && !!animated;
-  let revealed = CC.revealed;
-  let visible = true;
-  const webp = (playing) => {
-    const src = playing ? animated : still;
-    if (src && poster.getAttribute('src') !== src) poster.src = src;
-    crew.classList.toggle('has-webp', playing);
-    crew.classList.remove('has-video');
-  };
+  let useWebp = safari;
+  let inView = true;
+  let ready = CC.revealed;
   const sync = () => {
-    const stopped = CC.reduced || CC.motion.paused || document.hidden || !visible || !revealed;
-    page.classList.toggle('is-paused', stopped);
+    const stopped = CC.reduced || CC.motion.paused || document.hidden || !inView || !ready;
+    page.classList.toggle('is-paused', CC.reduced || CC.motion.paused || document.hidden);
     if (useWebp) {
-      if (video) video.pause();
-      webp(!stopped);
+      video.pause();
+      crew.classList.remove('has-video');
+      const src = stopped ? still : animated;
+      if (poster.getAttribute('src') !== src) poster.src = src;
       return;
     }
-    if (!video) return;
     if (stopped) video.pause();
-    else video.play().catch(fallback);
+    else video.play().catch(() => { useWebp = true; sync(); });
   };
-  const fallback = () => {
-    crew.classList.remove('has-video');
-    if (animated) { useWebp = true; sync(); }
-  };
-  if (video) {
-    video.addEventListener('playing', () => crew.classList.add('has-video'));
-    video.addEventListener('error', fallback);
-  }
+  video.addEventListener('playing', () => crew.classList.add('has-video'));
+  video.addEventListener('error', () => { useWebp = true; sync(); });
   CC.motion.on(sync);
   document.addEventListener('visibilitychange', sync);
-  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(crew);
-  CC.onReveal(() => { revealed = true; sync(); });
+  new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); }).observe(crew);
+  CC.onReveal(() => { ready = true; sync(); });
   sync();
+  });
   let reset;
   page.querySelector('.lost-signal').addEventListener('click', () => {
     clearTimeout(reset);

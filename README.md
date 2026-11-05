@@ -22,16 +22,16 @@ the published `404.html` handles unknown URLs with the custom error page.
 Do not add a catch-all rewrite to `index.html`, since this is a multi-page site.
 
 Unknown paths return the custom page with HTTP 404 locally. Preview it directly at `/404.html`.
-The 404 page uses the approved coder, designer and 3D companion together in
-`assets/404/trio-loop.webm` (1280×720, 24 fps, alpha, muted). The selected Flow
-clip is `Animate_character_illustration_loop_6c08d129_gwr_video_mvp.mp4`.
-Its green screen is keyed and despilled; an eight-frame circular dissolve joins
-the tail to the head, making a 184-frame / 7.667-second forward loop.
-`trio-loop.webp` supplies Safari's animated fallback, while `trio-searching.webp`
-matches the first frame for loading and reduced motion. CSS drift stops when
-the real animation is active. Pause, tab visibility and offscreen controls stop
-playback; reduced motion keeps the still. Regenerate HTML after changing assets
-with `node tools/build-pages.mjs`.
+The 404 page uses three independent transparent character animations in
+dist/assets/404/: coder-loop.webm, designer-loop.webm and
+companion-loop.webm. Each has an animated WebP fallback and matching poster.
+The supplied clips are keyed from chroma green, despilled and joined with an
+eight-frame circular dissolve, giving 184-frame / 7.667-second forward loops
+at 24 fps. Character layers preserve their portrait proportions, with separate
+desktop and mobile positions; the companion is scaled below human height.
+Pause, reduced-motion, offscreen and background-tab controls apply to every layer.
+The older combined trio assets are retained as a fallback archive and are no
+longer loaded by the 404 page. Run `node tools/build-pages.mjs` after page edits.
 
 ## Structure
 

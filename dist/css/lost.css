@@ -32,6 +32,14 @@
 .lost-reply { min-height:20px; color:var(--orbit); font:11px var(--mono); margin:3px 0 0; }
 .lost-crew { animation:crew-drift 6s ease-in-out infinite; }
 .lost-crew.has-video,.lost-crew.has-webp { animation:none; }
+.lost-crew-separate { width:100%; height:100%; top:50%; animation:none; }
+.lost-character { position:absolute; top:50%; height:112%; aspect-ratio:9 / 16; transform:translate(-50%,-50%); }
+.lost-character .lost-poster { width:100%; height:100%; object-fit:contain; }
+.lost-character.has-video .lost-loop { opacity:1; }
+.lost-character.has-video .lost-poster { opacity:0; }
+.lost-coder { left:29%; }
+.lost-designer { left:72%; }
+.lost-companion { left:50%; height:84%; }
 .lost-star { animation:signal-star 5s ease-in-out infinite; }
 .lost-page.is-paused * { animation-play-state:paused !important; }
 .lost-page.is-signalling .lost-star { animation:signal-flash .65s ease-out 2; }
@@ -46,6 +54,11 @@
   .lost-scene { height:260px; margin-top:30px; }
   .lost-code { font-size:clamp(220px,63vw,360px); top:0; }
   .lost-crew { width:118%; max-width:none; top:48%; }
+  .lost-crew-separate { width:100%; top:48%; }
+  .lost-character { height:115%; }
+  .lost-coder { left:20%; }
+  .lost-designer { left:80%; }
+  .lost-companion { height:88%; left:50%; }
   .lost-orbit { width:130%; left:-15%; }
   .lost-scene-note { left:0; right:0; text-align:center; font-size:8px; }
   .lost-copy { margin-top:28px; }
