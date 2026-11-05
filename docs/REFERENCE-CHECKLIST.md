@@ -37,10 +37,10 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 | Curved ribbon with moving text | SVG band with text on a path; drifts and responds to scroll | ✅ 🔶 speed |
 | Pinned section with progressive text reveal | "A bit about us" pinned; characters go lavender → electric → ink while scrubbing; value pills pop | ✅ 🔶 pin length |
 | Marquee | Direction follows scroll direction, speed boosts with scroll velocity; pause button | ✅ 🔶 base speed |
-| Selected work | Liquid-glass WebGL carousel (original implementation) with HTML captions, counter, View project link; card list fallback | ✅ |
+| Selected work | Three.js liquid-glass lens carousel from the supplied component settings (render target + lens shader: rotated elliptical lens, wavy rim, dispersion, glow, blue ring, shimmer; glide, inertia, snap, speed shrink, entry sequence, focus scale); HTML captions, counter, View project link; card list fallback. Refraction verified by pixel comparison (lens on vs off). Not compared with the reference recordings, which did not arrive | ✅ 🔶 |
 | Project cards | Reference hover from the recording: colour blob grows from the entry corner, detail crop follows; arrow swap, cursor label | ✅ 🔶 timing |
 | "Whole page for that" | Link from the homepage to the Work page | ✅ |
-| Services + winding path | Large transparent clips, sentence-case split titles, caption bubbles, measured path with exact leading marker that ends at the last caption, mobile channel composition; designer presents the heading | ✅ (precision tested) 🔶 composition |
+| Services + winding path | Large transparent clips, sentence-case split titles, brand-book service notes (number, pillar, copy, capability tags, pin), measured path with exact leading marker that ends at the last caption, mobile channel composition; designer presents the heading | ✅ (precision tested) 🔶 composition |
 | Presenting / waving characters | Coder presents Work, designer presents Services, mascot in FAQ, duo waves at the footer contact point, mascot waves in the contact dialog | ✅ |
 | Motion control | Dock button pauses the hero clip, marquee, ribbon drift and orbit star; services have their own pause | ✅ |
 | Card stack | Drag/swipe (pointer), arrow buttons, ← → keys, counter | ✅ 🔶 |

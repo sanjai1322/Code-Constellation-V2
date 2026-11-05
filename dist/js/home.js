@@ -355,7 +355,7 @@
     const probe = () => {
       try {
         const c = document.createElement("canvas");
-        const gl = c.getContext("webgl", { failIfMajorPerformanceCaveat: !force });
+        const gl = c.getContext("webgl2", { failIfMajorPerformanceCaveat: !force });
         if (!gl) return false;
         const lose = gl.getExtension("WEBGL_lose_context");
         if (lose) lose.loseContext();
@@ -424,36 +424,56 @@
       root.remove();
       window.ScrollTrigger && ScrollTrigger.refresh();
     }
-    const loadScript = (src) =>
-      new Promise((resolve, reject) => {
-        if (window.CCGlass) return resolve();
-        const el = document.createElement("script");
-        el.src = src;
-        el.onload = resolve;
-        el.onerror = reject;
-        document.head.append(el);
-      });
-    function start() {
+    let played = false;
+    const inView = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        inView.disconnect();
+        played = true;
+        if (api) begin();
+      },
+      { threshold: 0.35 },
+    );
+    function begin() {
+      api.ready
+        .then(() => {
+          root.classList.add("is-ready");
+          api.play();
+        })
+        .catch(() => {});
+    }
+    function start(replay) {
       if (api || loading) return;
       loading = true;
-      loadScript("js/glass-carousel.js?v=22")
-        .then(() => {
+      const small = innerWidth < 700;
+      const srcs = items.map((it) => ({ src: small ? it.src.replace(/\.webp$/, "-sm.webp") : it.src }));
+      import(new URL("js/liquid-carousel.js?v=24", document.baseURI).href)
+        .then((mod) => {
           loading = false;
-          if (!window.CCGlass.supported(force)) return fallback();
+          if (!mod.supported(force)) return fallback();
           try {
-            api = window.CCGlass.mount(stage, items, {
-              start: index,
-              onIndex: show,
-              onReveal: (on) => {
-                root.classList.toggle("is-revealed", on);
-                sfx("reveal", { on });
+            api = mod.mount(
+              stage,
+              srcs,
+              {
+                start: index,
+                onIndex: show,
+                onReveal: (on) => {
+                  root.classList.toggle("is-revealed", on);
+                  sfx("reveal", { on });
+                },
+                onFail: fallback,
+                paused: () => !!(window.CC && window.CC.motion && window.CC.motion.paused),
               },
-              onFail: fallback,
-            });
+              { entryAnimation: !replay },
+            );
           } catch {
             return fallback();
           }
-          api.ready.then(() => root.classList.add("is-ready")).catch(() => {});
+          if (force) stage.__glass = api; // automated tests only
+          if (replay) api.ready.then(() => root.classList.add("is-ready")).catch(() => {});
+          else if (played) begin();
+          else inView.observe(root);
         })
         .catch(() => {
           loading = false;
@@ -464,7 +484,7 @@
       ([entry]) => {
         if (!entry.isIntersecting) return;
         near.disconnect();
-        start();
+        start(false);
       },
       { rootMargin: "900px 0px" },
     );
@@ -478,7 +498,7 @@
       poster.src = items[index].src;
     });
     addEventListener("pageshow", (e) => {
-      if (e.persisted && section.classList.contains("is-glass") && !api) start();
+      if (e.persisted && section.classList.contains("is-glass") && !api) start(true);
     });
   })();
 

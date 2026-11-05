@@ -24,7 +24,8 @@ Then open http://127.0.0.1:8765/.
 | `dist/js/site.js` | The only owner of Lenis and the Lenis ↔ ScrollTrigger bridge; header, page transitions, anchors/deep links, dialog, cursor, footer motion |
 | `dist/js/home.js` | Hero, ribbon, pinned intro, marquee, project cards, services journey + clips, card deck, FAQ |
 | `dist/js/about.js`, `case.js`, `work.js`, `sound.js` | About motion, case-study motion, Work-page filters, opt-in ambience |
-| `dist/js/glass-carousel.js` | Liquid-glass Selected Work carousel (WebGL), loaded on demand by `home.js` |
+| `dist/js/liquid-carousel.js` | Liquid-glass Selected Work carousel (Three.js module), loaded on demand by `home.js` |
+| `dist/js/sound.js` | Synthesized sound kit (all pages); see "Sound" |
 
 Each animated element has exactly one controller; the ownership list is at the top of `js/home.js`.
 
@@ -34,16 +35,23 @@ The winding line is generated at runtime from the real positions of the illustra
 
 Clips play only while visible and the tab is visible; the "Pause animations" button pauses them; reduced motion shows posters only. Safari (no VP9 alpha) gets animated WebP that swaps back to the poster when paused.
 
-## Selected work carousel
+## Selected work carousel (liquid-glass lens)
 
-`js/glass-carousel.js` is an original implementation: one WebGL 1 context, one fragment shader and one texture atlas of the six covers, with GSAP tweening the position. Slides glide beneath a fixed glass lens; refraction is restrained (stronger only while moving), chromatic dispersion is minimal, and titles, type labels, the counter and the "View project" link are ordinary HTML outside the canvas.
+`js/liquid-carousel.js` (ES module, loaded on demand by `home.js`) renders the carousel with **Three.js r169** (MIT, vendored at `assets/vendor/three/`):
 
-- Loaded only when the section is within ~900px of the viewport; renders on demand and stops completely offscreen or in a hidden tab; device pixel ratio capped at 2; every texture, buffer, shader and program is deleted and the context released on `pagehide` (rebuilt on back/forward restore).
-- Horizontal drag, horizontal trackpad swipe, previous/next buttons and ←/→/Home/End keys. Vertical wheel and vertical touch scrolling always scroll the page (`touch-action: pan-y`). Clicking (or Enter on) the focused image enlarges it; the "View project" link is always visible.
-- The project cards underneath are the source of truth and the fallback: with reduced motion, without WebGL, on software-only rendering, or on context loss, visitors get the accessible card list instead.
-- `?glass-test` in the URL lets automated tests use software WebGL.
+1. The six project panels are drawn into an off-screen `WebGLRenderTarget` (4× MSAA).
+2. A full-screen shader refracts that target through an animated glass lens: a rotated ellipse with a wavy rim, chromatic dispersion toward the edge, an inner glow, a coloured rim ring, a halo and a moving shimmer band.
+3. Motion: target/current scroll with a glide factor, drag inertia, delayed snapping, speed-based shrink, panels that bow against their motion, image glide inside each frame, a GSAP entry (small scattered images rise, grow into the strip, then the glass develops) and a focus state (the selected project scales up, neighbours dim, the glass eases back).
 
-**Licensing.** The Framer module referenced in the brief (`framer.com/m/liquid-glass-carousel-…`) could not be opened from the build environment, so its licence could not be verified and none of its code is used. The carousel depends only on the browser's WebGL and the GSAP build already in the repository.
+The starting values are the reference component's settings, kept in `SETTINGS` at the top of the module: `panelHeight 450, gap 12, glide 0.075, wheelSensitivity 1, snap true, snapDistance 60, snapDelay 120, speedShrink 60, lensShape "circle", lensRotation 65, lensWidth 0.565, lensHeight 1, lensX 0.5, lensY 0.5, dispersion 11, zoom 0, blur 0, glow 4.2, blueRing 6, blueColor "#009dff", shimmer true, rimWave 0.6, entryAnimation true, focusScale 1.18, pixelRatio 2`, with the background set to Starlight `#F1F2FB`.
+
+- Titles, type labels, the counter and the "View project" link are HTML outside the canvas.
+- Horizontal drag, horizontal trackpad swipe, previous/next buttons, ←/→/Home/End, Enter to select and Escape to close. Vertical wheel and vertical touch scrolling always scroll the page (`touch-action: pan-y`).
+- Three.js downloads only when the section is near; rendering runs only while the stage is visible and the tab is visible (and only while moving when "Pause motion" is on); device pixel ratio is capped at 2; textures, materials, geometry, the render target and the context are released on `pagehide` and rebuilt on back/forward restore.
+- Reduced motion, no WebGL2, software-only rendering or a lost context fall back to the static project card list.
+- `?glass-test` enables software WebGL and a test hook for automated checks.
+
+**About the reference.** The Framer module (`framer.com/m/liquid-glass-carousel-…`) and the recordings meant to accompany the latest brief were not available to the build environment (framer.com is blocked; the recordings did not arrive), so its source was not inspected or copied. This is an independent implementation of the described behaviour from the supplied settings, and has not been compared side by side with the reference.
 
 ## Work page and card hover
 
@@ -58,9 +66,18 @@ The "Meet the team" cards show a lavender placeholder with an initials badge unt
 
 The card keeps its 4:5 frame (`object-fit: cover`). Only names and roles are shown; there are no biographies, links or credentials. The hover treatment (slight lift, portrait tilt toward the pointer, soft light, cobalt hairline) is an interpretation: the Framer "Showcase Card" component referenced in the brief could not be opened from the build environment, so it was not inspected or reused.
 
+## Sound
+
+`js/sound.js` synthesizes every sound with the Web Audio API — no audio files. Off by default; once turned on it stays on for the session across pages and resumes on the next tap or key. One palette (D major pentatonic, soft sine/FM bells, a shared reverb and a limiter): hover ticks (mouse only), tap plucks, a whoosh on page transitions, a glass note per carousel project, an arpeggio of rising notes as the services line reaches each star, a card flick, FAQ open/close, dialog, copy and filter sounds, the mascot's "Hi!" chirp, and an ambient pad with occasional twinkles. On iOS it uses the "ambient" audio session (respects the silent switch, mixes with the visitor's music). Add `?sfx-debug` to log sound errors.
+
+## Motion control
+
+Everything animates by default. One "Pause motion" button in the corner dock (every page) stops looping motion everywhere — hero clip, marquee, ribbon, orbit star, service clips, carousel shimmer, About gallery — and is remembered for the session. It is kept because WCAG 2.2.2 requires a way to stop motion that loops for more than five seconds. Reduced-motion users get static versions.
+
 ## Third-party code and fonts
 
 - GSAP and ScrollTrigger 3.14.2 — GreenSock standard licence (https://gsap.com/standard-license).
+- Three.js r169 — MIT (`dist/assets/vendor/three/LICENSE`), from the npm registry (integrity `sha512-Ed906MA3…`).
 - Lenis 1.1.20 — MIT.
 - Geist and Geist Mono — SIL Open Font License 1.1.
 
@@ -94,7 +111,7 @@ The pose PNGs were supplied as AI-assisted reproductions of the approved sheet; 
 
 The hero mascot clip was re-keyed from the original green-screen source (`Mascot_character_waving_animatio…mp4`): green-excess matte, despill, interior holes filled so the eyes stay solid, edge colour taken from the nearest solid body pixel. Outputs: VP9-alpha WebM (Chrome, Firefox, Edge), animated WebP fallback (Safari), WebP poster.
 
-The hero boards are inline SVG illustrations of two brand pillars: **Build** on the coder's board (a website wireframe with a code badge and cursor) and **Brand** on the designer's (the official mark in an orbit ring, palette swatches, "Aa" and a pencil). The mark is the master SVG, never redrawn. Prompts for painted replacements and the steps to swap them in are in `docs/HERO-BOARD-PROMPTS.md`.
+The hero boards show two brand pillars, using the supplied illustrations (`assets/boards/board-build.webp`, `board-brand.webp`, generated from the prompts in `docs/HERO-BOARD-PROMPTS.md`): **Build** on the coder's board and **Brand** on the designer's, painted on with a brush-stroke mask. The official mark (master SVG, never redrawn) spins into the Brand board's empty circle.
 
 Service illustrations are the transparent clips in `assets/services/` (VP9-alpha WebM, animated WebP fallback, PNG poster). The supplied logo is unchanged at `assets/cc-mark-light.svg`.
 
