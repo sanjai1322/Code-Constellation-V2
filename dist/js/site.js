@@ -302,6 +302,53 @@
     });
   }
 
+  /* ---------- Project cards: blob wipe on hover (fine pointers only) ----------
+     A blob in the project colour grows from the corner the pointer entered,
+     then a detail crop of the cover follows it. Leaving reverses the order. */
+  if (finePointer && !CC.reduced) {
+    const blobPath = (t, corner, phase) => {
+      if (t <= 0.002) return "polygon(0 0, 0 0, 0 0)";
+      if (t >= 0.998) return "inset(0)";
+      const [cx, cy] = corner;
+      const sx = cx ? -1 : 1;
+      const sy = cy ? -1 : 1;
+      const R = t * 1.65;
+      const pts = [`${cx * 100}% ${cy * 100}%`];
+      for (let i = 0; i <= 24; i++) {
+        const th = (i / 24) * (Math.PI / 2);
+        const r = R * (1 + 0.1 * Math.sin(th * 4 + phase + t * 2.4) * (1 - t));
+        pts.push(`${((cx + sx * Math.cos(th) * r) * 100).toFixed(2)}% ${((cy + sy * Math.sin(th) * r) * 100).toFixed(2)}%`);
+      }
+      return `polygon(${pts.join(",")})`;
+    };
+    document.querySelectorAll(".project-card").forEach((card) => {
+      const media = card.querySelector(".project-media");
+      const fill = card.querySelector(".blob-fill");
+      const detail = card.querySelector(".blob-detail");
+      if (!media || !fill || !detail) return;
+      const st = { a: 0, b: 0, corner: [0, 1], phase: Math.random() * 6.28 };
+      const paint = () => {
+        fill.style.clipPath = blobPath(st.a, st.corner, st.phase);
+        detail.style.clipPath = blobPath(st.b, st.corner, st.phase + 1.4);
+      };
+      const link = card.querySelector("a");
+      link.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse") return;
+        const r = media.getBoundingClientRect();
+        if (st.a < 0.05) st.corner = [(e.clientX - r.left) / r.width < 0.5 ? 0 : 1, (e.clientY - r.top) / r.height < 0.5 ? 0 : 1];
+        gsap.killTweensOf(st);
+        gsap.to(st, { a: 1, duration: 0.65, ease: "power2.inOut", onUpdate: paint });
+        gsap.to(st, { b: 1, duration: 0.75, delay: 0.14, ease: "power3.inOut", onUpdate: paint });
+      });
+      link.addEventListener("pointerleave", (e) => {
+        if (e.pointerType !== "mouse") return;
+        gsap.killTweensOf(st);
+        gsap.to(st, { b: 0, duration: 0.45, ease: "power2.inOut", onUpdate: paint });
+        gsap.to(st, { a: 0, duration: 0.55, delay: 0.08, ease: "power2.inOut", onUpdate: paint });
+      });
+    });
+  }
+
   /* ---------- Shared scroll reveals and footer entrance ---------- */
   if (!CC.reduced) {
     gsap.utils.toArray("[data-reveal]").forEach((el) => {

@@ -155,43 +155,32 @@
     }
   });
 
-  /* Boards: keep the caret right after the typed code */
-  const codeText = $(".code-line");
-  const caret = $(".code-caret");
-  const codeChars = codeText ? $$("tspan", codeText) : [];
-  const caretAt = (n) => {
-    if (!codeText || !caret) return;
-    try {
-      const w = n ? codeText.getSubStringLength(0, n) : 0;
-      caret.setAttribute("x", (Number(codeText.getAttribute("x")) + w + 5).toFixed(1));
-    } catch {}
-  };
-  caretAt(codeChars.length);
-  document.fonts?.ready.then(() => caretAt(codeChars.length));
-
   if (!reduced && hero) {
-    // Boards start blank and fill in once the duo has landed.
-    const links = $$(".c-link");
-    const dots = $$(".c-dot");
-    gsap.set(codeChars, { opacity: 0 });
-    gsap.set(".code-underline", { strokeDasharray: 1, strokeDashoffset: 1 });
-    gsap.set(links, { strokeDashoffset: 1 });
-    gsap.set([...dots, ".c-star", ".c-spark"], { scale: 0, transformOrigin: "50% 50%" });
-    gsap.set(".c-orbit", { opacity: 0 });
-    caretAt(0);
-    const boards = gsap.timeline({ paused: true });
-    codeChars.forEach((ch, i) =>
-      boards.set(ch, { opacity: 1, onComplete: () => caretAt(i + 1), onReverseComplete: () => caretAt(i) }, i * 0.09),
-    );
-    boards.to(".code-underline", { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, codeChars.length * 0.09 + 0.05);
-    boards.to(".c-orbit", { opacity: 1, duration: 0.6 }, 0.1);
-    dots.forEach((d, i) => {
-      boards.to(d, { scale: 1, duration: 0.35, ease: "back.out(3)" }, 0.15 + i * 0.16);
-      if (links[i]) boards.to(links[i], { strokeDashoffset: 0, duration: 0.18, ease: "none" }, 0.27 + i * 0.16);
-    });
-    boards.fromTo(".c-seam", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.2 + dots.length * 0.16);
-    boards.to([".c-star", ".c-spark"], { scale: 1, duration: 0.6, ease: "back.out(2.6)" }, 0.3 + dots.length * 0.16);
-    boards.fromTo(".c-caption", { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.55 + dots.length * 0.16);
+    // Boards draw themselves once the duo has landed: Build (left), Brand (right).
+    const strokes = $$(".b-frame, .b-text");
+    gsap.set(strokes, { strokeDasharray: 1, strokeDashoffset: 1 });
+    gsap.set(".b-dots circle, .b-code, .g-swatches circle", { scale: 0, transformOrigin: "50% 50%" });
+    gsap.set(".g-logo", { scale: 0.6, rotation: -30, opacity: 0, transformOrigin: "50% 50%" });
+    gsap.set(".b-hero", { scaleX: 0, transformOrigin: "0% 50%" });
+    gsap.set(".b-cursor", { x: -26, y: 22, opacity: 0 });
+    gsap.set(".g-orbit, .g-type", { opacity: 0 });
+    gsap.set(".g-pencil", { x: 26, y: 16, opacity: 0 });
+    const boards = gsap
+      .timeline({ paused: true, defaults: { ease: "power3.out" } })
+      // Build: a website sketch
+      .to(".b-frame", { strokeDashoffset: 0, duration: 0.7, stagger: 0.12, ease: "power2.inOut" }, 0)
+      .to(".b-dots circle", { scale: 1, duration: 0.35, stagger: 0.06, ease: "back.out(3)" }, 0.35)
+      .to(".b-hero", { scaleX: 1, duration: 0.6, ease: "expo.out" }, 0.5)
+      .to(".b-text", { strokeDashoffset: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }, 0.7)
+      .to(".b-code", { scale: 1, duration: 0.5, ease: "back.out(2.2)" }, 0.85)
+      .to(".b-cursor", { x: 0, y: 0, opacity: 1, duration: 0.6 }, 1.0)
+      .to(".b-cursor", { scale: 0.82, duration: 0.12, yoyo: true, repeat: 1, transformOrigin: "0% 0%" }, 1.6)
+      // Brand: the mark's construction, colour and type
+      .fromTo(".g-orbit", { rotation: -90, transformOrigin: "50% 50%" }, { opacity: 1, rotation: 0, duration: 1.1, ease: "power2.out" }, 0.1)
+      .to(".g-logo", { scale: 1, rotation: 0, opacity: 1, duration: 0.9, ease: "back.out(1.6)" }, 0.3)
+      .to(".g-swatches circle", { scale: 1, duration: 0.4, stagger: 0.08, ease: "back.out(2.6)" }, 0.6)
+      .fromTo(".g-type", { y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, 0.95)
+      .to(".g-pencil", { x: 0, y: 0, opacity: 1, duration: 0.7 }, 1.15);
 
     // Entrance (waits for the curtain).
     gsap.set(".hero-title .line-mask > span", { yPercent: 110 });
@@ -387,9 +376,154 @@
     );
   });
 
-  /* ================= Project cards ================= */
-  if (!reduced) {
-    $$(".project-card").forEach((card, i) => {
+  /* ================= Selected work: liquid-glass carousel =================
+     The card list under the carousel is the source of truth and the accessible
+     fallback (reduced motion, no WebGL, context loss). The WebGL module is only
+     downloaded when the section approaches the viewport. */
+  (() => {
+    const section = $("#work");
+    const root = section && $("[data-glass]", section);
+    if (!root) return;
+    const items = $$(".work-grid .project-card", section).map((li) => ({
+      href: $("a", li).getAttribute("href"),
+      src: $(".project-mask img", li).getAttribute("src"),
+      title: $("h3", li).textContent.trim(),
+      category: $(".project-meta p", li).textContent.trim(),
+      kind: $(".project-tag", li).textContent.trim(),
+      kindClass: li.dataset.kind,
+    }));
+    // ?glass-test lets automated tests use software WebGL; real visitors on
+    // software-only rendering get the card list instead.
+    const force = new URLSearchParams(location.search).has("glass-test");
+    const probe = () => {
+      try {
+        const c = document.createElement("canvas");
+        const gl = c.getContext("webgl", { failIfMajorPerformanceCaveat: !force });
+        if (!gl) return false;
+        const lose = gl.getExtension("WEBGL_lose_context");
+        if (lose) lose.loseContext();
+        return true;
+      } catch {
+        return false;
+      }
+    };
+    if (reduced || !items.length || !probe()) {
+      root.remove();
+      return;
+    }
+    section.classList.add("is-glass");
+
+    const n = items.length;
+    const stage = $(".glass-stage", root);
+    const poster = $(".glass-poster", root);
+    const kindEl = $(".glass-kind", root);
+    const titleEl = $(".glass-title", root);
+    const catEl = $(".glass-cat", root);
+    const link = $(".glass-link", root);
+    const count = $(".glass-count", root);
+    const pad = (v) => String(v).padStart(2, "0");
+    let index = 0;
+    let api = null;
+    let loading = false;
+
+    function show(i) {
+      if (i === index && titleEl.textContent === items[i].title) return;
+      index = i;
+      const it = items[i];
+      link.href = it.href;
+      link.setAttribute("aria-label", `View project: ${it.title}`);
+      count.textContent = `${pad(i + 1)} / ${pad(n)}`;
+      if (!api) poster.src = it.src;
+      gsap
+        .timeline()
+        .to([kindEl, titleEl, catEl], { y: -10, opacity: 0, duration: 0.16, ease: "power2.in", stagger: 0.02, overwrite: "auto" })
+        .add(() => {
+          kindEl.textContent = it.kind;
+          kindEl.className = `kind-chip kind-${it.kindClass} glass-kind`;
+          titleEl.textContent = it.title;
+          catEl.textContent = it.category;
+        })
+        .fromTo([kindEl, titleEl, catEl], { y: 12 }, { y: 0, opacity: 1, duration: 0.42, ease: "power3.out", stagger: 0.04 });
+    }
+    link.setAttribute("aria-label", `View project: ${items[0].title}`);
+
+    const step = (d) => (api ? api.go(d) : show((((index + d) % n) + n) % n));
+    $("[data-glass-prev]", root).addEventListener("click", () => step(-1));
+    $("[data-glass-next]", root).addEventListener("click", () => step(1));
+    stage.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") (e.preventDefault(), step(1));
+      else if (e.key === "ArrowLeft") (e.preventDefault(), step(-1));
+      else if (e.key === "Home") (e.preventDefault(), api ? api.goTo(0) : show(0));
+      else if (e.key === "End") (e.preventDefault(), api ? api.goTo(n - 1) : show(n - 1));
+      else if ((e.key === "Enter" || e.key === " ") && api) (e.preventDefault(), api.toggleReveal());
+      else if (e.key === "Escape" && api) api.collapse();
+    });
+
+    function fallback() {
+      if (api) api.destroy();
+      api = null;
+      section.classList.remove("is-glass");
+      root.remove();
+      window.ScrollTrigger && ScrollTrigger.refresh();
+    }
+    const loadScript = (src) =>
+      new Promise((resolve, reject) => {
+        if (window.CCGlass) return resolve();
+        const el = document.createElement("script");
+        el.src = src;
+        el.onload = resolve;
+        el.onerror = reject;
+        document.head.append(el);
+      });
+    function start() {
+      if (api || loading) return;
+      loading = true;
+      loadScript("js/glass-carousel.js?v=22")
+        .then(() => {
+          loading = false;
+          if (!window.CCGlass.supported(force)) return fallback();
+          try {
+            api = window.CCGlass.mount(stage, items, {
+              start: index,
+              onIndex: show,
+              onReveal: (on) => root.classList.toggle("is-revealed", on),
+              onFail: fallback,
+            });
+          } catch {
+            return fallback();
+          }
+          api.ready.then(() => root.classList.add("is-ready")).catch(() => {});
+        })
+        .catch(() => {
+          loading = false;
+          fallback();
+        });
+    }
+    const near = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        near.disconnect();
+        start();
+      },
+      { rootMargin: "900px 0px" },
+    );
+    near.observe(root);
+    // Release the GPU when the page is hidden in history; rebuild if it comes back.
+    addEventListener("pagehide", () => {
+      if (!api) return;
+      api.destroy();
+      api = null;
+      root.classList.remove("is-ready", "is-revealed");
+      poster.src = items[index].src;
+    });
+    addEventListener("pageshow", (e) => {
+      if (e.persisted && section.classList.contains("is-glass") && !api) start();
+    });
+  })();
+
+  /* ================= Project cards (fallback list) ================= */
+  if (!reduced && !$("#work")?.classList.contains("is-glass")) {
+    $$(".work-grid .project-card").forEach((card, i) => {
       gsap.fromTo(
         $(".project-mask", card),
         { clipPath: "inset(14% 12% 14% 12% round 36px)", scale: 1.12 },
@@ -408,15 +542,6 @@
         delay: (i % 2) * 0.08,
         scrollTrigger: { trigger: card, start: "top 70%", once: true },
       });
-    });
-    gsap.from(".end-pills li", {
-      scale: 0.4,
-      opacity: 0,
-      y: 20,
-      stagger: 0.12,
-      duration: 0.7,
-      ease: "back.out(2)",
-      scrollTrigger: { trigger: ".work-end", start: "top 80%", once: true },
     });
   }
 

@@ -1,12 +1,12 @@
 // Generates the static About page, case-study pages and 404 page into dist/.
 // The site stays buildless at runtime; run `node tools/build-pages.mjs` after
 // editing content here. Only verified project facts belong in PROJECTS.
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
-const V = "21";
+const V = "22";
 const EMAIL = "codeconstellation.business@gmail.com";
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -187,7 +187,7 @@ function header({ base, current }) {
   const cur = (k) => (current === k ? ' aria-current="page"' : "");
   return `    <header class="site-header">
       <nav aria-label="Main">
-        <a class="pill" href="${base}index.html#work"${cur("work")}>Work</a>
+        <a class="pill" href="${base}work.html"${cur("work")}>Work</a>
         <a class="pill" href="${base}about.html"${cur("about")}>About</a>
       </nav>
       <a class="brand" href="${base}index.html" aria-label="Code Constellation home">
@@ -224,7 +224,7 @@ function footer({ base }) {
         </div>
         <div>
           <p class="eyebrow">Explore</p>
-          <a class="footer-link" href="${base}index.html#work">Work</a>
+          <a class="footer-link" href="${base}work.html">Work</a>
           <a class="footer-link" href="${base}about.html">About</a>
           <a class="footer-link" href="${base}index.html#services">Services</a>
         </div>
@@ -486,6 +486,89 @@ const SLOTS = {
 };
 const KIND = { "Client work": "client", Concept: "concept", "Unofficial concept": "unofficial", Lab: "lab" };
 
+// Hover colour (brand palette only) and the focal point of the detail crop revealed on hover.
+const CARD_STYLE = {
+  "1xircle": ["#2F6BFF", "50% 46%"],
+  poppio: ["#C9CAEE", "42% 55%"],
+  "tesla-roadster": ["#0A1033", "40% 62%"],
+  vespera: ["#8A90EE", "56% 42%"],
+  "ferrari-f1": ["#2B45D8", "46% 60%"],
+  "sanjai-portfolio": ["#0A1033", "62% 40%"],
+};
+
+function card(p, base, indent = "          ") {
+  const [accent, focus] = CARD_STYLE[p.slug];
+  const kind = KIND[p.label] || "concept";
+  const img = `${base}assets/${p.image}.webp`;
+  return `${indent}<li class="project-card" data-kind="${kind}" style="--accent: ${accent}; --focus: ${focus}">
+${indent}  <a href="${base}work/${p.slug}.html" data-cursor="View case">
+${indent}    <div class="project-media">
+${indent}      <div class="project-mask"><img src="${img}" alt="" width="1536" height="1024" loading="lazy" decoding="async" /></div>
+${indent}      <span class="blob blob-fill" aria-hidden="true"></span>
+${indent}      <span class="blob blob-detail" aria-hidden="true"><img src="${img}" alt="" width="1536" height="1024" loading="lazy" decoding="async" /></span>
+${indent}      <span class="project-tag kind-chip kind-${kind}">${esc(p.label)}</span>
+${indent}    </div>
+${indent}    <div class="project-meta">
+${indent}      <h3>${esc(p.name)}</h3>
+${indent}      <p>${esc(p.category)}</p>
+${indent}      <span class="arrow-chip"></span>
+${indent}    </div>
+${indent}  </a>
+${indent}</li>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Work index                                                          */
+/* ------------------------------------------------------------------ */
+function workPage() {
+  const base = "";
+  const counts = PROJECTS.reduce((m, p) => ((m[KIND[p.label]] = (m[KIND[p.label]] || 0) + 1), m), {});
+  const filters = [
+    ["all", "All", PROJECTS.length],
+    ["client", "Client work", counts.client || 0],
+    ["concept", "Concept", counts.concept || 0],
+    ["unofficial", "Unofficial concept", counts.unofficial || 0],
+    ["lab", "Lab", counts.lab || 0],
+  ].filter(([, , c]) => c > 0);
+  const body = `
+    <main id="main">
+      <section class="work-hero" aria-labelledby="work-page-title">
+        <div>
+          <p class="eyebrow"><span class="star-dot" aria-hidden="true"></span>Work</p>
+          <h1 id="work-page-title" class="work-page-title">
+            <span class="line-mask"><span>Ideas,</span></span>
+            <span class="line-mask"><span>made <em>tangible.</em></span></span>
+          </h1>
+        </div>
+        <div class="work-intro">
+          <img class="work-mascot" src="${base}assets/characters/mascot-point.webp" alt="" width="565" height="720" decoding="async" />
+          <p>Client work, independent concepts and lab experiments. Every project is labelled for what it is.</p>
+        </div>
+      </section>
+
+      <section class="work-list" aria-label="All projects">
+        <div class="work-filters" role="group" aria-label="Filter projects">
+${filters.map(([key, label, c], i) => `          <button class="filter-chip" type="button" data-filter="${key}" aria-pressed="${i === 0}">${esc(label)} <span>${String(c).padStart(2, "0")}</span></button>`).join("\n")}
+        </div>
+        <p class="sr-only" aria-live="polite" data-filter-status></p>
+        <ul class="work-grid work-index">
+${PROJECTS.map((p) => card(p, base)).join("\n")}
+        </ul>
+      </section>
+    </main>
+`;
+  return page(
+    {
+      base,
+      css: "work",
+      current: "work",
+      title: "Work — Code Constellation",
+      description: "Client work, independent concepts and lab experiments by Code Constellation, each labelled for what it is.",
+    },
+    body,
+  );
+}
+
 function slot(label, [shape, ar, px], n, pending) {
   return `          <figure class="slot slot-${shape}" style="--ar: ${ar}">
             <div class="slot-frame">
@@ -520,7 +603,7 @@ ${p.results.map(([big, small]) => `          <li><strong>${esc(big)}</strong><sp
     <main id="main" class="case case-${kind}">
       <section class="case-hero" aria-labelledby="case-title">
         <div class="case-topline">
-          <a class="back-link" href="${base}index.html#work"><span aria-hidden="true">←</span> All work</a>
+          <a class="back-link" href="${base}work.html"><span aria-hidden="true">←</span> All work</a>
           <span class="case-index">${String(i + 1).padStart(2, "0")} / ${String(PROJECTS.length).padStart(2, "0")}</span>
         </div>
         <p class="case-label"><span class="kind-chip kind-${kind}">${esc(p.label)}</span><span class="eyebrow">${esc(p.category)}</span></p>
@@ -604,7 +687,7 @@ function notFound() {
         <p class="eyebrow">Error 404</p>
         <h1 class="case-title"><span class="line-mask"><span>Lost in orbit.</span></span></h1>
         <p class="case-lead">This page drifted out of range. Head back to the studio or see our work.</p>
-        <p class="lost-actions"><a class="cta" href="/index.html"><span class="label">Back home</span>${arrowChip}</a> <a class="pill" href="/index.html#work">See work</a></p>
+        <p class="lost-actions"><a class="cta" href="/index.html"><span class="label">Back home</span>${arrowChip}</a> <a class="pill" href="/work.html">See work</a></p>
       </section>
     </main>
 `;
@@ -621,3 +704,18 @@ const out = (rel, html) => {
 out("about.html", aboutPage());
 PROJECTS.forEach((p, i) => out(`work/${p.slug}.html`, casePage(p, i)));
 out("404.html", notFound());
+out("work.html", workPage());
+
+// Homepage: the fallback card list under the carousel is generated from the same data.
+{
+  const file = join(DIST, "index.html");
+  const html = readFileSync(file, "utf8");
+  const start = "<!-- work-cards:start (generated by tools/build-pages.mjs) -->";
+  const end = "<!-- work-cards:end -->";
+  const a = html.indexOf(start);
+  const b = html.indexOf(end);
+  if (a < 0 || b < 0) throw new Error("work-cards markers missing in index.html");
+  const cards = PROJECTS.map((p) => card(p, "")).join("\n");
+  writeFileSync(file, html.slice(0, a + start.length) + "\n" + cards + "\n          " + html.slice(b));
+  console.log("updated index.html work cards");
+}

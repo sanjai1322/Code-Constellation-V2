@@ -1,0 +1,112 @@
+/* Code Constellation — Work index. Card styles are shared in site.css. */
+
+.work-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: end;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(var(--header-h) + clamp(28px, 6vh, 72px)) var(--gutter) 0;
+}
+.work-hero .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.work-page-title {
+  font-size: clamp(54px, 9vw, 160px);
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+}
+.work-page-title em {
+  font-style: normal;
+  color: var(--orbit);
+}
+.work-intro {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 16px;
+  padding-bottom: 0.4em;
+}
+.work-mascot {
+  width: clamp(88px, 9vw, 140px);
+  height: auto;
+}
+.work-intro p {
+  max-width: 30ch;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.4;
+}
+
+.work-list {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(40px, 5vw, 72px) var(--gutter) var(--section-y);
+}
+.work-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--lavender);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.filter-chip span {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.filter-chip:hover {
+  border-color: var(--orbit);
+}
+.filter-chip[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--starlight);
+}
+.filter-chip[aria-pressed="true"] span {
+  color: var(--lavender);
+}
+.work-index {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: clamp(36px, 4vw, 64px);
+  margin-top: 0;
+}
+.work-index .project-card:nth-child(even) {
+  margin-top: 0;
+}
+.work-index .project-media {
+  aspect-ratio: 4 / 3;
+}
+.work-index .project-card[hidden] {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .work-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .work-hero {
+    grid-template-columns: 1fr;
+  }
+  .work-index {
+    grid-template-columns: 1fr;
+  }
+}

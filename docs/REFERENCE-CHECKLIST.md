@@ -1,6 +1,6 @@
 # Reference checklist — two26.studio → Code Constellation
 
-**Important limitation.** In both implementation passes (4 and 5 November 2026) the reference site (`two26.studio`) was blocked by the build environment's network policy, so it could not be browsed, scrolled, timed or inspected live. The supplied screen recording of our own site (1105.mp4) and the Code Constellation Brand Book v1.0 were used instead. The mapping below follows the section structure already present in this repository (which was modelled on the reference) and the behaviours listed in the project brief. Items marked **needs live comparison** should be checked side by side against the reference once it is reachable; nothing here claims a pixel-perfect match.
+**Important limitation.** In both implementation passes (4 and 5 November 2026) the reference site (`two26.studio`) was blocked by the build environment's network policy, so it could not be browsed, scrolled, timed or inspected live. The supplied screen recordings — of our own site (1105.mp4) and of the reference itself (1105_1.mp4: home, card hovers, Work page and About page) — and the Code Constellation Brand Book v1.0 were used instead. Timings were judged from the recording at 2–4 frames per second, not measured on the live site. The mapping below follows the section structure already present in this repository (which was modelled on the reference) and the behaviours listed in the project brief. Items marked **needs live comparison** should be checked side by side against the reference once it is reachable; nothing here claims a pixel-perfect match.
 
 Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs live comparison with the reference · ⏳ awaiting content
 
@@ -9,6 +9,7 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 | Reference | Ours | Status |
 | --- | --- | --- |
 | Home | `index.html` | ✅ / 🔶 |
+| Work page ("To brag about") | `work.html` with type filters | ✅ 🔶 |
 | About (own page) | `about.html` | ✅ / 🔶 |
 | Project pages | `work/1xircle.html`, `poppio`, `tesla-roadster`, `vespera`, `ferrari-f1`, `sanjai-portfolio` | ✅ (content partly ⏳) |
 | Missing route | `404.html` (served by static hosts that honour it) | ✅ |
@@ -36,7 +37,9 @@ Status key: ✅ implemented and verified in a browser · 🔶 implemented, needs
 | Curved ribbon with moving text | SVG band with text on a path; drifts and responds to scroll | ✅ 🔶 speed |
 | Pinned section with progressive text reveal | "A bit about us" pinned; characters go lavender → electric → ink while scrubbing; value pills pop | ✅ 🔶 pin length |
 | Marquee | Direction follows scroll direction, speed boosts with scroll velocity; pause button | ✅ 🔶 base speed |
-| Project cards | Scroll-scrubbed mask reveal, hover inset + zoom, arrow swap, cursor label; links to case pages | ✅ 🔶 |
+| Selected work | Liquid-glass WebGL carousel (original implementation) with HTML captions, counter, View project link; card list fallback | ✅ |
+| Project cards | Reference hover from the recording: colour blob grows from the entry corner, detail crop follows; arrow swap, cursor label | ✅ 🔶 timing |
+| "Whole page for that" | Link from the homepage to the Work page | ✅ |
 | Services + winding path | Large transparent clips, sentence-case split titles, caption bubbles, measured path with exact leading marker that ends at the last caption, mobile channel composition; designer presents the heading | ✅ (precision tested) 🔶 composition |
 | Presenting / waving characters | Coder presents Work, designer presents Services, mascot in FAQ, duo waves at the footer contact point, mascot waves in the contact dialog | ✅ |
 | Motion control | Dock button pauses the hero clip, marquee, ribbon drift and orbit star; services have their own pause | ✅ |

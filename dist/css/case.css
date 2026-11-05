@@ -57,31 +57,6 @@
   gap: 12px;
   margin: clamp(32px, 5vw, 64px) 0 16px;
 }
-.kind-chip {
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.kind-client {
-  background: var(--electric);
-  color: #fff;
-}
-.kind-concept {
-  background: var(--lavender);
-  color: var(--ink);
-}
-.kind-unofficial {
-  background: var(--ink);
-  color: var(--starlight);
-}
-.kind-lab {
-  background: var(--nebula);
-  color: #fff;
-}
 .case-title {
   font-size: clamp(60px, 11.5vw, 210px);
   line-height: 0.9;
