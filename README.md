@@ -12,6 +12,15 @@ python tools/serve.py
 
 Then open http://127.0.0.1:8765/.
 
+## Vercel
+
+Import this repository with Root Directory left at the repository root (`./`),
+Framework Preset **Other**, and Production Branch **main**. The root
+`vercel.json` generates the pages and publishes `dist/`. No dependency install
+is needed. `cleanUrls` serves `/about` and `/work/...` from their HTML files;
+the published `404.html` handles unknown URLs with the custom error page.
+Do not add a catch-all rewrite to `index.html`, since this is a multi-page site.
+
 Unknown paths return the custom page with HTTP 404 locally. Preview it directly at `/404.html`.
 The 404 page uses the approved coder, designer and 3D companion together in
 `assets/404/trio-loop.webm` (1280×720, 24 fps, alpha, muted). The selected Flow
